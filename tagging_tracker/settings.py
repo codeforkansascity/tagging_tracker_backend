@@ -27,7 +27,7 @@ if DEBUG:
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['52.173.252.39']
+ALLOWED_HOSTS = ['52.173.252.39', 'localhost', '127.0.0.1']
 
 
 # Application definition
