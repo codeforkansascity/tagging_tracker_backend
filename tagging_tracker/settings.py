@@ -86,7 +86,7 @@ DATABASES = {
 	'USER': 'tagfighter@taggingtrackerdb',
 	'HOST': 'taggingtrackerdb.postgres.database.azure.com',
 	'PORT': '5432',
-	'PASSWORD': os.environ['DB_PW'], 
+	'PASSWORD': "TagFighter!"#os.environ['DB_PW'],
     }
 }
 
