@@ -10,3 +10,19 @@ RUN pip3 install --upgrade pip
 RUN pip3 install virtualenv
 
 # clone the git repo
+# RUN git clone https://github.com/Nerdenator/tagging_tracker
+
+# make working directory
+RUN mkdir /tagging_tracker
+
+# change directory
+WORKDIR /tagging_tracker
+
+# put requirements.txt
+ADD requirements.txt /tagging_tracker/
+
+# install pip stuff
+RUN pip install -r requirements.txt
+
+
+ADD . /tagging_tracker/
