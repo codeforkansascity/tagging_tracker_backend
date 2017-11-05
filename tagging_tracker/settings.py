@@ -26,7 +26,7 @@ if DEBUG:
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['52.173.252.39', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['52.173.204.52', 'localhost', '127.0.0.1', '0.0.0.0']
 
 # Application definition
 
@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'tagtracking',
-        'USER': 'tagfighter@taggingtrackerdb',
-        'HOST': 'taggingtrackerdb.postgres.database.azure.com',
+        'USER': 'tagfighter@taggingtracker',
+        'HOST': 'taggingtracker.postgres.database.azure.com',
         'PORT': '5432',
         'PASSWORD': os.environ['DB_PW'],
     }
