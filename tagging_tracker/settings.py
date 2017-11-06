@@ -26,7 +26,7 @@ if DEBUG:
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['52.173.204.52', 'localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['52.173.204.52', 'localhost', '127.0.0.1', '0.0.0.0', 'http://tagtracker.centralus.cloudapp.azure.com/']
 
 # Application definition
 
