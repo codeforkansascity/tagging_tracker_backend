@@ -1,14 +1,15 @@
 version: '3'
 
 services:
-  #db:
-    #image: postgres
+  db:
+    image: mdillon/postgis:9.6
   web:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/tagging_tracker/
+      - .:/code
     ports:
-      - "8000:8000"
-    #depends_on:
-      #- db
+      - "80:8000"
+    depends_on:
+      - db
+    env_file:
+      - local.env

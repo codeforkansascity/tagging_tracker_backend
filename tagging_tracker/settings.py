@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     SECRET_KEY = 'mysecretkey'
@@ -79,11 +79,10 @@ WSGI_APPLICATION = 'tagging_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'tagtracking',
-        'USER': 'tagfighter@taggingtracker',
-        'HOST': 'taggingtracker.postgres.database.azure.com',
-        'PORT': '5432',
-        'PASSWORD': os.environ['DB_PW'],
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
+        'PORT': '5432'
     }
 }
 
