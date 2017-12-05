@@ -9,9 +9,9 @@ from backend.serializers import AddressSerializer, TagSerializer
 @csrf_exempt
 def address_list(request):
     """
-    List all tagging points or create a new one.
+    List all addresses or create a new one.
     :param request:
-    :return: yo mama
+    :return: list of addresses
     """
     if request.method == "GET":
         addresses = Address.objects.all()
@@ -27,15 +27,15 @@ def address_list(request):
         return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-def taggingpoint_list(request):
+def tag_list(request):
     """
-    List all tagging points or create a new one.
+    List all tags or create a new one.
     :param request:
-    :return: yo mama
+    :return: list of tags
     """
     if request.method == "GET":
-        taggingpoints = Tag.objects.all()
-        serializer = TagSerializer(taggingpoints, many=True)
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == "POST":
@@ -47,30 +47,30 @@ def taggingpoint_list(request):
         return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-def taggingpoint_detail(request, pk):
+def tag_detail(request, pk):
     """
-    Retrieve, update or delete a tagging point
+    Retrieve, update or delete a tag
     :param request:
     :param pk:
-    :return: also yo mama
+    :return: details of a tag
     """
     try:
-        taggingpoint = Tag.objects.get(pk=pk)
+        tag = Tag.objects.get(pk=pk)
     except Tag.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        serializer = TagSerializer(taggingpoint)
+        serializer = TagSerializer(tag)
         return JsonResponse(serializer.data)
 
     elif request.method == "PUT":
         data = JSONParser().parse(request)
-        serializer = TagSerializer(taggingpoint, data=data)
+        serializer = TagSerializer(tag, data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
-        taggingpoint.delete()
+        tag.delete()
         return HttpResponse(status=204)
