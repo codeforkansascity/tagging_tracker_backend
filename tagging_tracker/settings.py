@@ -26,7 +26,7 @@ if DEBUG:
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['52.173.204.52', 'localhost', '127.0.0.1', '0.0.0.0', 'tagtracker.centralus.cloudapp.azure.com']
+ALLOWED_HOSTS = ['52.173.204.52', 'localhost', '127.0.0.1', '0.0.0.0', 'tagtracker.centralus.cloudapp.azure.com', 'tagging-tracker-dev.westus2.cloudapp.azure.com']
 
 # Application definition
 
@@ -81,10 +81,11 @@ WSGI_APPLICATION = 'tagging_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432'
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'HOST': os.environ['DB_HOST'],
+        'PORT': os.environ['DB_PORT'],
+        'PASSWORD': os.environ['DB_PASSWORD']
     }
 }
 
