@@ -21,6 +21,8 @@ RUN pip3 install virtualenv
 
 # make working directory
 RUN mkdir /code
+RUN mkdir -p /code/logs
+RUN mkdir /logs
 
 # change directory
 WORKDIR /code
@@ -34,4 +36,7 @@ RUN pip install -r requirements.txt
 ADD . /code/
 
 COPY ./docker-entrypoint.sh /
+COPY ./django_nginx.conf /etc/nginx/sites-available/
+RUN ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 ENTRYPOINT ["/docker-entrypoint.sh"]
