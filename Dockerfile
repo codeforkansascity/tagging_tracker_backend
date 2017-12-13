@@ -24,6 +24,10 @@ RUN mkdir /code
 RUN mkdir -p /code/logs
 RUN mkdir /logs
 
+# Touch log files
+RUN touch /code/logs/gunicorn.log
+RUN touch /code/logs/access.log
+
 # change directory
 WORKDIR /code
 

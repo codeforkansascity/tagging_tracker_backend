@@ -85,7 +85,12 @@ DATABASES = {
         'USER': os.environ['DB_USER'],
         'HOST': os.environ['DB_HOST'],
         'PORT': os.environ['DB_PORT'],
-        'PASSWORD': os.environ['DB_PASSWORD']
+        'EMAIL_USE_SSL': True,
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        'OPTIONS': {
+            'sslmode': os.environ['SSL_MODE'],
+            'sslrootcert': os.environ['SSL_ROOT_CERT']
+        }
     }
 }
 
