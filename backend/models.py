@@ -20,6 +20,7 @@ class Address(gis_models.Model):
     tenant_email = gis_models.CharField(max_length=12, blank=True)
     follow_up_owner_needed = gis_models.BooleanField(default=False)
     land_bank_property = gis_models.BooleanField(default=False)
+    type_of_property = gis_models.IntegerField(default=False, blank=False)
     date_updated = gis_models.DateField(auto_now=True)
 
     def latitude(self):

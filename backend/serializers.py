@@ -21,6 +21,7 @@ class AddressSerializer(GeoFeatureModelSerializer):
           'tenant_email',
           'follow_up_owner_needed',
           'land_bank_property',
+          'type_of_property',
           'date_updated'
         )
 

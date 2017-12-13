@@ -2,6 +2,7 @@
 
 python3 manage.py migrate
 
+mkdir -p /code/logs/
 touch /code/logs/gunicorn.log
 touch /code/logs/access.log
 tail -n 0 -f /code/logs/*.log &
