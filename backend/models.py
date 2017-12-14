@@ -31,7 +31,7 @@ class Address(gis_models.Model):
 
 
 class Tag(base_models.Model):
-    address = base_models.ForeignKey('Address')
+    address = base_models.ForeignKey(Address, on_delete=base_models.CASCADE)
     creator_user_id = base_models.CharField(max_length=255)
     last_updated_user_id = base_models.CharField(max_length=255)
     crossed_out = base_models.BooleanField(default=False)

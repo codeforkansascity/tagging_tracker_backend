@@ -36,12 +36,30 @@ def address_detail(request, pk):
     """
     try:
         address = Address.objects.get(pk=pk)
-    except AddressSerializer.DoesNotExist:
+    except Address.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
         serializer = AddressSerializer(address)
         return JsonResponse(serializer.data)
+
+@csrf_exempt
+def address_tags(request, pk):
+    """
+    Retrieve, update or delete a tag
+    :param request:
+    :param pk:
+    :return: details of a tag
+    """
+    try:
+        address = Address.objects.get(pk=pk)
+    except Address.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 @csrf_exempt
 def tag_list(request):
