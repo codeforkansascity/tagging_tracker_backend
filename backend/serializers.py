@@ -25,7 +25,7 @@ class AddressSerializer(GeoFeatureModelSerializer):
           'date_updated'
         )
 
-class TagSerializer(serializers.Serializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = (

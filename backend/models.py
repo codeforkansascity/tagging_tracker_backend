@@ -36,6 +36,7 @@ class Tag(base_models.Model):
     last_updated_user_id = base_models.CharField(max_length=255)
     crossed_out = base_models.BooleanField(default=False)
     date_updated = base_models.DateField(auto_now=True)
+    date_taken = base_models.DateField(auto_now=False)
     description = base_models.CharField(max_length=255)
     gang_related = base_models.BooleanField(default=False)
     img = base_models.CharField(max_length=1000, blank=True)
