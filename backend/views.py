@@ -43,6 +43,10 @@ def address_detail(request, pk):
         serializer = AddressSerializer(address)
         return JsonResponse(serializer.data)
 
+    elif request.method == 'DELETE':
+        address.delete();
+        return HttpResponse(status=204)
+
 @csrf_exempt
 def address_tags(request, pk):
     """
