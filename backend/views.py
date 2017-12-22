@@ -7,6 +7,10 @@ from backend.models import Address, Tag
 from backend.serializers import AddressSerializer, TagSerializer
 
 @csrf_exempt
+def index(request):
+    return HttpResponse(status=204)
+
+@csrf_exempt
 def address_list(request):
     """
     List all addresses or create a new one.
