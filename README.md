@@ -1,17 +1,61 @@
-# tagging_tracker
+# Tagging Tracker Backend Services
+
+These are the services that are powering the [Tagging Tracker Application](https://github.com/codeforkansascity/tagging-tracker).
+
+* Note: * To use the existing Azure and auth0 accounts that are applied to this code, you need to contact one of the developers on the team. Otherwise, you'll need to setup your own Azure account and auth0 instance to run this code.
 
 ## Getting Started
-To get started, clone the repository:
 
-`git clone http://www.github.com/codeforkansascity/tagging_tracker`
+In order to checkout the code, and run it locally, the following steps are needed.
 
-Next, create a virtualenv, then install the requirements:
+1. You first need to generate your own self signed certificate pointing to the localhost domain. If you have any existing ones, feel free to use them as well. When creating them, you need to ensure that the file names coorelate to ~/.ssh/tagging_tracker/fullchain.pem (certificate file) and ~/.ssh/tagging_tracker/privkey.pem (private key).
 
-```
-cd tagging_tracker
-pip install -r requirements.txt
-```
+ If you need assistance, I recommend this following [article](https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs#generating-ssl-certificates). Concentrate on the * Generate a Self-Signed Certificate section. *
 
-_Note: not setting up a virtualenv means that packages will be installed on your
-system's Python interpreter. This carries risks. Don't know what virtualenv is? Google it!_
+1. Checkout the repository
 
+  ```
+  git clone http://www.github.com/codeforkansascity/tagging_tracker_backend
+  ```
+
+1. Once your certificate is generated and the repo is cloned, create a local.env file in the project directory. It should contain the following variables
+
+  ```
+  DEBUG - Whether the application is in debug mode. Defaults to False.
+  SECRET_KEY - The secret key of the application. You can generate one here. https://www.miniwebtool.com/django-secret-key-generator/
+  DEPLOYED_URL - The URL of where the application is hosted at. This isn't need if you are running locally on your device.
+  LOADBALANCER_URL - The URL of the loadbalancer for the application. This isn't needed if you are running locally on your device.
+  DB_NAME - Name of the database. See below for running it locally.
+  DB_USER - Name of the database user. See below for running it locally.
+  DB_HOST - Host of the database. See below for running it locally.
+  DB_PORT - Database port. See below for running it locally.
+  DB_PASSWORD - Database Password. See below for running it locally.
+  SSL_MODE - The SSL mode of the database connection. Defaults to disable.
+  SSL_ROOT_CERT - The path of the SSL certificate. Defaults to empty string, and not used if SSL is disabled.
+  AUTH0_CLIENTID - ClientID of the auth0 authentication engine.
+  AUTH0_SECRET - Secret of the auth0 authentication engine.
+  ```
+
+  To get you started and running locally, here is a local.env file you can use.
+
+
+  ```
+  DEBUG=true
+  SECRET_KEY=<Your generated key>
+  DB_NAME=postgres
+  DB_USER=postgres
+  DB_HOST=db
+  DB_PORT=5432
+  DB_PASSWORD=''
+  AUTH0_CLIENTID=<Create your own auth0 or ask developers for it>
+  AUTH0_SECRET=<Create your own auth0 or ask developers for it>
+  SSL_MODE=disable
+  ```
+
+1. After the following previous steps are setup, running the following command to run the application.
+
+  ```
+  docker-compose up --build
+  ```
+
+  Anytime you change application code, kill the current container, and re run `docker-compose up --build`.
