@@ -19,14 +19,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = os.environ['DEBUG'] == True
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
 if DEBUG:
     SECRET_KEY = 'mysecretkey'
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['52.173.204.52', 'localhost', '127.0.0.1', '0.0.0.0', 'tagtracker.centralus.cloudapp.azure.com', 'tagging-tracker-dev.westus2.cloudapp.azure.com']
+ALLOWED_HOSTS = [
+    '52.173.204.52',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+    'tagtracker.centralus.cloudapp.azure.com',
+    os.getenv('DEPLOYED_URL', ''),
+    os.getenv('LOADBALANCER_URL', '')
+]
 
 # Application definition
 
@@ -88,8 +97,8 @@ DATABASES = {
         'EMAIL_USE_SSL': True,
         'PASSWORD': os.environ['DB_PASSWORD'],
         'OPTIONS': {
-            'sslmode': os.environ['SSL_MODE'],
-            'sslrootcert': os.environ['SSL_ROOT_CERT']
+            'sslmode': os.getenv('SSL_MODE', 'disabled'),
+            'sslrootcert': os.getenv('SSL_ROOT_CERT', '')
         }
     }
 }
