@@ -1,6 +1,11 @@
+import os
+
 from django.db import models as base_models
 from django.contrib.gis.db import models as gis_models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
+from azure.storage.blob import BlockBlobService
 
 class Address(gis_models.Model):
     objects = gis_models.GeoManager()
@@ -29,7 +34,6 @@ class Address(gis_models.Model):
     def longitude(self):
         return self.point.x
 
-
 class Tag(base_models.Model):
     address = base_models.ForeignKey(Address, on_delete=base_models.CASCADE)
     creator_user_id = base_models.CharField(max_length=255)
@@ -46,3 +50,9 @@ class Tag(base_models.Model):
     surface = base_models.CharField(max_length=100, blank=True)
     tag_words = base_models.CharField(max_length=255, blank=True)
     tag_initials = base_models.CharField(max_length=20, blank=True)
+
+@receiver(pre_delete, sender=Tag)
+def delete_image(sender, instance, **kwargs):
+    image_name = instance.img.split("/")[-1]
+    block_blob_service = BlockBlobService(account_name=os.environ['AZURE_IMAGE_CONTAINER_NAME'], account_key=os.environ['AZURE_IMAGE_CONTAINER_KEY'])
+    block_blob_service.delete_blob('images', image_name)
