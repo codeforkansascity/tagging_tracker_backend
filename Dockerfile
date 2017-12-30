@@ -21,6 +21,7 @@ RUN pip3 install virtualenv
 
 # make working directory
 RUN mkdir /code
+RUN mkdir /nginx
 RUN mkdir -p /code/logs
 RUN mkdir /logs
 
