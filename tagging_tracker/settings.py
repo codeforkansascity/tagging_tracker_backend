@@ -153,6 +153,8 @@ AUTH0 = {
         # make sure it's the same string that aud attribute in your payload provides
             'AUTH0_CLIENT_SECRET': os.environ['AUTH0_SECRET'],
             'CLIENT_SECRET_BASE64_ENCODED': True,
+            'AUTH0_ALGORITHM': 'HS256',  # default used in Auth0 apps
+            'AUTHORIZATION_EXTENSION': False,  # default to False
         # default to True, if you're Auth0 user since December, maybe you should set it to False
         }
     },

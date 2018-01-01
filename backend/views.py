@@ -1,11 +1,42 @@
+import urllib3
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework_auth0.decorators import token_required, is_authenticated
+from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from backend.models import Address, Tag
 from backend.serializers import AddressSerializer, TagSerializer
 
+def get_authenticated_user(request):
+    auth = request.META.get("HTTP_AUTHORIZATION", None)
+
+    if not auth or len(auth.split()) != 2:
+        return JsonResponse({"Error": "Unauthenticated"}, status=401)
+
+    parts = auth.split()
+    token = parts[1]
+    http = urllib3.PoolManager()
+
+    r = http.request(
+        'GET',
+        'https://taggingtrackerdev.auth0.com/userinfo',
+        headers={
+         'Authorization': 'Bearer ' + token,
+         'Content-Type': 'application/json'
+        }
+    )
+
+    if not r.status == 200:
+        if r.status == 403 or r.status == 401:
+            return JsonResponse({"Error": "Unauthorized"}, status=401)
+        else:
+            return JsonResponse({"Error": "Internal Server Error"}, status=500)
+    else:
+        return JsonResponse({"id": json.loads(r.data.decode('utf-8'))["sub"].split('|')[1]}, status=200)
 @csrf_exempt
 def index(request):
     return HttpResponse(status=204)
@@ -23,6 +54,17 @@ def address_list(request):
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == "POST":
+        authentication_request = get_authenticated_user(request)
+
+        if not authentication_request.status_code == 200:
+            return authentication_request
+
+        authenticated_data = json.loads(authentication_request.content.decode('utf-8'))
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        if not authenticated_data['id'] == request_data['creator_user_id']:
+            return JsonResponse({"Error": authenticated_data["id"] + " " + request_data['creator_user_id']}, status=403)
+
         data = JSONParser().parse(request)
         serializer = AddressSerializer(data=data)
         if serializer.is_valid():
@@ -48,6 +90,11 @@ def address_detail(request, pk):
         return JsonResponse(serializer.data)
 
     elif request.method == 'DELETE':
+        authentication_request = get_authenticated_user(request)
+
+        if not authentication_request.status_code == 200:
+            return authentication_request
+
         address.delete();
         return HttpResponse(status=204)
 
@@ -82,6 +129,17 @@ def tag_list(request):
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == "POST":
+        authentication_request = get_authenticated_user(request)
+
+        if not authentication_request.status_code == 200:
+            return authentication_request
+
+        authenticated_data = json.loads(authentication_request.content.decode('utf-8'))
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        if not authenticated_data['id'] == request_data['creator_user_id']:
+            return JsonResponse({'Error': 'Unauthorized to create tags'}, status=403)
+
         data = JSONParser().parse(request)
         serializer = TagSerializer(data=data)
         if serializer.is_valid():
@@ -107,6 +165,17 @@ def tag_detail(request, pk):
         return JsonResponse(serializer.data)
 
     elif request.method == "PUT":
+        authentication_request = get_authenticated_user(request)
+
+        if not authentication_request.status_code == 200:
+            return authentication_request
+
+        authenticated_data = json.loads(authentication_request.content.decode('utf-8'))
+        request_data = json.loads(request.body.decode('utf-8'))
+
+        if not authenticated_data['id'] == request_data['last_updated_user_id']:
+            return JsonResponse({'Error': 'Unauthorized to update tag'}, status=403)
+
         data = JSONParser().parse(request)
         serializer = TagSerializer(tag, data=data)
         if serializer.is_valid():
@@ -115,5 +184,10 @@ def tag_detail(request, pk):
         return JsonResponse(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
+        authentication_request = get_authenticated_user(request)
+
+        if not authentication_request.status_code == 200:
+            return authentication_request
+
         tag.delete()
         return HttpResponse(status=204)
