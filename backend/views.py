@@ -207,10 +207,22 @@ def tag_detail(request, pk):
 @csrf_exempt
 def csv_address_export(request):
     """
-    Allows for the download of the database as a .csv file
+    Allows for the download of the addresses as a .csv file
     :param request:
     :return: a .csv file for download
     """
     if request.method == "GET":
         addresses = Address.objects.all()
         return render_to_csv_response(queryset=addresses, filename='addresses.csv', append_datestamp=True)
+
+
+@csrf_exempt
+def csv_tag_export(request):
+    """
+    Allows for the download of the tags as a .csv file
+    :param request:
+    :return: a .csv file for download
+    """
+    if request.method == "GET":
+        tags = Tag.objects.all()
+        return render_to_csv_response(queryset=tags, filename='tags.csv',append_datestamp=True)
