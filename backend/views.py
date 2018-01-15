@@ -1,5 +1,8 @@
 import urllib3
 import json
+import csv
+
+from djqscsv import render_to_csv_response
 
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -10,6 +13,7 @@ from rest_framework_auth0.decorators import token_required, is_authenticated
 from rest_framework_auth0.authentication import Auth0JSONWebTokenAuthentication
 from backend.models import Address, Tag
 from backend.serializers import AddressSerializer, TagSerializer
+
 
 def get_authenticated_user(request):
     auth = request.META.get("HTTP_AUTHORIZATION", None)
@@ -25,8 +29,8 @@ def get_authenticated_user(request):
         'GET',
         'https://taggingtrackerdev.auth0.com/userinfo',
         headers={
-         'Authorization': 'Bearer ' + token,
-         'Content-Type': 'application/json'
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
         }
     )
 
@@ -37,9 +41,12 @@ def get_authenticated_user(request):
             return JsonResponse({"Error": "Internal Server Error"}, status=500)
     else:
         return JsonResponse({"id": json.loads(r.data.decode('utf-8'))["sub"].split('|')[1]}, status=200)
+
+
 @csrf_exempt
 def index(request):
     return HttpResponse(status=204)
+
 
 @csrf_exempt
 def address_list(request):
@@ -72,6 +79,7 @@ def address_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
+
 @csrf_exempt
 def address_detail(request, pk):
     """
@@ -98,6 +106,7 @@ def address_detail(request, pk):
         address.delete();
         return HttpResponse(status=204)
 
+
 @csrf_exempt
 def address_tags(request, pk):
     """
@@ -115,6 +124,7 @@ def address_tags(request, pk):
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
         return JsonResponse(serializer.data, safe=False)
+
 
 @csrf_exempt
 def tag_list(request):
@@ -146,6 +156,7 @@ def tag_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
 
 @csrf_exempt
 def tag_detail(request, pk):
@@ -191,3 +202,27 @@ def tag_detail(request, pk):
 
         tag.delete()
         return HttpResponse(status=204)
+
+
+@csrf_exempt
+def csv_address_export(request):
+    """
+    Allows for the download of the addresses as a .csv file
+    :param request:
+    :return: a .csv file for download
+    """
+    if request.method == "GET":
+        addresses = Address.objects.all()
+        return render_to_csv_response(queryset=addresses, filename='addresses.csv', append_datestamp=True)
+
+
+@csrf_exempt
+def csv_tag_export(request):
+    """
+    Allows for the download of the tags as a .csv file
+    :param request:
+    :return: a .csv file for download
+    """
+    if request.method == "GET":
+        tags = Tag.objects.all()
+        return render_to_csv_response(queryset=tags, filename='tags.csv',append_datestamp=True)
