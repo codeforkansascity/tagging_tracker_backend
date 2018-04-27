@@ -63,3 +63,7 @@ In order to checkout the code, and run it locally, the following steps are neede
    ```
 
    Anytime you change application code, kill the current container, and re run `docker-compose up --build`.
+
+# Contribution
+
+Read the [Contribution Guide](documentation/contribution.md)
