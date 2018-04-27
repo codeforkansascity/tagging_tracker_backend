@@ -105,3 +105,6 @@ venv.bak/
 
 # storing .env files is forbidden
 *.env
+
+# Jetbrains project settings
+.idea
