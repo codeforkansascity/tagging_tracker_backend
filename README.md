@@ -50,6 +50,11 @@ In order to checkout the code, and run it locally, the following steps are neede
    AUTH0_SECRET=<Create your own auth0 or ask developers for it>
    SSL_MODE=disable
    ```
+1. Optionally, configure your own settings by creating a
+  [docker-composer.override.yml](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files)
+  file. See
+  [Docker Compose](https://docs.docker.com/compose/compose-file/) for a list
+  of additional settings. 
 
 1. After the following previous steps are setup, running the following command to run the application.
 
