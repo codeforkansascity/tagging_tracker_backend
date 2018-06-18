@@ -17,12 +17,12 @@ def address_detail(request, pk):
     :param pk:
     :return: details of an address
     """
-    response = HttpResponse(status=405)
     try:
         address = Address.objects.get(pk=pk)
     except Address.DoesNotExist:
-        response = HttpResponse(status=404)
+        return HttpResponse(status=404)
 
+    response = HttpResponse(status=405)
     if request.method == 'GET':
         response = __retrieve_address(address)
     elif request.method == 'DELETE':
@@ -40,9 +40,9 @@ def address_list(request):
     """
     response = HttpResponse(status=405)
     if request.method == "GET":
-        response = __list_address_list()
+        response = __list_addresses()
     elif request.method == "POST":
-        response = __create_address_list(request)
+        response = __create_address(request)
     return response
 
 
@@ -54,15 +54,14 @@ def address_tags(request, pk):
     :param pk:
     :return: details of tags
     """
-    response = HttpResponse(status=405)
-
     try:
         address = Address.objects.get(pk=pk)
     except Address.DoesNotExist:
-        response = HttpResponse(status=404)
+        return HttpResponse(status=404)
 
+    response = HttpResponse(status=405)
     if request.method == 'GET':
-        response = __retrieve_address_tags()
+        response = __retrieve_tags_by_address(address)
 
     return response
 
@@ -82,13 +81,13 @@ def __delete_address(request, address):
     return HttpResponse(status=204)
 
 
-def __list_address_list():
+def __list_addresses():
     addresses = Address.objects.all()
     serializer = AddressSerializer(addresses, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 
-def __create_address_list(request):
+def __create_address(request):
     authentication_request = get_authenticated_user(request)
 
     if not authentication_request.status_code == 200:
@@ -109,7 +108,7 @@ def __create_address_list(request):
 
 
 # does this do what it's intended to do - retrieve only an address' tags?
-def __retrieve_address_tags():
+def __retrieve_tags_by_address(address):
     tags = Tag.objects.all()
     serializer = TagSerializer(tags, many=True)
     return JsonResponse(serializer.data, safe=False)

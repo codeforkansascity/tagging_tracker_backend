@@ -17,13 +17,13 @@ def tag_detail(request, pk):
     :param pk:
     :return: details of a tag
     """
-    response = HttpResponse(status=405)
 
     try:
         tag = Tag.objects.get(pk=pk)
     except Tag.DoesNotExist:
-        response = HttpResponse(status=404)
+        return HttpResponse(status=404)
 
+    response = HttpResponse(status=405)
     if request.method == 'GET':
         response = __retrieve_tag_detail(tag)
     elif request.method == "PUT":
@@ -43,9 +43,9 @@ def tag_list(request):
     """
     response = HttpResponse(status=405)
     if request.method == "GET":
-        response = __retrieve_tag_list()
+        response = __list_tags()
     elif request.method == "POST":
-        response = __create_tag_list(request)
+        response = __create_tag(request)
     return response
 
 
@@ -84,13 +84,13 @@ def __delete_tag_detail(request, tag):
     return HttpResponse(status=204)
 
 
-def __retrieve_tag_list():
+def __list_tags():
     tags = Tag.objects.all()
     serializer = TagSerializer(tags, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 
-def __create_tag_list(request):
+def __create_tag(request):
     authentication_request = get_authenticated_user(request)
 
     if not authentication_request.status_code == 200:
