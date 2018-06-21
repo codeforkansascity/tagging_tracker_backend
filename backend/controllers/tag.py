@@ -17,7 +17,6 @@ def tag_detail(request, pk):
     :param pk:
     :return: details of a tag
     """
-
     try:
         tag = Tag.objects.get(pk=pk)
     except Tag.DoesNotExist:
