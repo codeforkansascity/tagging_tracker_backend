@@ -107,8 +107,6 @@ def __create_address(request):
     return JsonResponse(serializer.errors, status=400)
 
 
-# does this do what it's intended to do - retrieve only an address' tags?
 def __retrieve_tags_by_address(address):
-    tags = Tag.objects.all()
-    serializer = TagSerializer(tags, many=True)
+    tags = Tag.objects.filter(address=address    serializer = TagSerializer(tags, many=True)
     return JsonResponse(serializer.data, safe=False)

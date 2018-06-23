@@ -1,3 +1,4 @@
+from datetime import date
 from django.contrib.gis.geos import Point
 from django.db.models import signals
 from django.http import HttpRequest, JsonResponse
@@ -5,9 +6,8 @@ from django.test import TestCase
 from random import randint
 
 from backend.controllers import address
-from backend.models import Address, delete_image
-from backend.serializers import AddressSerializer
-
+from backend.models import Address, delete_image, Tag
+from backend.serializers import AddressSerializer, TagSerializer
 
 STATUS_CODES = {"No Content": 204, "Unauthorized": 401, "Not Found": 404, "Method Not Allowed": 405}
 
@@ -15,6 +15,7 @@ STATUS_CODES = {"No Content": 204, "Unauthorized": 401, "Not Found": 404, "Metho
 class TestAddress(TestCase):
     request = HttpRequest()
     addresses = []
+    tags = []
 
     def setUp(self):
         for i in range(5):
@@ -23,11 +24,24 @@ class TestAddress(TestCase):
                                                          state="MO", zip=randint(10000, 99999),
                                                          type_of_property=0))
 
+        # create two tags belonging to one address and a third tag belonging to another address
+        self.tags.append(Tag.objects.create(address=self.addresses[0], creator_user_id=0, last_updated_user_id=1,
+                                            date_taken=f"{date.today()}T00:00:00Z", description="tag0"))
+        self.tags.append(Tag.objects.create(address=self.addresses[0], creator_user_id=0, last_updated_user_id=1,
+                                            date_taken=f"{date.today()}T00:00:00Z", description="tag1"))
+        self.tags.append(Tag.objects.create(address=self.addresses[1], creator_user_id=0, last_updated_user_id=1,
+                                            date_taken=f"{date.today()}T00:00:00Z", description="tag2"))
+
     def tearDown(self):
+        signals.pre_delete.disconnect(receiver=delete_image, sender=Tag)
+        Tag.objects.all().delete()
+        signals.pre_delete.connect(receiver=delete_image, sender=Tag)
+
         signals.pre_delete.disconnect(receiver=delete_image, sender=Address)
         Address.objects.all().delete()
         signals.pre_delete.connect(receiver=delete_image, sender=Address)
 
+        self.tags.clear()
         self.addresses.clear()
 
     def test_address_list__get(self):
@@ -39,7 +53,6 @@ class TestAddress(TestCase):
         expected = JsonResponse(serializer.data, safe=False).getvalue().decode("utf-8")
 
         self.assertEqual(actual, expected)
-
 
     # TODO add valid token to this test's authorization request
     '''
@@ -107,4 +120,26 @@ class TestAddress(TestCase):
         response = address.address_detail(self.request, pk)
         self.assert_(response.status_code == STATUS_CODES['Not Found'])
 
-    # TODO add tests for address_tags() once it works as intended
+    def test_retrieve_tags_by_address__get(self):
+        self.request.method = 'GET'
+        pk = self.addresses[0].id
+        response = address.address_tags(self.request, pk)
+        actual = response.getvalue().decode("utf=8")
+
+        # filter() used by address_tags() returns list in reverse traversal order
+        serializer = TagSerializer(self.tags[-2::-1], many=True)
+        expected = JsonResponse(serializer.data, safe=False).getvalue().decode("utf-8")
+
+        self.assertEqual(actual, expected)
+
+    def test_retrieve_tags_by_address__invalid_method(self):
+        self.request.method = 'POST'
+        pk = self.addresses[0].id
+        response = address.address_tags(self.request, pk)
+        self.assert_(response.status_code == STATUS_CODES['Method Not Allowed'])
+
+    def test_retrieve_tags_by_address__invalid_tag(self):
+        self.request.method = 'GET'
+        pk = None
+        response = address.address_tags(self.request, pk)
+        self.assert_(response.status_code == STATUS_CODES['Not Found'])
