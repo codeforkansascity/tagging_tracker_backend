@@ -3,13 +3,11 @@ from django.contrib.gis.geos import Point
 from django.db.models import signals
 from django.http import HttpRequest, JsonResponse
 from django.test import TestCase
-from random import randint
 
 from backend.controllers import address
+from backend.controllers.controller_utils import HTTP_STATUS_NOT_FOUND, HTTP_STATUS_METHOD_NOT_ALLOWED
 from backend.models import Address, delete_image, Tag
 from backend.serializers import AddressSerializer, TagSerializer
-
-STATUS_CODES = {"No Content": 204, "Unauthorized": 401, "Not Found": 404, "Method Not Allowed": 405}
 
 
 class TestAddress(TestCase):
@@ -19,9 +17,9 @@ class TestAddress(TestCase):
 
     def setUp(self):
         for i in range(5):
-            self.addresses.append(Address.objects.create(point=Point(randint(0, 89), randint(0, 179)),
-                                                         street=f"{randint(1000, 9999)} Main St",
-                                                         state="MO", zip=randint(10000, 99999),
+            self.addresses.append(Address.objects.create(point=Point(50, 50),
+                                                         street="1234 Main St",
+                                                         state="MO", zip=12345,
                                                          type_of_property=0))
 
         # create two tags belonging to one address and a third tag belonging to another address
@@ -54,29 +52,10 @@ class TestAddress(TestCase):
 
         self.assertEqual(actual, expected)
 
-    # TODO add valid token to this test's authorization request
-    '''
-    def test_address_list__post__auth(self):
-        self.request.method = 'POST'
-        self.request.META['HTTP_AUTHORIZATION'] = "BEARER "
-        self.request._body = AddressSerializer(self.addresses[0])
-
-        response = address.address_list(self.request)
-        self.assert_(response.status_code == STATUS_CODES['No Content'])
-    '''
-
-    def test_address_list__post__unauth(self):
-        self.request.method = 'POST'
-        self.request.META['HTTP_AUTHORIZATION'] = "BEARER fake_token"
-        self.request._body = AddressSerializer(self.addresses[0])
-
-        response = address.address_list(self.request)
-        self.assert_(response.status_code == STATUS_CODES['Unauthorized'])
-
     def test_address_list__invalid_method(self):
         self.request.method = 'PUT'
         response = address.address_list(self.request)
-        self.assert_(response.status_code == STATUS_CODES['Method Not Allowed'])
+        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
 
     def test_address_detail__get(self):
         self.request.method = 'GET'
@@ -89,36 +68,17 @@ class TestAddress(TestCase):
 
         self.assertEqual(actual, expected)
 
-    # TODO add valid token to this test's authorization request
-    '''
-    def test_address_detail__delete__auth(self):
-        self.request.method = 'DELETE'
-        self.request.META['HTTP_AUTHORIZATION'] = "BEARER "
-        pk = self.addresses[0].id
-
-        response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == STATUS_CODES['No Content'])
-    '''
-    
-    def test_address_detail__delete__unauth(self):
-        self.request.method = 'DELETE'
-        self.request.META['HTTP_AUTHORIZATION'] = "BEARER fake_token"
-        pk = self.addresses[0].id
-
-        response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == STATUS_CODES['Unauthorized'])
-
     def test_address_detail__invalid_method(self):
         self.request.method = 'POST'
         pk = self.addresses[0].id
         response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == STATUS_CODES['Method Not Allowed'])
+        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
 
     def test_address_detail__invalid_address(self):
         self.request.method = 'GET'
         pk = None
         response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == STATUS_CODES['Not Found'])
+        self.assert_(response.status_code == HTTP_STATUS_NOT_FOUND)
 
     def test_retrieve_tags_by_address__get(self):
         self.request.method = 'GET'
@@ -136,10 +96,10 @@ class TestAddress(TestCase):
         self.request.method = 'POST'
         pk = self.addresses[0].id
         response = address.address_tags(self.request, pk)
-        self.assert_(response.status_code == STATUS_CODES['Method Not Allowed'])
+        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
 
     def test_retrieve_tags_by_address__invalid_tag(self):
         self.request.method = 'GET'
         pk = None
         response = address.address_tags(self.request, pk)
-        self.assert_(response.status_code == STATUS_CODES['Not Found'])
+        self.assert_(response.status_code == HTTP_STATUS_NOT_FOUND)
