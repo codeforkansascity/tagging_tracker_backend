@@ -1,10 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from backend.models import Tag
 from backend.serializers import TagSerializer
 
-from backend.controllers.controller_utils import *
+from backend.controllers.controller_utils import HTTP_STATUS_CREATED, HTTP_STATUS_NO_CONTENT, HTTP_STATUS_BAD_REQUEST,\
+    HTTP_STATUS_NOT_FOUND, HTTP_STATUS_METHOD_NOT_ALLOWED
 
 
 @csrf_exempt
@@ -26,7 +27,7 @@ def tag_detail(request, pk):
     elif request.method == "PUT":
         response = __update_tag_detail(request, tag)
     elif request.method == 'DELETE':
-        response = __delete_tag_detail(request, tag)
+        response = __delete_tag_detail(tag)
 
     return response
 
@@ -52,17 +53,6 @@ def __retrieve_tag_detail(tag):
 
 
 def __update_tag_detail(request, tag):
-    authentication_request = get_authenticated_user(request)
-
-    if not authentication_request.status_code == HTTP_STATUS_OK:
-        return authentication_request
-
-    authenticated_data = json.loads(authentication_request.content.decode('utf-8'))
-    request_data = json.loads(request.body.decode('utf-8'))
-
-    if not authenticated_data['id'] == request_data['last_updated_user_id']:
-        return JsonResponse({'Error': 'Unauthorized to update tag'}, status=HTTP_STATUS_FORBIDDEN)
-
     data = JSONParser().parse(request)
     serializer = TagSerializer(tag, data=data)
     if serializer.is_valid():
@@ -71,12 +61,7 @@ def __update_tag_detail(request, tag):
     return JsonResponse(serializer.errors, status=HTTP_STATUS_BAD_REQUEST)
 
 
-def __delete_tag_detail(request, tag):
-    authentication_request = get_authenticated_user(request)
-
-    if not authentication_request.status_code == HTTP_STATUS_OK:
-        return authentication_request
-
+def __delete_tag_detail(tag):
     tag.delete()
     return HttpResponse(status=HTTP_STATUS_NO_CONTENT)
 
@@ -88,17 +73,6 @@ def __list_tags():
 
 
 def __create_tag(request):
-    authentication_request = get_authenticated_user(request)
-
-    if not authentication_request.status_code == HTTP_STATUS_OK:
-        return authentication_request
-
-    authenticated_data = json.loads(authentication_request.content.decode('utf-8'))
-    request_data = json.loads(request.body.decode('utf-8'))
-
-    if not authenticated_data['id'] == request_data['creator_user_id']:
-        return JsonResponse({'Error': 'Unauthorized to create tags'}, status=HTTP_STATUS_FORBIDDEN)
-
     data = JSONParser().parse(request)
     serializer = TagSerializer(data=data)
     if serializer.is_valid():

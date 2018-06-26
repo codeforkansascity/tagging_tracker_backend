@@ -1,10 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from backend.models import Address, Tag
 from backend.serializers import AddressSerializer, TagSerializer
 
-from backend.controllers.controller_utils import *
+from backend.controllers.controller_utils import HTTP_STATUS_CREATED, HTTP_STATUS_NO_CONTENT, HTTP_STATUS_BAD_REQUEST,\
+    HTTP_STATUS_NOT_FOUND, HTTP_STATUS_METHOD_NOT_ALLOWED
 
 
 @csrf_exempt
@@ -24,7 +25,7 @@ def address_detail(request, pk):
     if request.method == 'GET':
         response = __retrieve_address(address)
     elif request.method == 'DELETE':
-        response = __delete_address(request, address)
+        response = __delete_address(address)
 
     return response
 
@@ -69,12 +70,7 @@ def __retrieve_address(address):
     return JsonResponse(serializer.data)
 
 
-def __delete_address(request, address):
-    authentication_request = get_authenticated_user(request)
-
-    if not authentication_request.status_code == HTTP_STATUS_OK:
-        return authentication_request
-
+def __delete_address(address):
     address.delete()
     return HttpResponse(status=HTTP_STATUS_NO_CONTENT)
 
@@ -86,18 +82,6 @@ def __list_addresses():
 
 
 def __create_address(request):
-    authentication_request = get_authenticated_user(request)
-
-    if not authentication_request.status_code == HTTP_STATUS_OK:
-        return authentication_request
-
-    authenticated_data = json.loads(authentication_request.content.decode('utf-8'))
-    request_data = json.loads(request.body.decode('utf-8'))
-
-    if not authenticated_data['id'] == request_data['creator_user_id']:
-        return JsonResponse({"Error": authenticated_data["id"] + " " + request_data['creator_user_id']},
-                            status=HTTP_STATUS_FORBIDDEN)
-
     data = JSONParser().parse(request)
     serializer = AddressSerializer(data=data)
     if serializer.is_valid():
