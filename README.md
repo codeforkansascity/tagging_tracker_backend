@@ -51,7 +51,7 @@ In order to checkout the code, and run it locally, the following steps are neede
    SSL_MODE=disable
    ```
 1. Optionally, configure your own settings by creating a
-  [docker-composer.override.yml](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files)
+  [docker-compose.override.yml](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files)
   file. See
   [Docker Compose](https://docs.docker.com/compose/compose-file/) for a list
   of additional settings. 
