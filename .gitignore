@@ -108,3 +108,5 @@ venv.bak/
 
 # Jetbrains project settings
 .idea
+
+docker-compose.override.yml
