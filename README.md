@@ -51,10 +51,15 @@ In order to checkout the code, and run it locally, the following steps are neede
    SSL_MODE=disable
    ```
 1. Optionally, configure your own settings by creating a
-  [docker-composer.override.yml](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files)
+  [docker-compose.override.yml](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files)
   file. See
   [Docker Compose](https://docs.docker.com/compose/compose-file/) for a list
-  of additional settings. 
+  of additional settings.
+
+   > NOTE: To configure ports properly, `docker-compose.override.yml` must
+ contain all settings from the `docker-compose.yml`.
+ [Refer to this](https://stackoverflow.com/a/48863743) for more details. To 
+  run, use `docker-compose -f docker-compose.override.yml up`
 
 1. After the following previous steps are setup, running the following command to run the application.
 
