@@ -41,7 +41,6 @@ class TagSerializer(serializers.ModelSerializer):
           'gang_related',
           'img',
           'last_updated_user_id',
-          'neighborhood',
           'racially_motivated',
           'square_footage',
           'surface',
