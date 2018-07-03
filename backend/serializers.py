@@ -1,6 +1,16 @@
-from backend.models import Tag, Address
+from backend.models import Address, PropertyType, Tag
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+
+
+class PropertyTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyType
+        fields = (
+            'id',
+            'type_name'
+        )
+
 
 class AddressSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -26,6 +36,7 @@ class AddressSerializer(GeoFeatureModelSerializer):
           'type_of_property',
           'date_updated'
         )
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:

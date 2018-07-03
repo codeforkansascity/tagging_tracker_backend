@@ -6,7 +6,7 @@ from django.test import TestCase
 
 from backend.controllers import address
 from backend.controllers.controller_utils import HTTP_STATUS_NOT_FOUND, HTTP_STATUS_METHOD_NOT_ALLOWED
-from backend.models import Address, delete_image, Tag
+from backend.models import Address, delete_image, PropertyType, Tag
 from backend.serializers import AddressSerializer, TagSerializer
 
 
@@ -16,11 +16,12 @@ class TestAddress(TestCase):
     tags = []
 
     def setUp(self):
+        type_of_property = PropertyType.objects.create(type_name="house")
         for i in range(5):
             self.addresses.append(Address.objects.create(point=Point(50, 50),
                                                          street="1234 Main St",
                                                          state="MO", zip=12345,
-                                                         type_of_property=0))
+                                                         type_of_property=type_of_property))
 
         # create two tags belonging to one address and a third tag belonging to another address
         self.tags.append(Tag.objects.create(address=self.addresses[0], creator_user_id=0, last_updated_user_id=1,
@@ -38,6 +39,8 @@ class TestAddress(TestCase):
         signals.pre_delete.disconnect(receiver=delete_image, sender=Address)
         Address.objects.all().delete()
         signals.pre_delete.connect(receiver=delete_image, sender=Address)
+
+        PropertyType.objects.all().delete()
 
         self.tags.clear()
         self.addresses.clear()

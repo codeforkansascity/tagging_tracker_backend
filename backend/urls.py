@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from backend.controllers import address, csv, index, tag
+from backend.controllers import address, csv, index, property, tag
 
 urlpatterns = [
     url(r'^$', index.index),
@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^tags/?$', tag.tag_list),
     url(r'^tags/(?P<pk>[0-9]+)/?$', tag.tag_detail),
     url(r'^tags/tags.csv', csv.csv_tag_export),
+    url(r'^property-types/?$', property.property_type_list)
 ]
