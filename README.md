@@ -71,4 +71,4 @@ In order to checkout the code, and run it locally, the following steps are neede
 
 # Contribution
 
-Read the [Contribution Guide](documentation/contribution.md)
+Read the [Contribution Guide](docs/CONTRIBUTING.md)
