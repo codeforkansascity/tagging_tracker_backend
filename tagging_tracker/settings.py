@@ -163,3 +163,24 @@ AUTH0 = {
     'AUTHORIZATION_EXTENSION': False,  # default to False
     # 'USERNAME_FIELD': 'sub',  # default username field in auth0 token scope to use as token user
 }
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler'
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': '/code/logs/error.log'
+        }
+    },
+    'loggers': {
+        '': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        },
+    },
+}
