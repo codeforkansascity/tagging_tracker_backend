@@ -34,6 +34,7 @@ In order to checkout the code, and run it locally, the following steps are neede
    SSL_ROOT_CERT - The path of the SSL certificate. Defaults to empty string, and not used if SSL is disabled.
    AUTH0_CLIENTID - ClientID of the auth0 authentication engine.
    AUTH0_SECRET - Secret of the auth0 authentication engine.
+   LOG_LEVEL - Error/Reporting logging level. More information here https://docs.djangoproject.com/en/2.0/topics/logging/#configuring-logging
    ```
 
    To get you started and running locally, here is a local.env file you can use.
@@ -49,7 +50,9 @@ In order to checkout the code, and run it locally, the following steps are neede
    AUTH0_CLIENTID=<Create your own auth0 or ask developers for it>
    AUTH0_SECRET=<Create your own auth0 or ask developers for it>
    SSL_MODE=disable
+   LOG_LEVEL=DEBUG
    ```
+   
 1. Optionally, configure your own settings by creating a
   [docker-compose.override.yml](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files)
   file. See
