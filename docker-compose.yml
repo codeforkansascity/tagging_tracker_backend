@@ -6,6 +6,7 @@ services:
     ports:
       - "5432:5432"
   web:
+    restart: always
     build: .
     volumes:
       - .:/code

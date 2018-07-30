@@ -16,7 +16,8 @@ exec gunicorn tagging_tracker.wsgi:application \
     --workers 3 \
     --log-level=debug \
     --log-file=/code/logs/gunicorn.log \
-    --access-logfile=/code/logs/access.log &
+    --access-logfile=/code/logs/access.log \
+    --reload &
 
 echo 'Starting nginx'
 exec service nginx start
