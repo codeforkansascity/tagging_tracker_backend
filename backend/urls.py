@@ -1,15 +1,15 @@
 from django.conf.urls import url
-from backend import views
+from backend.controllers import address, csv, index, tag
 
 urlpatterns = [
-    url(r'^$', views.index),
-    url(r'^index/?$', views.index),
-    url(r'^address/(?P<pk>[0-9]+)/tags/?$', views.address_tags),
-    url(r'^address/(?P<pk>[0-9]+)/?$', views.address_detail),
-    url(r'^address/?$', views.address_list),
-    url(r'^address/(?P<pk>[0-9]+)/?$', views.address_detail),
-    url(r'^address/address.csv', views.csv_address_export),
-    url(r'^tags/?$', views.tag_list),
-    url(r'^tags/(?P<pk>[0-9]+)/?$', views.tag_detail),
-    url(r'^tags/tags.csv', views.csv_tag_export),
+    url(r'^$', index.index),
+    url(r'^index/?$', index.index),
+    url(r'^address/(?P<pk>[0-9]+)/tags/?$', address.address_tags),
+    url(r'^address/(?P<pk>[0-9]+)/?$', address.address_detail),
+    url(r'^address/?$', address.address_list),
+    url(r'^address/(?P<pk>[0-9]+)/?$', address.address_detail),
+    url(r'^address/address.csv', csv.csv_address_export),
+    url(r'^tags/?$', tag.tag_list),
+    url(r'^tags/(?P<pk>[0-9]+)/?$', tag.tag_detail),
+    url(r'^tags/tags.csv', csv.csv_tag_export),
 ]

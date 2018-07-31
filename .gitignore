@@ -108,5 +108,7 @@ venv.bak/
 
 # Jetbrains project settings
 .idea
+*.iml
+.DS_Store
 
 docker-compose.override.yml
