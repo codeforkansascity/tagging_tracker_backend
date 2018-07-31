@@ -1,15 +1,18 @@
 from django.conf.urls import url
-from backend.controllers import address, csv, index, tag
+from backend.controllers.address import AddressResource
+from backend.controllers.csv import CSVResource
+from backend.controllers.index import IndexResource
+from backend.controllers.tag import TagResource
 
 urlpatterns = [
-    url(r'^$', index.index),
-    url(r'^index/?$', index.index),
-    url(r'^address/(?P<pk>[0-9]+)/tags/?$', address.address_tags),
-    url(r'^address/(?P<pk>[0-9]+)/?$', address.address_detail),
-    url(r'^address/?$', address.address_list),
-    url(r'^address/(?P<pk>[0-9]+)/?$', address.address_detail),
-    url(r'^address/address.csv', csv.csv_address_export),
-    url(r'^tags/?$', tag.tag_list),
-    url(r'^tags/(?P<pk>[0-9]+)/?$', tag.tag_detail),
-    url(r'^tags/tags.csv', csv.csv_tag_export),
+    url(r'^$', IndexResource.index),
+    url(r'^index/?$', IndexResource.index),
+    url(r'^address/(?P<pk>[0-9]+)/tags/?$', AddressResource.address_tags),
+    url(r'^address/(?P<pk>[0-9]+)/?$', AddressResource.address_detail),
+    url(r'^address/?$', AddressResource.address_list),
+    url(r'^address/(?P<pk>[0-9]+)/?$', AddressResource.address_detail),
+    url(r'^address/address.csv', CSVResource.csv_address_export),
+    url(r'^tags/?$', TagResource.tag_list),
+    url(r'^tags/(?P<pk>[0-9]+)/?$', TagResource.tag_detail),
+    url(r'^tags/tags.csv', CSVResource.csv_tag_export),
 ]
