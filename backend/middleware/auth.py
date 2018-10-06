@@ -2,10 +2,6 @@ import json
 import urllib3
 
 from django.http import JsonResponse
-
-from backend.controllers.controller_utils import HTTP_STATUS_OK, HTTP_STATUS_UNAUTHORIZED, HTTP_STATUS_FORBIDDEN,\
-    HTTP_STATUS_INTERNAL_SERVER_ERROR
-
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN, HTTP_500_INTERNAL_SERVER_ERROR
 
 

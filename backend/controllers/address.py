@@ -1,11 +1,11 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, \
+    HTTP_405_METHOD_NOT_ALLOWED
+
 from backend.models import Address, Tag
 from backend.serializers import AddressSerializer, TagSerializer
-
-from backend.controllers.controller_utils import HTTP_STATUS_CREATED, HTTP_STATUS_NO_CONTENT, HTTP_STATUS_BAD_REQUEST,\
-    HTTP_STATUS_NOT_FOUND, HTTP_STATUS_METHOD_NOT_ALLOWED
 
 
 @csrf_exempt
@@ -19,9 +19,9 @@ def address_detail(request, pk):
     try:
         address = Address.objects.get(pk=pk)
     except Address.DoesNotExist:
-        return HttpResponse(status=HTTP_STATUS_NOT_FOUND)
+        return HttpResponse(status=HTTP_404_NOT_FOUND)
 
-    response = HttpResponse(status=HTTP_STATUS_METHOD_NOT_ALLOWED)
+    response = HttpResponse(status=HTTP_405_METHOD_NOT_ALLOWED)
     if request.method == 'GET':
         response = __retrieve_address(address)
     elif request.method == 'DELETE':
@@ -37,7 +37,7 @@ def address_list(request):
     :param request:
     :return: list of addresses
     """
-    response = HttpResponse(status=HTTP_STATUS_METHOD_NOT_ALLOWED)
+    response = HttpResponse(status=HTTP_405_METHOD_NOT_ALLOWED)
     if request.method == "GET":
         response = __list_addresses()
     elif request.method == "POST":
@@ -56,9 +56,9 @@ def address_tags(request, pk):
     try:
         address = Address.objects.get(pk=pk)
     except Address.DoesNotExist:
-        return HttpResponse(status=HTTP_STATUS_NOT_FOUND)
+        return HttpResponse(status=HTTP_404_NOT_FOUND)
 
-    response = HttpResponse(status=HTTP_STATUS_METHOD_NOT_ALLOWED)
+    response = HttpResponse(status=HTTP_405_METHOD_NOT_ALLOWED)
     if request.method == 'GET':
         response = __retrieve_tags_by_address(address)
 
@@ -72,7 +72,7 @@ def __retrieve_address(address):
 
 def __delete_address(address):
     address.delete()
-    return HttpResponse(status=HTTP_STATUS_NO_CONTENT)
+    return HttpResponse(status=HTTP_204_NO_CONTENT)
 
 
 def __list_addresses():
@@ -86,8 +86,8 @@ def __create_address(request):
     serializer = AddressSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
-        return JsonResponse(serializer.data, status=HTTP_STATUS_CREATED)
-    return JsonResponse(serializer.errors, status=HTTP_STATUS_BAD_REQUEST)
+        return JsonResponse(serializer.data, status=HTTP_201_CREATED)
+    return JsonResponse(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 def __retrieve_tags_by_address(address):
