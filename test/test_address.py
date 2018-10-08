@@ -3,9 +3,9 @@ from django.contrib.gis.geos import Point
 from django.db.models import signals
 from django.http import HttpRequest, JsonResponse
 from django.test import TestCase
+from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_405_METHOD_NOT_ALLOWED
 
 from backend.controllers import address
-from backend.controllers.controller_utils import HTTP_STATUS_NOT_FOUND, HTTP_STATUS_METHOD_NOT_ALLOWED
 from backend.models import Address, delete_image, Tag
 from backend.serializers import AddressSerializer, TagSerializer
 
@@ -55,7 +55,7 @@ class TestAddress(TestCase):
     def test_address_list__invalid_method(self):
         self.request.method = 'PUT'
         response = address.address_list(self.request)
-        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
+        self.assert_(response.status_code == HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_address_detail__get(self):
         self.request.method = 'GET'
@@ -72,13 +72,13 @@ class TestAddress(TestCase):
         self.request.method = 'POST'
         pk = self.addresses[0].id
         response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
+        self.assert_(response.status_code == HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_address_detail__invalid_address(self):
         self.request.method = 'GET'
         pk = None
         response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == HTTP_STATUS_NOT_FOUND)
+        self.assert_(response.status_code == HTTP_404_NOT_FOUND)
 
     def test_retrieve_tags_by_address__get(self):
         self.request.method = 'GET'
@@ -96,10 +96,10 @@ class TestAddress(TestCase):
         self.request.method = 'POST'
         pk = self.addresses[0].id
         response = address.address_tags(self.request, pk)
-        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
+        self.assert_(response.status_code == HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_retrieve_tags_by_address__invalid_tag(self):
         self.request.method = 'GET'
         pk = None
         response = address.address_tags(self.request, pk)
-        self.assert_(response.status_code == HTTP_STATUS_NOT_FOUND)
+        self.assert_(response.status_code == HTTP_404_NOT_FOUND)

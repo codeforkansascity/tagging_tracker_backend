@@ -3,9 +3,9 @@ from django.contrib.gis.geos import Point
 from django.db.models import signals
 from django.http import HttpRequest, JsonResponse
 from django.test import TestCase
+from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_405_METHOD_NOT_ALLOWED
 
 from backend.controllers import tag
-from backend.controllers.controller_utils import HTTP_STATUS_NOT_FOUND, HTTP_STATUS_METHOD_NOT_ALLOWED
 from backend.models import Tag, Address, delete_image
 from backend.serializers import TagSerializer
 
@@ -41,7 +41,7 @@ class TestTag(TestCase):
     def test_tag_list__invalid_method(self):
         self.request.method = 'PUT'
         response = tag.tag_list(self.request)
-        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
+        self.assert_(response.status_code == HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_tag_detail__get(self):
         self.request.method = 'GET'
@@ -58,10 +58,10 @@ class TestTag(TestCase):
         self.request.method = 'POST'
         pk = self.tags[0].id
         response = tag.tag_detail(self.request, pk)
-        self.assert_(response.status_code == HTTP_STATUS_METHOD_NOT_ALLOWED)
+        self.assert_(response.status_code == HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_tag_detail__invalid_tag(self):
         self.request.method = 'GET'
         pk = None
         response = tag.tag_detail(self.request, pk)
-        self.assert_(response.status_code == HTTP_STATUS_NOT_FOUND)
+        self.assert_(response.status_code == HTTP_404_NOT_FOUND)
