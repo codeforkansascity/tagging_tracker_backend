@@ -28,6 +28,7 @@ RUN mkdir /logs
 # Touch log files
 RUN touch /code/logs/gunicorn.log
 RUN touch /code/logs/access.log
+RUN touch /code/logs/error.log
 
 # change directory
 WORKDIR /code
