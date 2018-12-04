@@ -35,6 +35,8 @@ In order to checkout the code, and run it locally, the following steps are neede
    AUTH0_CLIENTID - ClientID of the auth0 authentication engine.
    AUTH0_SECRET - Secret of the auth0 authentication engine.
    LOG_LEVEL - Error/Reporting logging level. More information here https://docs.djangoproject.com/en/2.0/topics/logging/#configuring-logging
+   AZURE_IMAGE_CONTAINER_NAME - Azure container name for file uploads.
+   AZURE_IMAGE_CONTAINER_KEY - Azure container access key.
    ```
 
    To get you started and running locally, here is a local.env file you can use.
@@ -51,8 +53,10 @@ In order to checkout the code, and run it locally, the following steps are neede
    AUTH0_SECRET=<Create your own auth0 or ask developers for it>
    SSL_MODE=disable
    LOG_LEVEL=DEBUG
+   AZURE_IMAGE_CONTAINER_NAME=taggingtrackerdevimages
+   AZURE_IMAGE_CONTAINER_KEY=<Attend meetup to obtain>
    ```
-   
+
 1. Optionally, configure your own settings by creating a
   [docker-compose.override.yml](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files)
   file. See
@@ -61,7 +65,7 @@ In order to checkout the code, and run it locally, the following steps are neede
 
    > NOTE: To configure ports properly, `docker-compose.override.yml` must
  contain all settings from the `docker-compose.yml`.
- [Refer to this](https://stackoverflow.com/a/48863743) for more details. To 
+ [Refer to this](https://stackoverflow.com/a/48863743) for more details. To
   run, use `docker-compose -f docker-compose.override.yml up`
 
 1. After the following previous steps are setup, running the following command to run the application.
