@@ -1,4 +1,5 @@
 import json
+import os
 import urllib3
 
 from django.http import JsonResponse
@@ -22,7 +23,7 @@ class AuthMiddleware:
 
             auth_response = http.request(
                 'GET',
-                'https://taggingtrackerdev.auth0.com/userinfo',
+                os.getenv('AUTH0_URL', ''),
                 headers={
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'
