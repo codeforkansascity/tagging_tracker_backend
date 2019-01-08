@@ -176,7 +176,7 @@ LOGGING = {
     },
     'loggers': {
         '': {  # 'catch all' loggers by referencing it with the empty string
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': os.getenv('LOG_LEVEL', 'ERROR'),
         },
     },
