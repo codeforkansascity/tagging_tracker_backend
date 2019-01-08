@@ -36,17 +36,21 @@ watchl:
 	@$(DC) logs -f
 
 # Show Nginx container logs
-nlogs:
+logn:
 	@$(DC) logs nginx
 
-# Show uwsgi container logs
-ulogs:
-	@$(DC) logs uwsgi
+# Show web container logs
+logw:
+	@$(DC) logs web
 
 # Watch Nginx container logs
 watchn:
 	@$(DC) logs -f nginx
 
-# Watch uwsgi container logs
-watchu:
-	@$(DC) logs -f uwsgi
+# Watch web container logs
+watchw:
+	@$(DC) logs -f web
+
+# Reload uwsgi server
+reload:
+	@./reload.sh
