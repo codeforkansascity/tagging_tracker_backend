@@ -1,5 +1,7 @@
 DC=docker-compose
 
+.PHONY: logs
+
 # Gets docker-compose.yml images and local builds
 build:
 	@$(DC) pull
@@ -24,6 +26,14 @@ restart:
 # List running services:
 ps:
 	@$(DC) ps
+
+# Print all logs
+logs:
+	@$(DC) logs
+
+# Watch all logs
+watchl:
+	@$(DC) logs -f
 
 # Show Nginx container logs
 nlogs:
