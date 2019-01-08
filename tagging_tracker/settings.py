@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.getenv('DEBUG', False)
 
 if DEBUG:
     SECRET_KEY = 'mysecretkey'
@@ -173,10 +173,6 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler'
         },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': '/code/logs/error.log'
-        }
     },
     'loggers': {
         '': {  # 'catch all' loggers by referencing it with the empty string
