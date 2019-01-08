@@ -2,6 +2,7 @@ import json
 import os
 import urllib3
 
+from django.conf import settings
 from django.http import JsonResponse
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN, HTTP_500_INTERNAL_SERVER_ERROR
 
@@ -11,6 +12,9 @@ class AuthMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if settings.DEBUG:
+            return self.get_response(request)
+
         if request.method == "POST" or request.method == "DELETE" or request.method == "PUT":
             auth = request.META.get("HTTP_AUTHORIZATION", None)
 
