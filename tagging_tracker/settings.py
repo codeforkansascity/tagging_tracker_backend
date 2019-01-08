@@ -98,7 +98,7 @@ DATABASES = {
         'EMAIL_USE_SSL': True,
         'PASSWORD': os.environ['DB_PASSWORD'],
         'OPTIONS': {
-            'sslmode': os.getenv('SSL_MODE', 'disabled'),
+            'sslmode': os.getenv('SSL_MODE', 'disable'),
             'sslrootcert': os.getenv('SSL_ROOT_CERT', '')
         }
     }
