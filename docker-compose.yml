@@ -1,20 +1,26 @@
 version: '3'
-
 services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "/tmp:/tmp"
   db:
     image: mdillon/postgis:9.6
+    environment:
+      POSTGRES_DB: 'dev'
     ports:
       - "5432:5432"
   web:
-    restart: always
     build: .
+    environment:
+      DEBUG: 1
+      DB_NAME: 'dev'
+      DB_USER: 'tag_user'
+      DB_HOST: 'db'
+      DB_PORT: 5432
+      DB_PASSWORD: 'somepass'
     volumes:
-      - .:/code
-      - ~/.ssh/tagging_tracker/:/application_keys/
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - db
-    env_file:
-      - local.env
+      - ".:/code"
+      - "/tmp:/tmp"
