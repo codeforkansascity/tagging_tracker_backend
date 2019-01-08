@@ -24,3 +24,19 @@ restart:
 # List running services:
 ps:
 	@$(DC) ps
+
+# Show Nginx container logs
+nlogs:
+	@$(DC) logs nginx
+
+# Show uwsgi container logs
+ulogs:
+	@$(DC) logs uwsgi
+
+# Watch Nginx container logs
+watchn:
+	@$(DC) logs -f nginx
+
+# Watch uwsgi container logs
+watchu:
+	@$(DC) logs -f uwsgi
