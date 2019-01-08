@@ -1,9 +1,8 @@
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
-from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework import status
 
 
 @csrf_exempt
 def index(request):
-    return HttpResponse(status=HTTP_204_NO_CONTENT)
+    return JsonResponse({"status": "running"}, status=status.HTTP_200_OK)
