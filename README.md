@@ -72,11 +72,16 @@ In order to checkout the code, and run it locally, the following steps are neede
 
 1. After the following previous steps are setup, running the following command to run the application.
 
-   ```
-   docker-compose up --build
+   ```bash
+   $ make \\ Pulls images for services and builds locally defined images
+   $ make up \\ Runs services or...
+   $ make upd \\ Runs services in background
    ```
 
-   Anytime you change application code, kill the current container, and re run `docker-compose up --build`.
+   Anytime you change application code run `make reload` to restart `uwsgi` in the container.
+
+   When finished run `make down` to stop all services. There are other targets available in the [Makefile](Makefile) that also help
+   with development so feel free to look those over.
 
 # Contribution
 
