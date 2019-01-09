@@ -10,8 +10,6 @@ services:
     image: mdillon/postgis:9.6
     environment:
       POSTGRES_DB: 'dev'
-    ports:
-      - "5432:5432"
   web:
     build: .
     environment:
