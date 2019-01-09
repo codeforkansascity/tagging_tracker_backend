@@ -8,7 +8,7 @@ These are the services that are powering the [Tagging Tracker Application](https
 
 In order to checkout the code, and run it locally, the following steps are needed.
 
-1. Install `docker` and `docker-compose`
+1. Install [`docker`](https://docs.docker.com/install/#support) and [`docker-compose`](https://docs.docker.com/compose/install/)
 
 1. You first need to generate your own self signed certificate pointing to the localhost domain. If you have any existing ones, feel free to use them as well. When creating them, you need to ensure that the file names coorelate to ~/.ssh/tagging_tracker/fullchain.pem (certificate file) and ~/.ssh/tagging_tracker/privkey.pem (private key).
 
