@@ -73,9 +73,9 @@ In order to checkout the code, and run it locally, the following steps are neede
 1. After the following previous steps are setup, running the following command to run the application.
 
    ```bash
-   $ make \\ Pulls images for services and builds locally defined images
-   $ make up \\ Runs services or...
-   $ make upd \\ Runs services in background
+   $ make # Pulls images for services and builds locally defined images
+   $ make up # Runs services or...
+   $ make upd # Runs services in background
    ```
 
    Anytime you change application code run `make reload` to restart `uwsgi` in the container.
