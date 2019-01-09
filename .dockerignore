@@ -1,0 +1,6 @@
+.git/
+.idea/
+*.png
+*.md
+tagging_tracker/bin
+tagging_tracker/include
