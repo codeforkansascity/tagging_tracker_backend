@@ -21,6 +21,8 @@ services:
       DB_HOST: 'db'
       DB_PORT: 5432
       DB_PASSWORD: 'somepass'
+    env_file:
+      - local.env
     volumes:
       - ".:/code"
       - "/tmp:/tmp"
