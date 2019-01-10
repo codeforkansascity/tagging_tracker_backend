@@ -54,3 +54,15 @@ watchw:
 # Reload uwsgi server
 reload:
 	@./reload.sh
+
+# Bash inside web container
+bashw:
+	@$(DC) exec web bash
+
+# Bash inside Nginx container
+bashn:
+	@$(DC) exec nginx bash
+
+# Bash inside db container
+bashd:
+	@$(DC) exec db bash
