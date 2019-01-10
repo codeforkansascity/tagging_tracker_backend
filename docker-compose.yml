@@ -8,9 +8,13 @@ services:
       - "/tmp:/tmp"
   db:
     image: mdillon/postgis:9.6
+    volumes:
+      - "db-data:/var/lib/postgresql/data "
   web:
     build: .
     environment:
       DB_PORT: 5432
     volumes:
       - "/tmp:/tmp"
+volumes:
+  db-data:
