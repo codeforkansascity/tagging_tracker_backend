@@ -57,7 +57,7 @@ In order to checkout the code, and run it locally, the following steps are neede
    AZURE_IMAGE_CONTAINER_KEY=<Attend meetup to obtain>
    ```
 
-1. After the following previous steps are setup, running the following command to run the application.
+1. After the above steps are setup, running the following command to run the application.
 
    ```bash
    $ make && make up # build and runs all containers or...
