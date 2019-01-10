@@ -2,6 +2,9 @@ version: "3"
 # TODO: better config
 services:
   nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile.prod
     volumes:
       - "./etc:/etc/ssl"
     ports:
