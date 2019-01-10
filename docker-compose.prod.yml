@@ -1,0 +1,14 @@
+version: "3"
+# TODO: better config
+services:
+  nginx:
+    volumes:
+      - "./etc:/etc/ssl"
+    ports:
+      - "443:443"
+  db:
+    environment:
+      POSTGRES_DB: "dev"
+  web:
+    volumes:
+      - ".:/code"

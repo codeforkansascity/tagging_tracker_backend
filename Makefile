@@ -1,4 +1,9 @@
 DC=docker-compose
+BASE=docker-compose.yml
+LOCAL=docker-compose.local.yml
+PROD=docker-compose.prod.yml
+BASE_AND_LOC=-f $(BASE) -f $(LOCAL)
+BASE_AND_PROD=-f $(BASE) -f $(PROD)
 
 .PHONY: logs
 
@@ -9,11 +14,11 @@ build:
 
 # Runs services
 up:
-	@$(DC) up
+	@$(DC) $(BASE_AND_LOC) up
 
 # Runs services in detached mode
 upd:
-	@$(DC) up -d
+	@$(DC) $(BASE_AND_LOC) up -d
 
 # Stops services
 down:
@@ -66,3 +71,11 @@ bashn:
 # Bash inside db container
 bashd:
 	@$(DC) exec db bash
+
+# Generate self signed SSL key
+ssl:
+	@./ssl.sh
+
+# Run production docker compose
+prod:
+	@$(DC) $(BASE_AND_PROD) up -d
