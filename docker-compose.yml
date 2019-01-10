@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   nginx:
     build: ./nginx
@@ -9,16 +9,18 @@ services:
   db:
     image: mdillon/postgis:9.6
     environment:
-      POSTGRES_DB: 'dev'
+      POSTGRES_USER: "tag_user"
+      POSTGRES_PASSWORD: "somepass"
+      POSTGRES_DB: "dev"
   web:
     build: .
     environment:
       DEBUG: 1
-      DB_NAME: 'dev'
-      DB_USER: 'tag_user'
-      DB_HOST: 'db'
+      DB_NAME: "dev"
+      DB_USER: "tag_user"
+      DB_HOST: "db"
       DB_PORT: 5432
-      DB_PASSWORD: 'somepass'
+      DB_PASSWORD: "somepass"
     env_file:
       - local.env
     volumes:
