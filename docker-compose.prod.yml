@@ -10,5 +10,11 @@ services:
     environment:
       POSTGRES_DB: "dev"
   web:
-    volumes:
-      - ".:/code"
+    environment:
+      SECRET_KEY: "some key"
+      DB_NAME: "dev"
+      DB_USER: "tag_user"
+      DB_HOST: "db"
+      DB_PASSWORD: "somepass"
+      AUTH0_CLIENTID: "something"
+      AUTH0_SECRET: "pass"
