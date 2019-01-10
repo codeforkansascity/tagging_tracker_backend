@@ -113,3 +113,4 @@ venv.bak/
 
 docker-compose.override.yml
 reload.ini
+etc/
