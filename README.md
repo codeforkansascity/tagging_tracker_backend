@@ -16,7 +16,7 @@ In order to checkout the code, and run it locally, the following steps are neede
    git clone http://www.github.com/codeforkansascity/tagging_tracker_backend
    ```
 
-1. Once your certificate is generated and the repo is cloned, create a local.env file in the project directory. It should contain the following variables
+1. Create a local.env file in the project directory. It should contain the following variables
 
    ```
    DEBUG - Whether the application is in debug mode. Defaults to False.
@@ -60,9 +60,8 @@ In order to checkout the code, and run it locally, the following steps are neede
 1. After the following previous steps are setup, running the following command to run the application.
 
    ```bash
-   $ make # Pulls images for services and builds locally defined images
-   $ make up # Runs services or...
-   $ make upd # Runs services in background
+   $ make && make up # build and runs all containers or...
+   $ make && make upd # build and runs all containers in detached mode
    ```
 
    Anytime you change application code run `make reload` to restart `uwsgi` in the container.
