@@ -58,7 +58,7 @@ watchw:
 
 # Reload uwsgi server
 reload:
-	@./reload.sh
+	@touch reload.ini
 
 # Bash inside web container
 bashw:
