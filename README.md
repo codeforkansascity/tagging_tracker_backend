@@ -2,7 +2,7 @@
 
 These are the services that are powering the [Tagging Tracker Application](https://github.com/codeforkansascity/tagging-tracker).
 
-* Note: * To use the existing Azure and auth0 accounts that are applied to this code, you need to contact one of the developers on the team. Otherwise, you'll need to setup your own Azure account and auth0 instance to run this code.
+> NOTE: To use the existing Azure and auth0 accounts that are applied to this code, you need to contact one of the developers on the team. Otherwise, you'll need to setup your own Azure account and auth0 instance to run this code.
 
 ## Getting Started
 
@@ -19,7 +19,7 @@ In order to checkout the code, and run it locally, the following steps are neede
 1. Create a local.env file in the project directory. It should contain the following variables
 
    ```
-   DEBUG - Whether the application is in debug mode. Defaults to False, set to 1 for True.
+   DEBUG - Whether the application is in debug mode. Defaults to 0 (False), set to 1 (True).
    SECRET_KEY - The secret key of the application. You can generate one here. https://www.miniwebtool.com/django-secret-key-generator/
    DEPLOYED_URL - The URL of where the application is hosted at. This isn't need if you are running locally on your device.
    LOADBALANCER_URL - The URL of the loadbalancer for the application. This isn't needed if you are running locally on your device.
@@ -41,7 +41,7 @@ In order to checkout the code, and run it locally, the following steps are neede
    To get you started and running locally, here is a local.env file you can use.
 
    ```
-   DEBUG=true
+   DEBUG=1
    SECRET_KEY=<Your generated key>
    DB_NAME=postgres
    DB_USER=postgres
