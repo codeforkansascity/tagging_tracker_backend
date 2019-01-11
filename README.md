@@ -41,7 +41,7 @@ In order to checkout the code, and run it locally, the following steps are neede
    To get you started and running locally, here is a local.env file you can use.
 
    ```
-   DEBUG=true
+   DEBUG=1
    SECRET_KEY=<Your generated key>
    DB_NAME=postgres
    DB_USER=postgres
