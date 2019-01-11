@@ -79,3 +79,8 @@ ssl:
 # Run production docker compose
 prod:
 	@$(DC) $(BASE_AND_PROD) up -d
+
+# Migrate local
+migratelocal:
+	@$(DC) $(BASE_AND_LOC) exec web python manage.py makemigrations
+	@$(DC) $(BASE_AND_LOC) exec web python manage.py migrate

@@ -60,8 +60,12 @@ In order to checkout the code, and run it locally, the following steps are neede
 1. After the above steps are setup, running the following command to run the application.
 
    ```bash
-   $ make && make up # build and runs all containers or...
-   $ make && make upd # build and runs all containers in detached mode
+   # build and runs all containers
+   $ make && make up
+   # in a seperate terminal
+   $ make migratelocal
+   # or run in detached mode
+   $ make && make upd && make migratelocal
    ```
 
    Anytime you change application code run `make reload` to restart `uwsgi` in the container.
