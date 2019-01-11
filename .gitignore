@@ -112,3 +112,5 @@ venv.bak/
 .DS_Store
 
 docker-compose.override.yml
+reload.ini
+etc/

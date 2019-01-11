@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.getenv('DEBUG', False)
 
 if DEBUG:
     SECRET_KEY = 'mysecretkey'
@@ -98,7 +98,7 @@ DATABASES = {
         'EMAIL_USE_SSL': True,
         'PASSWORD': os.environ['DB_PASSWORD'],
         'OPTIONS': {
-            'sslmode': os.getenv('SSL_MODE', 'disabled'),
+            'sslmode': os.getenv('SSL_MODE', 'disable'),
             'sslrootcert': os.getenv('SSL_ROOT_CERT', '')
         }
     }
@@ -147,23 +147,24 @@ REST_FRAMEWORK = {
     ),
 }
 
-AUTH0 = {
-    'CLIENTS': {
-        'default': {
-            'AUTH0_CLIENT_ID': os.environ['AUTH0_CLIENTID'],
-        # make sure it's the same string that aud attribute in your payload provides
-            'AUTH0_CLIENT_SECRET': os.environ['AUTH0_SECRET'],
-            'CLIENT_SECRET_BASE64_ENCODED': True,
-            'AUTH0_ALGORITHM': 'HS256',  # default used in Auth0 apps
-            'AUTHORIZATION_EXTENSION': False,  # default to False
-        # default to True, if you're Auth0 user since December, maybe you should set it to False
-        }
-    },
-    'AUTH0_ALGORITHM': 'HS256',  # default used in Auth0 apps
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',  # default prefix used by djangorestframework_jwt
-    'AUTHORIZATION_EXTENSION': False,  # default to False
-    # 'USERNAME_FIELD': 'sub',  # default username field in auth0 token scope to use as token user
-}
+if not DEBUG:
+    AUTH0 = {
+        'CLIENTS': {
+            'default': {
+                'AUTH0_CLIENT_ID': os.environ['AUTH0_CLIENTID'],
+            # make sure it's the same string that aud attribute in your payload provides
+                'AUTH0_CLIENT_SECRET': os.environ['AUTH0_SECRET'],
+                'CLIENT_SECRET_BASE64_ENCODED': True,
+                'AUTH0_ALGORITHM': 'HS256',  # default used in Auth0 apps
+                'AUTHORIZATION_EXTENSION': False,  # default to False
+            # default to True, if you're Auth0 user since December, maybe you should set it to False
+            }
+        },
+        'AUTH0_ALGORITHM': 'HS256',  # default used in Auth0 apps
+        'JWT_AUTH_HEADER_PREFIX': 'JWT',  # default prefix used by djangorestframework_jwt
+        'AUTHORIZATION_EXTENSION': False,  # default to False
+        # 'USERNAME_FIELD': 'sub',  # default username field in auth0 token scope to use as token user
+    }
 
 
 LOGGING = {
@@ -173,14 +174,10 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler'
         },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': '/code/logs/error.log'
-        }
     },
     'loggers': {
         '': {  # 'catch all' loggers by referencing it with the empty string
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': os.getenv('LOG_LEVEL', 'ERROR'),
         },
     },

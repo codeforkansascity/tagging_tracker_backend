@@ -1,0 +1,21 @@
+version: "3"
+services:
+  nginx:
+  db:
+    environment:
+      POSTGRES_USER: "tag_user"
+      POSTGRES_PASSWORD: "somepass"
+      POSTGRES_DB: "dev"
+    ports:
+      - "5432:5432"
+  web:
+    environment:
+      DEBUG: 1
+      DB_NAME: "dev"
+      DB_USER: "tag_user"
+      DB_HOST: "db"
+      DB_PASSWORD: "somepass"
+    env_file:
+      - local.env
+    volumes:
+      - ".:/code"

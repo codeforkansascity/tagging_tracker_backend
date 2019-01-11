@@ -1,20 +1,22 @@
-version: '3'
-
+version: "3"
 services:
-  db:
-    image: mdillon/postgis:9.6
-    ports:
-      - "5432:5432"
-  web:
-    restart: always
-    build: .
-    volumes:
-      - .:/code
-      - ~/.ssh/tagging_tracker/:/application_keys/
+  nginx:
+    build: ./nginx
     ports:
       - "80:80"
-      - "443:443"
+    volumes:
+      - "/tmp:/tmp"
+  db:
+    image: mdillon/postgis:9.6
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+  web:
+    build: .
+    environment:
+      DB_PORT: 5432
+    volumes:
+      - "/tmp:/tmp"
     depends_on:
       - db
-    env_file:
-      - local.env
+volumes:
+  db-data:
