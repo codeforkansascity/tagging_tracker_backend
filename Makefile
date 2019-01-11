@@ -1,11 +1,13 @@
+DK=docker
 DC=docker-compose
 BASE=docker-compose.yml
 LOCAL=docker-compose.local.yml
 PROD=docker-compose.prod.yml
 BASE_AND_LOC=-f $(BASE) -f $(LOCAL)
 BASE_AND_PROD=-f $(BASE) -f $(PROD)
+DB_IMG=mdillon/postgis:9.6
 
-.PHONY: logs
+.PHONY: logs dev
 
 # Gets docker-compose.yml images and local builds
 build:
@@ -84,3 +86,12 @@ prod:
 migratelocal:
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py makemigrations
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py migrate
+
+# Stop all containers and removes them
+stop:
+	@$(DK) stop $(shell $(DK) ps -a -q) \
+		&& $(DK) rm $(shell $(DK) ps -a -q)
+
+# Starts Django development server
+start:
+	@DB_IMG=$(DB_IMG) ./start.sh
