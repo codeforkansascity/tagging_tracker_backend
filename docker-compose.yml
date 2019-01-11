@@ -9,7 +9,7 @@ services:
   db:
     image: mdillon/postgis:9.6
     volumes:
-      - "db-data:/var/lib/postgresql/data "
+      - "db-data:/var/lib/postgresql/data"
   web:
     build: .
     environment:
