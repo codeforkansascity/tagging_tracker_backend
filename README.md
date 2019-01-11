@@ -19,7 +19,7 @@ In order to checkout the code, and run it locally, the following steps are neede
 1. Create a local.env file in the project directory. It should contain the following variables
 
    ```
-   DEBUG - Whether the application is in debug mode. Defaults to False.
+   DEBUG - Whether the application is in debug mode. Defaults to False, set to 1 for True.
    SECRET_KEY - The secret key of the application. You can generate one here. https://www.miniwebtool.com/django-secret-key-generator/
    DEPLOYED_URL - The URL of where the application is hosted at. This isn't need if you are running locally on your device.
    LOADBALANCER_URL - The URL of the loadbalancer for the application. This isn't needed if you are running locally on your device.
