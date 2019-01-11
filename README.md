@@ -86,6 +86,12 @@ In order to checkout the code, and run it locally, the following steps are neede
 
 1. (Optional) Generate your own self signed certificate pointing to the localhost domain using `make ssl`.
 
+# Managing requirements
+
+We use [`pip-tools`](https://github.com/jazzband/pip-tools) to manage our requirements. High level application packages should be
+put in `requirements.in` and high level development/testing packages should be put in `requirements-dev.in`. Once there run
+`make compile` to generate new requirements files and then `make reqs` to install the updates.
+
 # Contribution
 
 Read the [Contribution Guide](docs/CONTRIBUTING.md)

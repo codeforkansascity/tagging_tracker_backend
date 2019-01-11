@@ -84,3 +84,12 @@ prod:
 migratelocal:
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py makemigrations
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py migrate
+
+# Compiles requirements*.in
+compile:
+	@pip-compile
+	@pip-compile --output-file requirements-dev.txt requirements-dev.in
+
+# Installs requirements
+reqs:
+	@pip install -r requirements.txt -r requirements-dev.txt
