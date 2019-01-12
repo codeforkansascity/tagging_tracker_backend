@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 
+checkenv() {
+    if [[ -z "$1" ]]; then
+        echo "$2 not set in local.env"
+        exit 1
+    fi
+}
+
 if [ ! -f local.env ]; then
     echo "local.env not found"
     exit 1
 fi
 
 source local.env
+
+checkenv "$DB_NAME" "DB_NAME"
+checkenv "$DB_USER" "DB_USER"
+checkenv "$DB_PASSWORD" "DB_PASSWORD"
+
 export DEBUG=1
 
 # Check to see if we are already running the image
