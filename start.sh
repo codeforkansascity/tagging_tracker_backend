@@ -31,6 +31,19 @@ if docker ps | grep $DB_IMG -q; then
         make start
     else
         echo "No pending migrations"
+
+        # Check that DB container is up and running
+        if ! [ -x "$(command -v nc)" ]; then
+            echo "netcat not on system."
+            echo "If django server fails to connect to db press Ctrl+C and run 'make start' again"
+        else
+            while ! nc -z localhost 5432; do
+                echo "Waiting for DB container to boot"
+                sleep 0.2 # wait for 2/10 of the second before check again
+            done
+        fi
+
+        # Run dev server
         python manage.py runserver
     fi
 else
