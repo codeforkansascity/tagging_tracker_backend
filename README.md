@@ -43,11 +43,9 @@ In order to checkout the code, and run it locally, the following steps are neede
    ```
    DEBUG=1
    SECRET_KEY=<Your generated key>
-   DB_NAME=postgres
-   DB_USER=postgres
-   DB_HOST=db
-   DB_PORT=5432
-   DB_PASSWORD=''
+   DB_NAME=dev
+   DB_USER=tag_user
+   DB_PASSWORD=somepass
    AUTH0_URL=<Create your own auth0 or ask developers for it>
    AUTH0_CLIENTID=<Create your own auth0 or ask developers for it>
    AUTH0_SECRET=<Create your own auth0 or ask developers for it>
@@ -57,7 +55,28 @@ In order to checkout the code, and run it locally, the following steps are neede
    AZURE_IMAGE_CONTAINER_KEY=<Attend meetup to obtain>
    ```
 
-1. After the above steps are setup, running the following command to run the application.
+There are 2 methods of running the development environment. First is via a [virtualenv](#virtualenv-instructions) with a postgres `docker` image.
+Secondly you can use [docker-compose](#docker-compose-instructions).
+
+## Virtualenv instructions
+
+These instructions assume you already have a virtualenv setup with a python 3.6 distribution.
+
+1. Run the following commands
+
+```bash
+# Install all the requirements
+$ make reqs
+# Start development server
+$ make start
+# After exiting dev server process stop and remvoe all containers
+$ make stop
+```
+
+
+## Docker compose instructions
+
+1. Run the following commands
 
    ```bash
    # build and runs all containers

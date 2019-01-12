@@ -91,12 +91,12 @@ WSGI_APPLICATION = 'tagging_tracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': os.environ['DB_PORT'],
+        'NAME': os.getenv('DB_NAME', 'dev'),
+        'USER': os.getenv('DB_USER', 'tag_user'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', 5432),
         'EMAIL_USE_SSL': True,
-        'PASSWORD': os.environ['DB_PASSWORD'],
+        'PASSWORD': os.getenv('DB_PASSWORD', 'somepass'),
         'OPTIONS': {
             'sslmode': os.getenv('SSL_MODE', 'disable'),
             'sslrootcert': os.getenv('SSL_ROOT_CERT', '')

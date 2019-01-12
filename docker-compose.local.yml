@@ -11,11 +11,10 @@ services:
   web:
     environment:
       DEBUG: 1
-      DB_NAME: "dev"
-      DB_USER: "tag_user"
       DB_HOST: "db"
-      DB_PASSWORD: "somepass"
     env_file:
       - local.env
     volumes:
       - ".:/code"
+    depends_on:
+      - db
