@@ -6,6 +6,8 @@ PROD=docker-compose.prod.yml
 BASE_AND_LOC=-f $(BASE) -f $(LOCAL)
 BASE_AND_PROD=-f $(BASE) -f $(PROD)
 DB_IMG=mdillon/postgis:9.6
+E=source env.sh
+PT=$(E) && pytest
 
 .PHONY: logs dev
 
@@ -111,12 +113,12 @@ rundb:
 
 # Runs test suite
 test: rundb
-	@DEBUG=1 pytest
+	@$(PT)
 
 # Run unit tests
 unit:
-	@DEBUG=1 pytest -k unit
+	@$(PT) -k unit
 
 # Run integration tests
 integration: rundb
-	@DEBUG=1 pytest -k integration
+	@$(PT) -k integration
