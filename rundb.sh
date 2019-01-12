@@ -14,7 +14,7 @@ if [ ! -f local.env ]; then
     exit 1
 fi
 
-source local.env
+source env.sh
 
 checkenv "$DB_IMG" "DB_IMG not set on script invocation"
 checkenv "$DB_NAME" "DB_NAME not set in local.env"
