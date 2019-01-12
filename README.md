@@ -55,8 +55,8 @@ In order to checkout the code, and run it locally, the following steps are neede
    AZURE_IMAGE_CONTAINER_KEY=<Attend meetup to obtain>
    ```
 
-There are 2 methods of running the development environment. First is via a [virtualenv](virtualenv-instructions) with a postgres `docker` image.
-Secondly you can use [docker-compose](docker-compose-instructions).
+There are 2 methods of running the development environment. First is via a [virtualenv](#virtualenv-instructions) with a postgres `docker` image.
+Secondly you can use [docker-compose](#docker-compose-instructions).
 
 ## Virtualenv instructions
 
