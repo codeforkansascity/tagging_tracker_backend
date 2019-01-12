@@ -2,7 +2,7 @@
 
 These are the services that are powering the [Tagging Tracker Application](https://github.com/codeforkansascity/tagging-tracker).
 
-* Note: * To use the existing Azure and auth0 accounts that are applied to this code, you need to contact one of the developers on the team. Otherwise, you'll need to setup your own Azure account and auth0 instance to run this code.
+> NOTE: To use the existing Azure and auth0 accounts that are applied to this code, you need to contact one of the developers on the team. Otherwise, you'll need to setup your own Azure account and auth0 instance to run this code.
 
 ## Getting Started
 
@@ -19,7 +19,7 @@ In order to checkout the code, and run it locally, the following steps are neede
 1. Create a local.env file in the project directory. It should contain the following variables
 
    ```
-   DEBUG - Whether the application is in debug mode. Defaults to False, set to 1 for True.
+   DEBUG - Whether the application is in debug mode. Defaults to 0 (False), set to 1 (True).
    SECRET_KEY - The secret key of the application. You can generate one here. https://www.miniwebtool.com/django-secret-key-generator/
    DEPLOYED_URL - The URL of where the application is hosted at. This isn't need if you are running locally on your device.
    LOADBALANCER_URL - The URL of the loadbalancer for the application. This isn't needed if you are running locally on your device.
@@ -41,13 +41,11 @@ In order to checkout the code, and run it locally, the following steps are neede
    To get you started and running locally, here is a local.env file you can use.
 
    ```
-   DEBUG=true
+   DEBUG=1
    SECRET_KEY=<Your generated key>
-   DB_NAME=postgres
-   DB_USER=postgres
-   DB_HOST=db
-   DB_PORT=5432
-   DB_PASSWORD=''
+   DB_NAME=dev
+   DB_USER=tag_user
+   DB_PASSWORD=somepass
    AUTH0_URL=<Create your own auth0 or ask developers for it>
    AUTH0_CLIENTID=<Create your own auth0 or ask developers for it>
    AUTH0_SECRET=<Create your own auth0 or ask developers for it>
@@ -57,7 +55,28 @@ In order to checkout the code, and run it locally, the following steps are neede
    AZURE_IMAGE_CONTAINER_KEY=<Attend meetup to obtain>
    ```
 
-1. After the above steps are setup, running the following command to run the application.
+There are 2 methods of running the development environment. First is via a [virtualenv](#virtualenv-instructions) with a postgres `docker` image.
+Secondly you can use [docker-compose](#docker-compose-instructions).
+
+## Virtualenv instructions
+
+These instructions assume you already have a virtualenv setup with a python 3.6 distribution.
+
+1. Run the following commands
+
+```bash
+# Install all the requirements
+$ make reqs
+# Start development server
+$ make start
+# After exiting dev server process stop and remvoe all containers
+$ make stop
+```
+
+
+## Docker compose instructions
+
+1. Run the following commands
 
    ```bash
    # build and runs all containers
