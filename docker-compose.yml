@@ -19,4 +19,4 @@ services:
     depends_on:
       - db
 volumes:
-  db-data:
+  db-data: # NOTE: if this name changes update reference in start.sh

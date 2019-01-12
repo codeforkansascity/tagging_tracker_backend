@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ ! -f local.env ]; then
+    echo "local.env not found"
+    exit 1
+fi
+
+source local.env
 export DEBUG=1
 
 # Check to see if we are already running the image
@@ -19,13 +25,12 @@ else
     echo "DB container not found"
     echo "starting..."
     docker run \
-        --rm \
         -d \
         -p 5432:5432 \
-        -v db-data:/var/lib/postgresql/data \
-		-e POSTGRES_PASSWORD=pass \
-		-e POSTGRES_USER=dev_user \
-		-e POSTGRES_DB=dev \
+        -v tagging_tracker_backend_db-data:/var/lib/postgresql/data \
+		-e POSTGRES_PASSWORD=$DB_PASSWORD \
+		-e POSTGRES_USER=$DB_USER \
+		-e POSTGRES_DB=$DB_NAME \
 		$DB_IMG
     echo "started!"
     make start

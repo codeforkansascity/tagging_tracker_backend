@@ -92,11 +92,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': os.getenv('DB_NAME', 'dev'),
-        'USER': os.getenv('DB_USER', 'dev_user'),
+        'USER': os.getenv('DB_USER', 'tag_user'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', 5432),
         'EMAIL_USE_SSL': True,
-        'PASSWORD': os.getenv('DB_PASSWORD', 'pass'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'somepass'),
         'OPTIONS': {
             'sslmode': os.getenv('SSL_MODE', 'disable'),
             'sslrootcert': os.getenv('SSL_ROOT_CERT', '')

@@ -43,11 +43,9 @@ In order to checkout the code, and run it locally, the following steps are neede
    ```
    DEBUG=1
    SECRET_KEY=<Your generated key>
-   DB_NAME=postgres
-   DB_USER=postgres
-   DB_HOST=db
-   DB_PORT=5432
-   DB_PASSWORD=''
+   DB_NAME=dev
+   DB_USER=tag_user
+   DB_PASSWORD=somepass
    AUTH0_URL=<Create your own auth0 or ask developers for it>
    AUTH0_CLIENTID=<Create your own auth0 or ask developers for it>
    AUTH0_SECRET=<Create your own auth0 or ask developers for it>
