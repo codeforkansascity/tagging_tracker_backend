@@ -103,4 +103,20 @@ stop:
 
 # Starts Django development server
 start:
-	@DB_IMG=$(DB_IMG) ./start.sh
+	@./start.sh
+
+# Starts container for db locally
+rundb:
+	@DB_IMG=$(DB_IMG) ./rundb.sh
+
+# Runs test suite
+test: rundb
+	@DEBUG=1 pytest
+
+# Run unit tests
+unit:
+	@DEBUG=1 pytest -k unit
+
+# Run integration tests
+integration: rundb
+	@DEBUG=1 pytest -k integration

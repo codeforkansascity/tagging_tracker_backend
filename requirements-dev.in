@@ -1,1 +1,5 @@
 pip-tools
+pytest
+pytest-django
+pytest-cov
+pytest-mock

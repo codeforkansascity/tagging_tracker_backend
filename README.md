@@ -111,6 +111,19 @@ We use [`pip-tools`](https://github.com/jazzband/pip-tools) to manage our requir
 put in `requirements.in` and high level development/testing packages should be put in `requirements-dev.in`. Once there run
 `make compile` to generate new requirements files and then `make reqs` to install the updates.
 
+# Testing
+
+All tests should be placed under `test/` in order for `pytest` to pick them up.
+
+```bash
+# Runs entire test suite
+$ make test
+# Runs only unit tests
+$ make unit
+# Runs only integration tests
+$ make integration
+```
+
 # Contribution
 
 Read the [Contribution Guide](docs/CONTRIBUTING.md)
