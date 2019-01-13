@@ -19,7 +19,6 @@ class AddressView(APIView):
         return Response(AddressSerializer(address).data)
 
     def delete(self, request, pk):
-        print("HERE")
         address = self.get_object(pk)
         address.delete()
         return Response()
