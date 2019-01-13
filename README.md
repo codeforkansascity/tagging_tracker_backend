@@ -69,7 +69,7 @@ These instructions assume you already have a virtualenv setup with a python 3.6 
 $ make reqs
 # Start development server
 $ make start
-# After exiting dev server process stop and remvoe all containers
+# After exiting dev server process stop and remove all containers
 $ make stop
 ```
 
