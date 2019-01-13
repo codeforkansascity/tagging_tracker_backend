@@ -69,7 +69,7 @@ These instructions assume you already have a virtualenv setup with a python 3.6 
 $ make reqs
 # Start development server
 $ make start
-# After exiting dev server process stop and remvoe all containers
+# After exiting dev server process stop and remove all containers
 $ make stop
 ```
 
@@ -110,6 +110,22 @@ $ make stop
 We use [`pip-tools`](https://github.com/jazzband/pip-tools) to manage our requirements. High level application packages should be
 put in `requirements.in` and high level development/testing packages should be put in `requirements-dev.in`. Once there run
 `make compile` to generate new requirements files and then `make reqs` to install the updates.
+
+# Testing
+
+All tests should be placed under `test/` in order for `pytest` to pick them up. Currently the development requirements
+are not installed in the docker image and so ensure you have your `virtualenv` setup and run `make reqs` prior to testing.
+
+```bash
+# Runs entire test suite
+$ make test
+# Runs only unit tests
+$ make unit
+# Runs only integration tests
+$ make integration
+# Directly invoking pytest
+$ source env.sh && pytest -k "some filter"
+```
 
 # Contribution
 
