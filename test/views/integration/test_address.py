@@ -57,29 +57,6 @@ class TestAddress(TestCase):
         response = address.address_list(self.request)
         self.assert_(response.status_code == HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_address_detail__get(self):
-        self.request.method = 'GET'
-        pk = self.addresses[0].id
-        response = address.address_detail(self.request, pk)
-        actual = response.getvalue().decode("utf-8")
-
-        serializer = AddressSerializer(self.addresses[0])
-        expected = JsonResponse(serializer.data, safe=False).getvalue().decode("utf-8")
-
-        self.assertEqual(actual, expected)
-
-    def test_address_detail__invalid_method(self):
-        self.request.method = 'POST'
-        pk = self.addresses[0].id
-        response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == HTTP_405_METHOD_NOT_ALLOWED)
-
-    def test_address_detail__invalid_address(self):
-        self.request.method = 'GET'
-        pk = None
-        response = address.address_detail(self.request, pk)
-        self.assert_(response.status_code == HTTP_404_NOT_FOUND)
-
     def test_retrieve_tags_by_address__get(self):
         self.request.method = 'GET'
         pk = self.addresses[0].id
