@@ -6,3 +6,6 @@ omit =
     */migrations/*,
     test/*,
     manage.py,
+    conftest.py,
+    */wsgi.py,
+    */settings.py
