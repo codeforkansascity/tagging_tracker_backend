@@ -69,7 +69,7 @@ These instructions assume you already have a virtualenv setup with a python 3.6 
 $ make reqs
 # Start development server
 $ make start
-# After exiting dev server process stop and remvoe all containers
+# After exiting dev server process stop and remove all containers
 $ make stop
 ```
 
@@ -113,7 +113,8 @@ put in `requirements.in` and high level development/testing packages should be p
 
 # Testing
 
-All tests should be placed under `test/` in order for `pytest` to pick them up.
+All tests should be placed under `test/` in order for `pytest` to pick them up. Currently the development requirements
+are not installed in the docker image and so ensure you have your `virtualenv` setup and run `make reqs` prior to testing.
 
 ```bash
 # Runs entire test suite
