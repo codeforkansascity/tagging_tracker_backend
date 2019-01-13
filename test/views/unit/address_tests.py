@@ -13,7 +13,7 @@ def test_get_address_no_object_raises_404(mocker):
     address_get = mocker.patch("backend.views.address.Address.objects.get")
     address_get.side_effect = Address.DoesNotExist
 
-    with pytest. raises(Http404):
+    with pytest.raises(Http404):
         AddressView().get_object(pk)
     address_get.assert_called_once_with(pk=pk)
 
