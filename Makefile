@@ -104,3 +104,7 @@ stop:
 # Starts Django development server
 start:
 	@DB_IMG=$(DB_IMG) ./start.sh
+
+# Collect static files
+static:
+	@DEBUG=1 python manage.py collectstatic --no-input
