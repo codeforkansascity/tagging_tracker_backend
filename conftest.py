@@ -28,6 +28,16 @@ def remove_auth():
 @pytest.fixture
 def request_builder():
     def _request_builder(method, path, data=None, query_params=None, meta=None, format_="json"):
+        """
+        Fixture for easily building requests
+        :param method: HTTP method
+        :param path: request path
+        :param data: request body
+        :param query_params: dictionary that is encoded into query string
+        :param meta: dictionary that modifies META request headers
+        :param format_: api request format
+        :return: django.core.handlers.wsgi.WSGIRequest
+        """
         request = getattr(APIRequestFactory(), method.lower())(
             path,
             data=data,
