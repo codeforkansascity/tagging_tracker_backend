@@ -6,6 +6,8 @@ PROD=docker-compose.prod.yml
 BASE_AND_LOC=-f $(BASE) -f $(LOCAL)
 BASE_AND_PROD=-f $(BASE) -f $(PROD)
 DB_IMG=mdillon/postgis:9.6
+E=source env.sh
+PT=$(E) && pytest
 
 .PHONY: logs dev
 
@@ -103,7 +105,23 @@ stop:
 
 # Starts Django development server
 start:
-	@DB_IMG=$(DB_IMG) ./start.sh
+	@./start.sh
+
+# Starts container for db locally
+rundb:
+	@DB_IMG=$(DB_IMG) ./rundb.sh
+
+# Runs test suite
+test: rundb
+	@$(PT)
+
+# Run unit tests
+unit:
+	@$(PT) -k unit
+
+# Run integration tests
+integration: rundb
+	@$(PT) -k integration
 
 # Collect static files
 static:
