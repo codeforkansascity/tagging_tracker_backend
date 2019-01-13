@@ -8,4 +8,5 @@ omit =
     manage.py,
     conftest.py,
     */wsgi.py,
-    */settings.py
+    */settings.py,
+    */admin.py
