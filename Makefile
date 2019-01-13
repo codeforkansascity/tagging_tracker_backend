@@ -125,4 +125,4 @@ integration: rundb
 
 # Collect static files
 static:
-	@DEBUG=1 python manage.py collectstatic --no-input
+	@$(E) && python manage.py collectstatic --no-input
