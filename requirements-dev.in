@@ -1,4 +1,5 @@
 pip-tools
+python-dateutil
 pytest
 pytest-django
 pytest-cov

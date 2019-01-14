@@ -6,7 +6,7 @@ from rest_framework import status
 from backend.models import Address
 
 
-pytestmark = pytest.mark.usefixtures("db", "remove_auth")
+pytestmark = pytest.mark.usefixtures("db")
 
 
 def test_get_address_exists_returned(client, fake):
