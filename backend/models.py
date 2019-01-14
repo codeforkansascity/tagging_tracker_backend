@@ -56,7 +56,7 @@ class Tag(base_models.Model):
 
 @receiver(pre_delete, sender=Tag)
 def delete_image(sender, instance, **kwargs):
-    # TODO: figure out why `settings.DEBUG` appears false despite this logic returning `True`
+    # TODO: figure out why `settings.DEBUG` appears `False` despite this logic returning `True`
     debug = True if os.environ.get("DEBUG") else False
     if not debug:
         image_name = instance.img.split("/")[-1]
