@@ -8,7 +8,7 @@ from rest_framework import status
 
 from backend.models import Address, Tag
 
-pytestmark = pytest.mark.usefixtures("db", "remove_auth")
+pytestmark = pytest.mark.usefixtures("db")
 
 
 def test_get_method_retrieves_existing_tag(client, fake):
