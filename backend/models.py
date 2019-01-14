@@ -62,6 +62,9 @@ class Tag(base_models.Model):
 
 @receiver(pre_delete, sender=Tag)
 def delete_image(sender, instance, **kwargs):
-    image_name = instance.img.split("/")[-1]
-    block_blob_service = BlockBlobService(account_name=os.environ['AZURE_IMAGE_CONTAINER_NAME'], account_key=os.environ['AZURE_IMAGE_CONTAINER_KEY'])
-    block_blob_service.delete_blob('images', image_name)
+    # TODO: figure out why `settings.DEBUG` appears false despite this logic returning `True`
+    debug = True if os.environ.get("DEBUG") else False
+    if not debug:
+        image_name = instance.img.split("/")[-1]
+        block_blob_service = BlockBlobService(account_name=os.environ['AZURE_IMAGE_CONTAINER_NAME'], account_key=os.environ['AZURE_IMAGE_CONTAINER_KEY'])
+        block_blob_service.delete_blob('images', image_name)
