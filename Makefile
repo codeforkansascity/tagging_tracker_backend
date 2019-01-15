@@ -122,3 +122,7 @@ unit:
 # Run integration tests
 integration: rundb
 	@$(PT) -k integration
+
+# Collect static files
+static:
+	@$(E) && python manage.py collectstatic --no-input
