@@ -35,6 +35,9 @@ class Address(gis_models.Model):
     def longitude(self):
         return self.point.x
 
+    def __str__(self):
+        return self.street
+
 
 class Tag(base_models.Model):
     address = base_models.ForeignKey(Address, on_delete=base_models.CASCADE)
@@ -52,6 +55,9 @@ class Tag(base_models.Model):
     surface = base_models.CharField(max_length=100, blank=True)
     tag_words = base_models.CharField(max_length=255, blank=True)
     tag_initials = base_models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return str.format('{} {}',self.address, self.id)
 
 
 @receiver(pre_delete, sender=Tag)
