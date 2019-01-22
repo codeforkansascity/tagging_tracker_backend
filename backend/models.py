@@ -7,6 +7,7 @@ from django.dispatch import receiver
 
 from azure.storage.blob import BlockBlobService
 
+
 class Address(gis_models.Model):
     objects = gis_models.GeoManager()
     point = gis_models.PointField(srid=4326)
@@ -34,6 +35,7 @@ class Address(gis_models.Model):
     def longitude(self):
         return self.point.x
 
+
 class Tag(base_models.Model):
     address = base_models.ForeignKey(Address, on_delete=base_models.CASCADE)
     creator_user_id = base_models.CharField(max_length=255)
@@ -50,6 +52,7 @@ class Tag(base_models.Model):
     surface = base_models.CharField(max_length=100, blank=True)
     tag_words = base_models.CharField(max_length=255, blank=True)
     tag_initials = base_models.CharField(max_length=20, blank=True)
+
 
 @receiver(pre_delete, sender=Tag)
 def delete_image(sender, instance, **kwargs):
