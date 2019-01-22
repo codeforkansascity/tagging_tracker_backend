@@ -3,3 +3,5 @@ pytest
 pytest-django
 pytest-cov
 pytest-mock
+faker
+schema
