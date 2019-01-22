@@ -57,7 +57,7 @@ class Tag(base_models.Model):
     tag_initials = base_models.CharField(max_length=20, blank=True)
 
     def __str__(self):
-        return str.format('{} {}',self.address, self.id)
+        return f"{self.address} {self.id}"
 
 
 @receiver(pre_delete, sender=Tag)
