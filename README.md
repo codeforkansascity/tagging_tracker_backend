@@ -71,6 +71,9 @@ $ make reqs
 $ make start
 # After exiting dev server process stop and remove all containers
 $ make stop
+# to add superuser:
+$ python manage.py createsuperuser
+# then follow the prompts
 ```
 
 
@@ -85,6 +88,13 @@ $ make stop
    $ make migratelocal
    # or run in detached mode
    $ make && make upd && make migratelocal
+   # to add superuser:
+   # first, use docker ps to get container ID for the web container
+   $ docker ps
+   # next, run the command to execute a Bash shell in the web container
+   $ docker exec -it <your_container_id_here> bash
+   # then run makesuperuser
+   $ python manage.py createsuperuser
    ```
 
    Anytime you change application code run `make reload` to restart `uwsgi` in the container.
