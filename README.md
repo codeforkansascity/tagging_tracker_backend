@@ -89,12 +89,11 @@ $ python manage.py createsuperuser
    # or run in detached mode
    $ make && make upd && make migratelocal
    # to add superuser:
-   # first, use docker ps to get container ID for the web container
-   $ docker ps
-   # next, run the command to execute a Bash shell in the web container
-   $ docker exec -it <your_container_id_here> bash
+   # connect to web container:
+   $ make bashw
    # then run makesuperuser
    $ python manage.py createsuperuser
+   # then follow the prompts
    ```
 
    Anytime you change application code run `make reload` to restart `uwsgi` in the container.
