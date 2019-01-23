@@ -52,7 +52,7 @@ def test_get_returns_list_of_tags(client, fake):
     tag_two.save()
     tag_two.refresh_from_db()
 
-    response = client.get(reverse("tag_list"))
+    response = client.get(reverse("tag-list"))
     assert response.status_code == status.HTTP_200_OK
     assert [tag_one.id, tag_two.id] == sorted([t["id"] for t in json.loads(response.content)])
 
@@ -86,6 +86,6 @@ def test_post_request_creates_tag(client, fake):
         "date_taken": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
-    response = client.post(reverse("tag_list"), json.dumps(data), content_type="application/json")
+    response = client.post(reverse("tag-list"), json.dumps(data), content_type="application/json")
     assert response.status_code == status.HTTP_201_CREATED, response.content
     assert Tag.objects.filter(description=data["description"]).exists() is True
