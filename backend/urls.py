@@ -5,7 +5,7 @@ from backend.views.address import AddressView
 urlpatterns = [
     url(r'^$', index.index),
     url(r'^index/?$', index.index),
-    url(r'^address/(?P<pk>[0-9]+)/tags/?$', address.address_tags),
+    url(r'^address/(?P<pk>[0-9]+)/tags/?$', address.address_tags, name="address-tags"),
     url(r'^address/(?P<pk>[0-9]+)/?$', AddressView.as_view(), name="address"),
     url(r'^address/?$', address.address_list, name="address-list"),
     url(r'^address/address.csv', csv.csv_address_export),
