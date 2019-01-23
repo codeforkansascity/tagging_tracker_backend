@@ -1,6 +1,7 @@
 import logging
 import os
 
+from django.conf import settings
 from django.db import models as base_models
 from django.contrib.gis.db import models as gis_models
 from django.db.models.signals import pre_delete
@@ -65,10 +66,8 @@ class Tag(base_models.Model):
 
 @receiver(pre_delete, sender=Tag)
 def delete_image(sender, instance, **kwargs):
-    # TODO: figure out why `settings.DEBUG` appears `False` despite this logic returning `True`
-    debug = True if os.environ.get("DEBUG") else False
     image_name = instance.img.split("/")[-1]
-    if not debug:
+    if not settings.DEBUG:
         block_blob_service = BlockBlobService(account_name=os.environ['AZURE_IMAGE_CONTAINER_NAME'], account_key=os.environ['AZURE_IMAGE_CONTAINER_KEY'])
         block_blob_service.delete_blob('images', image_name)
         logger.debug(f"Image: {image_name} deleted from Azure")

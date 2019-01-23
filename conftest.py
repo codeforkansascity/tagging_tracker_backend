@@ -12,16 +12,8 @@ def client():
 
 
 @pytest.fixture
-def debug_mode_off():
-    with override_settings(DEBUG=False):
-        yield
-
-
-@pytest.fixture
-def remove_auth():
-    with modify_settings(MIDDLEWARE={
-        "remove": 'backend.middleware.auth.AuthMiddleware'
-    }):
+def debug_mode_on():
+    with override_settings(DEBUG=True):
         yield
 
 
