@@ -1,9 +1,9 @@
 import json
-from datetime import datetime
 
 import pytest
 from django.contrib.gis.geos import Point
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 
 from backend.models import Address, Tag
@@ -36,7 +36,7 @@ def test_get_returns_list_of_tags(client, fake):
         address=address,
         creator_user_id="some id",
         last_updated_user_id="some id",
-        date_taken=datetime.utcnow(),
+        date_taken=timezone.now(),
         description=fake.text(),
     )
     tag_one.save()
@@ -46,7 +46,7 @@ def test_get_returns_list_of_tags(client, fake):
         address=address,
         creator_user_id="some id",
         last_updated_user_id="some id",
-        date_taken=datetime.utcnow(),
+        date_taken=timezone.now(),
         description=fake.text(),
     )
     tag_two.save()
@@ -83,7 +83,7 @@ def test_post_request_creates_tag(client, fake):
         "creator_user_id": "some id",
         "last_updated_user_id": "some id",
         "description": fake.text(),
-        "date_taken": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+        "date_taken": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
     response = client.post(reverse("tag-list"), json.dumps(data), content_type="application/json")

@@ -1,8 +1,7 @@
-from datetime import datetime
-
 import pytest
 from django.contrib.gis.geos import Point
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 
 from backend.models import Address, Tag
@@ -63,7 +62,7 @@ def test_export_tags(client, fake):
         address=address,
         creator_user_id="some id",
         last_updated_user_id="some id",
-        date_taken=datetime.utcnow(),
+        date_taken=timezone.now(),
         description=fake.text(),
     )
     tag_one.save()
@@ -73,7 +72,7 @@ def test_export_tags(client, fake):
         address=address,
         creator_user_id="some id",
         last_updated_user_id="some id",
-        date_taken=datetime.utcnow(),
+        date_taken=timezone.now(),
         description=fake.text(),
     )
     tag_two.save()

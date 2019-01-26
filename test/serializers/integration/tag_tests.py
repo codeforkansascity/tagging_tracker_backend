@@ -1,7 +1,6 @@
-from datetime import datetime
-
 import pytest
 from django.contrib.gis.geos import Point
+from django.utils import timezone
 from schema import Schema, Or
 
 from backend.models import Tag, Address
@@ -55,7 +54,7 @@ def test_schema(fake):
         address=address,
         creator_user_id="some id",
         last_updated_user_id="some id",
-        date_taken=datetime.utcnow(),
+        date_taken=timezone.now(),
         description=fake.text(),
     )
     tag.save()
