@@ -33,9 +33,11 @@ class Address(gis_models.Model):
     type_of_property = gis_models.IntegerField(default=False, blank=False)
     date_updated = gis_models.DateTimeField(auto_now=True)
 
+    @property
     def latitude(self):
         return self.point.y
 
+    @property
     def longitude(self):
         return self.point.x
 
