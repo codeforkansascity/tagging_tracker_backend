@@ -1,9 +1,9 @@
-import pytest
 from urllib.parse import urlencode
 
+import pytest
+from django.test import override_settings
 from faker import Faker
 from rest_framework.test import APIRequestFactory, APIClient
-from django.test import override_settings, modify_settings
 
 
 @pytest.fixture
