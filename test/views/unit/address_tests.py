@@ -72,7 +72,7 @@ def test_post_address_list_invalid_parameters_response_structure(request_builder
     response = AddressListView().post(request)
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert json.loads(response.content) == expected_return
+    assert response.data == expected_return
 
 
 def test_post_address_list_valid_parameters_valid_response_structure(request_builder, mocker):
@@ -86,4 +86,4 @@ def test_post_address_list_valid_parameters_valid_response_structure(request_bui
     response = AddressListView().post(request)
 
     assert response.status_code == status.HTTP_201_CREATED
-    assert json.loads(response.content) == expected_data
+    assert response.data == expected_data
