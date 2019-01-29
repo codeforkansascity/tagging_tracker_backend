@@ -62,6 +62,10 @@ Secondly you can use [docker-compose](#docker-compose-instructions).
 
 These instructions assume you already have a virtualenv setup with a python 3.6 distribution.
 
+>NOTE: [This tutorial](https://docs.python-guide.org/dev/virtualenvs/)
+>provides good information on setting up a virtualenv for those that are
+>unfamiliar with setting it up.
+
 1. Run the following commands
 
 ```bash
