@@ -1,9 +1,9 @@
-import pytest
 from urllib.parse import urlencode
 
+import pytest
+from django.test import override_settings
 from faker import Faker
 from rest_framework.test import APIRequestFactory, APIClient
-from django.test import override_settings, modify_settings
 
 
 @pytest.fixture
@@ -12,16 +12,8 @@ def client():
 
 
 @pytest.fixture
-def debug_mode_off():
-    with override_settings(DEBUG=False):
-        yield
-
-
-@pytest.fixture
-def remove_auth():
-    with modify_settings(MIDDLEWARE={
-        "remove": 'backend.middleware.auth.AuthMiddleware'
-    }):
+def debug_mode_on():
+    with override_settings(DEBUG=True):
         yield
 
 

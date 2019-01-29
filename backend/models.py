@@ -1,11 +1,15 @@
+import logging
 import os
 
+from django.conf import settings
 from django.db import models as base_models
 from django.contrib.gis.db import models as gis_models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
 from azure.storage.blob import BlockBlobService
+
+logger = logging.getLogger(__name__)
 
 
 class Address(gis_models.Model):
@@ -29,9 +33,11 @@ class Address(gis_models.Model):
     type_of_property = gis_models.IntegerField(default=False, blank=False)
     date_updated = gis_models.DateTimeField(auto_now=True)
 
+    @property
     def latitude(self):
         return self.point.y
 
+    @property
     def longitude(self):
         return self.point.x
 
@@ -45,7 +51,7 @@ class Tag(base_models.Model):
     last_updated_user_id = base_models.CharField(max_length=255)
     crossed_out = base_models.BooleanField(default=False)
     date_updated = base_models.DateTimeField(auto_now=True)
-    date_taken = base_models.DateTimeField(auto_now=False)
+    date_taken = base_models.DateTimeField()
     description = base_models.CharField(max_length=255)
     gang_related = base_models.BooleanField(default=False)
     img = base_models.CharField(max_length=1000, blank=True)
@@ -63,5 +69,9 @@ class Tag(base_models.Model):
 @receiver(pre_delete, sender=Tag)
 def delete_image(sender, instance, **kwargs):
     image_name = instance.img.split("/")[-1]
-    block_blob_service = BlockBlobService(account_name=os.environ['AZURE_IMAGE_CONTAINER_NAME'], account_key=os.environ['AZURE_IMAGE_CONTAINER_KEY'])
-    block_blob_service.delete_blob('images', image_name)
+    if not settings.DEBUG:
+        block_blob_service = BlockBlobService(account_name=os.environ['AZURE_IMAGE_CONTAINER_NAME'], account_key=os.environ['AZURE_IMAGE_CONTAINER_KEY'])
+        block_blob_service.delete_blob('images', image_name)
+        logger.debug(f"Image: {image_name} deleted from Azure")
+    else:
+        logger.debug(f"Image: {image_name} would of been deleted if not in DEBUG mode")
