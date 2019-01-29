@@ -115,6 +115,10 @@ rundb:
 test: rundb
 	@$(PT)
 
+# Test command for Travis CI
+travis:
+	@pytest
+
 # Run unit tests
 unit:
 	@$(PT) -k unit
