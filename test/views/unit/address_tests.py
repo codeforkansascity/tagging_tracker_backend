@@ -1,5 +1,3 @@
-import json
-
 import pytest
 from django.http import Http404
 from django.urls import reverse
