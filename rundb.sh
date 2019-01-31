@@ -9,7 +9,7 @@ checkenv() {
     fi
 }
 
-source env.sh
+source local.env
 
 checkenv "$DB_IMG" "DB_IMG not set on script invocation"
 checkenv "$DB_NAME" "DB_NAME not set in local.env"

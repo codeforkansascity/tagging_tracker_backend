@@ -1,6 +1,7 @@
 pip-tools
 python-dateutil
 pytest
+pytest-dotenv
 pytest-django
 pytest-cov
 pytest-mock
