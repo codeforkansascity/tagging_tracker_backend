@@ -1,5 +1,7 @@
 # Tagging Tracker Backend Services
 
+[![Build Status](https://travis-ci.org/codeforkansascity/tagging_tracker_backend.svg?branch=master)](https://travis-ci.org/codeforkansascity/tagging_tracker_backend)
+
 These are the services that are powering the [Tagging Tracker Application](https://github.com/codeforkansascity/tagging-tracker).
 
 > NOTE: To use the existing Azure and auth0 accounts that are applied to this code, you need to contact one of the developers on the team. Otherwise, you'll need to setup your own Azure account and auth0 instance to run this code.
