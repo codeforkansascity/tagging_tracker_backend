@@ -1,29 +1,14 @@
-import json
-
-import pytest
-from django.http import Http404
 from django.urls import reverse
 from rest_framework import status
 
 from backend.models import Address
-from backend.views.address import AddressView, AddressListView
-
-
-def test_get_address_no_object_raises_404(mocker):
-    pk = 1
-
-    address_get = mocker.patch("backend.views.address.Address.objects.get")
-    address_get.side_effect = Address.DoesNotExist
-
-    with pytest.raises(Http404):
-        AddressView().get_object(pk)
-    address_get.assert_called_once_with(pk=pk)
+from backend.views.address import AddressView, AddressListView, AddressTagsView
 
 
 def test_get_address_found_and_returned(request_builder, mocker):
     pk = 1
 
-    address_get = mocker.patch("backend.views.address.Address.objects.get")
+    get_or_404 = mocker.patch("backend.views.address.get_object_or_404")
     serializer = mocker.patch("backend.views.address.AddressSerializer")
     expected_data = "hello"
     serializer.return_value.data = expected_data
@@ -33,21 +18,21 @@ def test_get_address_found_and_returned(request_builder, mocker):
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data == expected_data
-    address_get.assert_called_once_with(pk=pk)
-    serializer.assert_called_once_with(address_get.return_value)
+    get_or_404.assert_called_once_with(Address, pk=pk)
+    serializer.assert_called_once_with(get_or_404.return_value)
 
 
 def test_get_address_delete_found_and_deleted(request_builder, mocker):
     pk = 1
 
-    address_get = mocker.patch("backend.views.address.Address.objects.get")
+    get_or_404 = mocker.patch("backend.views.address.get_object_or_404")
 
     request = request_builder("DELETE", reverse("address", kwargs={"pk": pk}))
     response = AddressView().delete(request, pk)
 
     assert response.status_code == status.HTTP_200_OK
-    address_get.assert_called_once_with(pk=pk)
-    address_get.return_value.delete.assert_called_once()
+    get_or_404.assert_called_once_with(Address, pk=pk)
+    get_or_404.return_value.delete.assert_called_once()
 
 
 def test_get_address_list_returns_all(request_builder, mocker):
@@ -87,3 +72,18 @@ def test_post_address_list_valid_parameters_valid_response_structure(request_bui
 
     assert response.status_code == status.HTTP_201_CREATED
     assert response.data == expected_data
+
+
+def test_get_address_tags_response_structure(request_builder, mocker):
+    pk = 1
+
+    mocker.patch("backend.views.address.get_object_or_404")
+    mocker.patch("backend.views.address.Tag.objects.filter")
+    tag_serializer = mocker.patch("backend.views.address.TagSerializer")
+
+    request = request_builder("GET", reverse("address-tags", kwargs={"pk": pk}))
+
+    response = AddressTagsView().get(request, pk)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data == tag_serializer.return_value.data

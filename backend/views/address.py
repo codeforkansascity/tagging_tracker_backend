@@ -1,31 +1,24 @@
 import logging
-from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from backend.models import Address
-from backend.serializers import AddressSerializer
-
+from backend.models import Address, Tag
+from backend.serializers import AddressSerializer, TagSerializer
 
 logger = logging.getLogger(__name__)
 
 
 class AddressView(APIView):
 
-    def get_object(self, pk):
-        try:
-            return Address.objects.get(pk=pk)
-        except Address.DoesNotExist:
-            raise Http404
-
     def get(self, request, pk):
-        address = self.get_object(pk)
+        address = get_object_or_404(Address, pk=pk)
         return Response(AddressSerializer(address).data)
 
     def delete(self, request, pk):
-        address = self.get_object(pk)
+        address = get_object_or_404(Address, pk=pk)
         data = {
             "street": address.street,
             "city": address.city,
@@ -48,9 +41,16 @@ class AddressListView(APIView):
     def post(self, request):
         serializer = AddressSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            obj = serializer.save()
+            logger.debug(f"id: {obj.id} created by {obj.creator_user_id}")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class AddressTagsView(APIView):
 
+    def get(self, request, pk):
+        address = get_object_or_404(Address, pk=pk)
+        tags = Tag.objects.filter(address=address)
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
