@@ -6,8 +6,7 @@ PROD=docker-compose.prod.yml
 BASE_AND_LOC=-f $(BASE) -f $(LOCAL)
 BASE_AND_PROD=-f $(BASE) -f $(PROD)
 DB_IMG=mdillon/postgis:9.6
-E=source env.sh
-PT=$(E) && pytest
+PT=pytest
 
 .PHONY: logs dev
 

@@ -139,7 +139,7 @@ $ make unit
 # Runs only integration tests
 $ make integration
 # Directly invoking pytest
-$ source env.sh && pytest -k "some filter"
+$ pytest -k "some filter"
 ```
 
 # Contribution
