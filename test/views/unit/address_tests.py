@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 
 from backend.models import Address
-from backend.views.address import AddressView, AddressListView
+from backend.views.address import AddressView, AddressListView, AddressTagsView
 
 
 def test_get_address_no_object_raises_404(mocker):
@@ -85,3 +85,18 @@ def test_post_address_list_valid_parameters_valid_response_structure(request_bui
 
     assert response.status_code == status.HTTP_201_CREATED
     assert response.data == expected_data
+
+
+def test_get_address_tags_response_structure(request_builder, mocker):
+    pk = 1
+
+    mocker.patch("backend.views.address.get_object_or_404")
+    mocker.patch("backend.views.address.Tag.objects.filter")
+    tag_serializer = mocker.patch("backend.views.address.TagSerializer")
+
+    request = request_builder("GET", reverse("address-tags", kwargs={"pk": pk}))
+
+    response = AddressTagsView().get(request, pk)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data == tag_serializer.return_value.data

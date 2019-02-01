@@ -1,13 +1,13 @@
 import logging
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from backend.models import Address
-from backend.serializers import AddressSerializer
-
+from backend.models import Address, Tag
+from backend.serializers import AddressSerializer, TagSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -53,4 +53,10 @@ class AddressListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class AddressTagsView(APIView):
 
+    def get(self, request, pk):
+        address = get_object_or_404(Address, pk=pk)
+        tags = Tag.objects.filter(address=address)
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
