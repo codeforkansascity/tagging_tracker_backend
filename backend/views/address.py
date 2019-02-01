@@ -41,7 +41,8 @@ class AddressListView(APIView):
     def post(self, request):
         serializer = AddressSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            obj = serializer.save()
+            logger.debug(f"id: {obj.id} created by {obj.creator_user_id}")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
