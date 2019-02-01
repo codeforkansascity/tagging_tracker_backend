@@ -1,5 +1,4 @@
 import logging
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.parsers import JSONParser
@@ -14,18 +13,12 @@ logger = logging.getLogger(__name__)
 
 class AddressView(APIView):
 
-    def get_object(self, pk):
-        try:
-            return Address.objects.get(pk=pk)
-        except Address.DoesNotExist:
-            raise Http404
-
     def get(self, request, pk):
-        address = self.get_object(pk)
+        address = get_object_or_404(Address, pk=pk)
         return Response(AddressSerializer(address).data)
 
     def delete(self, request, pk):
-        address = self.get_object(pk)
+        address = get_object_or_404(Address, pk=pk)
         data = {
             "street": address.street,
             "city": address.city,
