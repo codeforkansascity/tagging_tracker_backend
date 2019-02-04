@@ -1,8 +1,7 @@
-FROM python:3.6
+FROM python:3.6-alpine
 
-RUN apt-get update \
-    && apt-get install -y \
-        gdal-bin
+RUN apk add --update \
+    gdal-bin
 
 RUN pip install uwsgi
 
