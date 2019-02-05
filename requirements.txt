@@ -17,15 +17,17 @@ django==1.11.18
 djangorestframework-gis==0.14
 djangorestframework-jwt==1.11.0
 djangorestframework==3.9.0
+faker==1.0.1
 idna==2.8                 # via cryptography, requests
 psycopg2==2.7.6.1
 pycparser==2.19           # via cffi
 pyjwt==1.7.1              # via djangorestframework-jwt
-python-dateutil==2.7.5    # via azure-storage
+python-dateutil==2.7.5    # via azure-storage, faker
 python-dotenv==0.10.1
 pytz==2018.9              # via django
 requests==2.21.0          # via azure-storage
 rest-framework-auth0==0.4.6
-six==1.12.0               # via cryptography, python-dateutil
+six==1.12.0               # via cryptography, faker, python-dateutil
+text-unidecode==1.2       # via faker
 unicodecsv==0.14.1        # via django-queryset-csv
 urllib3==1.24.1

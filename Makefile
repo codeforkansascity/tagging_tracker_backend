@@ -128,4 +128,8 @@ integration: rundb
 
 # Collect static files
 static:
-	@$(E) && python manage.py collectstatic --no-input
+	@python manage.py collectstatic --no-input
+
+# Seed db with fake data
+seed: rundb
+	@python manage.py seed
