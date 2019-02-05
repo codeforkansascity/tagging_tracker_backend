@@ -22,6 +22,7 @@ In order to checkout the code, and run it locally, the following steps are neede
 
    ```
    DEBUG - Whether the application is in debug mode. Defaults to 0 (False), set to 1 (True).
+   DISABLE_AUTH - Whether or not the application will enforce JWT authentication.
    SECRET_KEY - The secret key of the application. You can generate one here. https://www.miniwebtool.com/django-secret-key-generator/
    DEPLOYED_URL - The URL of where the application is hosted at. This isn't need if you are running locally on your device.
    LOADBALANCER_URL - The URL of the loadbalancer for the application. This isn't needed if you are running locally on your device.
@@ -44,6 +45,7 @@ In order to checkout the code, and run it locally, the following steps are neede
 
    ```
    DEBUG=1
+   DISABLE_AUTH=1
    SECRET_KEY=<Your generated key>
    DB_NAME=dev
    DB_USER=tag_user

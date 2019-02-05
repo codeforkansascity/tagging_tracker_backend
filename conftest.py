@@ -18,6 +18,12 @@ def debug_mode_on():
 
 
 @pytest.fixture
+def enable_auth():
+    with override_settings(DISABLE_AUTH=False):
+        yield
+
+
+@pytest.fixture
 def request_builder():
     def _request_builder(method, path, data=None, query_params=None, meta=None, format_="json"):
         """
