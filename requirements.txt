@@ -22,7 +22,7 @@ idna==2.8                 # via cryptography, requests
 psycopg2==2.7.6.1
 pycparser==2.19           # via cffi
 pyjwt==1.7.1              # via djangorestframework-jwt
-python-dateutil==2.7.5    # via azure-storage
+python-dateutil==2.7.5    # via azure-storage, faker
 python-dotenv==0.10.1
 pytz==2018.9              # via django
 requests==2.21.0          # via azure-storage
