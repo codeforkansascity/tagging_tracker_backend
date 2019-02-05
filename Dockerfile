@@ -6,7 +6,11 @@ RUN apk add \
   --no-cache \
   --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
   --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-  gdal gcc uwsgi musl-dev libffi-dev postgresql-dev
+  gdal py-gdal gcc musl-dev libffi-dev postgresql-dev python3-dev build-base linux-headers pcre-dev gdal-dev
+
+RUN pip install uwsgi
+RUN pip install numpy
+RUN pip install gdal
 
 RUN mkdir /code
 WORKDIR /code
