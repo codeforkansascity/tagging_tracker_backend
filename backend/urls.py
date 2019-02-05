@@ -1,11 +1,12 @@
 from django.conf.urls import url
-from backend.controllers import index, tag
+from backend.controllers import tag
+from backend.views.index import index
 from backend.views.address import AddressView, AddressListView, AddressTagsView
 from backend.views.csv import TagDownloadView, AddressDownloadView
 
 urlpatterns = [
-    url(r'^$', index.index),
-    url(r'^index/?$', index.index),
+    url(r'^$', index),
+    url(r'^index/?$', index),
     url(r'^address/(?P<pk>[0-9]+)/tags/?$', AddressTagsView.as_view(), name="address-tags"),
     url(r'^address/(?P<pk>[0-9]+)/?$', AddressView.as_view(), name="address"),
     url(r'^address/?$', AddressListView().as_view(), name="address-list"),
