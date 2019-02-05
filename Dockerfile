@@ -1,9 +1,12 @@
 FROM python:3.6-alpine
 
-RUN apk add --update \
-    gdal-bin
+RUN apk update
 
-RUN pip install uwsgi
+RUN apk add \
+  --no-cache \
+  --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+  --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+  gdal gcc uwsgi musl-dev libffi-dev postgresql-dev
 
 RUN mkdir /code
 WORKDIR /code
