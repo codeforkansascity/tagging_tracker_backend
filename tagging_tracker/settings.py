@@ -164,7 +164,7 @@ if not DISABLE_AUTH:
     }
 
 if not DISABLE_AUTH:
-    jsonurl = request.urlopen("https://YOUR_AUTH0_DOMAIN/.well-known/jwks.json")
+    jsonurl = request.urlopen(f"https://{os.environ['AUTH0_URL']}/.well-known/jwks.json")
     jwks = json.loads(jsonurl.read())
     cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
 
@@ -176,8 +176,8 @@ if not DISABLE_AUTH:
             'auth0authorization.user.jwt_get_username_from_payload_handler',
         'JWT_PUBLIC_KEY': publickey,
         'JWT_ALGORITHM': 'RS256',
-        'JWT_AUDIENCE': 'YOUR_API_IDENTIFIER',
-        'JWT_ISSUER': 'YOUR_AUTH0_DOMAIN',
+        'JWT_AUDIENCE': os.environ["AUTH0_AUDIENCE"],
+        'JWT_ISSUER': os.environ["AUTH0_URL"],
         'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     }
 
