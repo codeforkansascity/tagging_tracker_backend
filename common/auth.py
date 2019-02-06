@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
 
+# This entire module was taken from https://bit.ly/2t8LZVD
+
 
 def jwt_get_username_from_payload_handler(payload):
     username = payload.get('sub').replace('|', '.')
