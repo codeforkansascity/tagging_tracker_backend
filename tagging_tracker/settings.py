@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import json
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from urllib import request
+import requests
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.x509 import load_pem_x509_certificate
@@ -164,8 +163,8 @@ if not DISABLE_AUTH:
     }
 
 if not DISABLE_AUTH:
-    jsonurl = request.urlopen(f"https://{os.environ['AUTH0_URL']}/.well-known/jwks.json")
-    jwks = json.loads(jsonurl.read())
+    response = requests.get(f"https://{os.environ['AUTH0_URL']}/.well-known/jwks.json")
+    jwks = response.json()
     cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
 
     certificate = load_pem_x509_certificate(str.encode(cert), default_backend())
