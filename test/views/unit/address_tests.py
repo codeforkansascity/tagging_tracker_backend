@@ -5,6 +5,27 @@ from backend.models import Address
 from backend.views.address import AddressView, AddressListView, AddressTagsView
 
 
+def test_address_view_permissions_set():
+    scopes = {
+        "get": "read:address",
+        "delete": "write:address"
+    }
+    assert AddressView().scopes == scopes, "Invalid permissions"
+
+
+def test_address_list_view_permissions_set():
+    scopes = {
+        "get": "read:address",
+        "post": "write:address"
+    }
+    assert AddressListView().scopes == scopes, "Invalid permissions"
+
+
+def test_address_tags_view_permissions_set():
+    scopes = {"get": "read:address"}
+    assert AddressTagsView().scopes == scopes, "Invalid permissions"
+
+
 def test_get_address_found_and_returned(request_builder, mocker):
     pk = 1
 

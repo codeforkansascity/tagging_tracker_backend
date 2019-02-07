@@ -3,24 +3,27 @@ import logging
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from backend.models import Tag
 from backend.serializers import TagSerializer
-from common.auth import requires_scope
+from common.views import BaseView
 
 logger = logging.getLogger(__name__)
 
 
-class TagView(APIView):
+class TagView(BaseView):
 
-    @requires_scope("read:tag")
+    scopes = {
+        "get": "read:tag",
+        "put": "write:tag",
+        "delete": "write:tag"
+    }
+
     def get(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
         serializer = TagSerializer(tag)
         return Response(serializer.data)
 
-    @requires_scope("write:tag")
     def put(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
         serializer = TagSerializer(tag, request.data)
@@ -30,7 +33,6 @@ class TagView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @requires_scope("write:tag")
     def delete(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
         data = {
@@ -42,15 +44,18 @@ class TagView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class TagListView(APIView):
+class TagListView(BaseView):
 
-    @requires_scope("read:tag")
+    scopes = {
+        "get": "read:tag",
+        "post": "write:tag"
+    }
+
     def get(self, request):
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
-    @requires_scope("write:tag")
     def post(self, request):
         serializer = TagSerializer(data=request.data)
         if serializer.is_valid():

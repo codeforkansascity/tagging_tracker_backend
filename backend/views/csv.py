@@ -5,10 +5,10 @@ from common.views import CSVView
 class AddressDownloadView(CSVView):
     query = Address.objects.all
     file_name = "address.csv"
-    scope = "read:address"
+    scopes = {"get": "read:address"}
 
 
 class TagDownloadView(CSVView):
     query = Tag.objects.all
     file_name = "tags.csv"
-    scope = "read:tag"
+    scopes = {"get": "read:tag"}

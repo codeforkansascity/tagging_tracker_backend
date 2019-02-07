@@ -25,14 +25,12 @@ class BaseView(APIView):
         return has_valid_scope(request, scope)
 
 
-class CSVView(APIView):
+class CSVView(BaseView):
 
     query = None
     file_name = None
     append_datestamp = True
-    scope = None
 
-    @requires_scope(scope)
     def get(self, request):
         return render_to_csv_response(
             queryset=self.query(), filename=self.file_name, append_datestamp=self.append_datestamp
