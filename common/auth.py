@@ -35,6 +35,9 @@ def requires_scope(required_scope):
     def require_scope(f):
         @wraps(f)
         def decorated(*args, **kwargs):
+            if settings.DISABLE_AUTH:
+                return f(*args, **kwargs)
+
             request = args[1] if isinstance(args[0], APIView) else args[0]
             token = get_token_auth_header(request)
 

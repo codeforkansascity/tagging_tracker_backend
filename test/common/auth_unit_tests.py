@@ -29,6 +29,7 @@ def test_get_token_auth_header_gets_token(request_builder):
     assert get_token_auth_header(request) == token
 
 
+@pytest.mark.usefixtures("enable_auth")
 def test_requires_scope_valid_scope_returns_function_call(mocker, request_builder):
     scope = "read:write"
     payload = {
@@ -49,8 +50,10 @@ def test_requires_scope_valid_scope_returns_function_call(mocker, request_builde
 
     response = view_func(request)
     assert response == "Hello"
+    jwt_decode.assert_called_once()
 
 
+@pytest.mark.usefixtures("enable_auth")
 def test_requires_scope_valid_scope_returns_class_method_call(mocker, request_builder):
     scope = "read:write"
     payload = {
@@ -73,8 +76,10 @@ def test_requires_scope_valid_scope_returns_class_method_call(mocker, request_bu
 
     response = MyView().get(request)
     assert response == "Hello"
+    jwt_decode.assert_called_once()
 
 
+@pytest.mark.usefixtures("enable_auth")
 def test_requires_scope_invalid_scope_returns_403(mocker, request_builder):
     scope = "read:write"
     payload = {
