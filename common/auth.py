@@ -1,4 +1,3 @@
-import logging
 import os
 
 import jwt
@@ -6,9 +5,6 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 
 # This module was base off of https://bit.ly/2t8LZVD
-
-
-logger = logging.getLogger(__name__)
 
 
 def jwt_get_username_from_payload_handler(payload):
