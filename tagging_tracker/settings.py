@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import json
 import os
 
-import requests
-
-from cryptography.hazmat.backends import default_backend
-from cryptography.x509 import load_pem_x509_certificate
+from common.auth import make_public_key
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -163,16 +160,11 @@ if not DISABLE_AUTH:
     }
 
 if not DISABLE_AUTH:
-    response = requests.get(f"https://{os.environ['AUTH0_URL']}/.well-known/jwks.json")
-    jwks = response.json()
-    cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
-
-    certificate = load_pem_x509_certificate(str.encode(cert), default_backend())
-    publickey = certificate.public_key()
+    publickey = make_public_key()
 
     JWT_AUTH = {
         'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-            'auth0authorization.user.jwt_get_username_from_payload_handler',
+            'common.auth.jwt_get_username_from_payload_handler',
         'JWT_PUBLIC_KEY': publickey,
         'JWT_ALGORITHM': 'RS256',
         'JWT_AUDIENCE': os.environ["AUTH0_AUDIENCE"],
