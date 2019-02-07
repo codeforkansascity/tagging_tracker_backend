@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 # This entire module was taken from https://bit.ly/2t8LZVD
+from rest_framework.views import APIView
 
 
 def jwt_get_username_from_payload_handler(payload):
@@ -34,7 +35,8 @@ def requires_scope(required_scope):
     def require_scope(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            token = get_token_auth_header(args[0])
+            request = args[1] if isinstance(args[0], APIView) else args[0]
+            token = get_token_auth_header(request)
 
             decoded = jwt.decode(
                 token, settings.PUBLIC_KEY, audience=os.environ["AUTH0_AUDIENCE"], algorithms=["RS256"]

@@ -1,5 +1,6 @@
 import pytest
 from rest_framework import status
+from rest_framework.views import APIView
 
 from common.auth import jwt_get_username_from_payload_handler, get_token_auth_header, requires_scope
 
@@ -47,6 +48,30 @@ def test_requires_scope_valid_scope_returns_function_call(mocker, request_builde
     }
 
     response = view_func(request)
+    assert response == "Hello"
+
+
+def test_requires_scope_valid_scope_returns_class_method_call(mocker, request_builder):
+    scope = "read:write"
+    payload = {
+        "scope": scope
+    }
+
+    jwt_decode = mocker.patch("common.auth.jwt.decode")
+    jwt_decode.return_value = payload
+
+    class MyView(APIView):
+
+        @requires_scope(scope)
+        def get(self, request):
+            return "Hello"
+
+    request = request_builder("GET", "/some/endpoint")
+    request.META = {
+        "HTTP_AUTHORIZATION": "Bearer token"
+    }
+
+    response = MyView().get(request)
     assert response == "Hello"
 
 
