@@ -162,6 +162,9 @@ if not DISABLE_AUTH:
         ),
     }
 
+PUBLIC_KEY = "somekey"
+JWT_AUTH = {}
+
 if not DISABLE_AUTH:
     response = requests.get(f"https://{os.environ['AUTH0_URL']}/.well-known/jwks.json")
     jwks = response.json()
