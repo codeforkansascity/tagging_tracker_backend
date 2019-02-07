@@ -4,7 +4,7 @@ from django.conf import settings
 from djqscsv import render_to_csv_response
 from rest_framework.views import APIView
 
-from common.auth import requires_scope, has_valid_scope
+from common.auth import has_valid_scope
 
 
 logger = logging.getLogger(__name__)
@@ -16,13 +16,15 @@ class BaseView(APIView):
     def check_permissions(self, request):
         if settings.DISABLE_AUTH:
             logger.debug("auth disabled scope check skipped")
-            return True
+            return
 
         scope = self.scopes.get(request.method.lower())
         if scope is None:
-            return True
+            return
 
-        return has_valid_scope(request, scope)
+        if not has_valid_scope(request, scope):
+            raise PermissionError
+        return super().check_permissions(request)
 
 
 class CSVView(BaseView):
