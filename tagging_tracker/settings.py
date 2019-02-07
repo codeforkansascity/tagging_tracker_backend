@@ -150,8 +150,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
+REST_FRAMEWORK = {}
+
 if not DISABLE_AUTH:
     REST_FRAMEWORK = {
+        **REST_FRAMEWORK,
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
         ),
@@ -174,6 +177,7 @@ if not DISABLE_AUTH:
     PUBLIC_KEY = certificate.public_key()
 
     JWT_AUTH = {
+        **JWT_AUTH,
         'JWT_PAYLOAD_GET_USERNAME_HANDLER':
             'common.auth.jwt_get_username_from_payload_handler',
         'JWT_PUBLIC_KEY': PUBLIC_KEY,
