@@ -7,6 +7,7 @@ def test_address_download_view():
 
     assert view.query == Address.objects.all
     assert view.file_name == "address.csv"
+    assert view.scope == "read:address"
 
 
 def test_tag_download_view():
@@ -14,3 +15,4 @@ def test_tag_download_view():
 
     assert view.query == Tag.objects.all
     assert view.file_name == "tags.csv"
+    assert view.scope == "read:tag"

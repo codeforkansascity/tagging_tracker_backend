@@ -7,16 +7,19 @@ from rest_framework.views import APIView
 
 from backend.models import Address, Tag
 from backend.serializers import AddressSerializer, TagSerializer
+from common.auth import requires_scope
 
 logger = logging.getLogger(__name__)
 
 
 class AddressView(APIView):
 
+    @requires_scope("read:address")
     def get(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
         return Response(AddressSerializer(address).data)
 
+    @requires_scope("write:address")
     def delete(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
         data = {
@@ -33,11 +36,13 @@ class AddressListView(APIView):
 
     parser_classes = (JSONParser,)
 
+    @requires_scope("read:address")
     def get(self, request):
         addresses = Address.objects.all()
         serializer = AddressSerializer(addresses, many=True)
         return Response(serializer.data)
 
+    @requires_scope("write:address")
     def post(self, request):
         serializer = AddressSerializer(data=request.data)
         if serializer.is_valid():
@@ -49,6 +54,7 @@ class AddressListView(APIView):
 
 class AddressTagsView(APIView):
 
+    @requires_scope("read:address")
     def get(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
         tags = Tag.objects.filter(address=address)
