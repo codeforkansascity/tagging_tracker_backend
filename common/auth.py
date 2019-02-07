@@ -24,6 +24,12 @@ def get_token_auth_header(request):
 
 
 def has_valid_scope(request, required_scope):
+    """
+    Given a request and scope will decode JWT and determine if scope is valid
+    :param request: WSGIRequest
+    :param required_scope: Auth0 scope
+    :return: True if valid scope. False if invalid scope or no scope found
+    """
     token = get_token_auth_header(request)
 
     decoded = jwt.decode(

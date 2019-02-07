@@ -11,6 +11,15 @@ logger = logging.getLogger(__name__)
 
 
 class BaseView(APIView):
+    """
+    Handles Auth0 authentication scope authentication for endpoints.
+    Authentication can be disabled via DISABLE_AUTH=1 in envars
+
+    Define 'scopes' as follows
+    scopes = {
+        "method_name_in_lower_case": "auth0scope"
+    }
+    """
     scopes = {}
 
     def check_permissions(self, request):
@@ -28,6 +37,17 @@ class BaseView(APIView):
 
 
 class CSVView(BaseView):
+    """
+    View that translates callable query into CSV download.
+
+    query - Should be a queryset that can be invoked
+    file_name - Name of download w/o .csv as it is automatically appended
+    append_timestamp - will automatically append the timestamp of the download to file_name if True
+
+    class MyDownload(CSVView):
+        query = MyModel.objects.all  # note the lack of invocation
+        file_name = "my-model-data"
+    """
 
     query = None
     file_name = None
