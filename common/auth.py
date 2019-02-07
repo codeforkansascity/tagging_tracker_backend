@@ -2,9 +2,7 @@ import os
 from functools import wraps
 
 import jwt
-import requests
-from cryptography.hazmat.backends import default_backend
-from cryptography.x509 import load_pem_x509_certificate
+from django.conf import settings
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
@@ -16,19 +14,6 @@ def jwt_get_username_from_payload_handler(payload):
     username = payload.get('sub').replace('|', '.')
     authenticate(remote_user=username)
     return username
-
-
-def make_public_key():
-    """
-    Gets well known info to generate public key
-    :return:
-    """
-    jwks_response = requests.get("https://" + os.environ["AUTH0_URL"] + "/.well-known/jwks.json")
-    jwks = jwks_response.json()
-
-    cert = "-----BEGIN CERTIFICATE-----\n" + jwks["keys"][0]["x5c"][0] + "\n-----END CERTIFICATE-----"
-    certificate = load_pem_x509_certificate(cert.encode("utf-8"), default_backend())
-    return certificate.public_key()
 
 
 def get_token_auth_header(request):
@@ -50,9 +35,10 @@ def requires_scope(required_scope):
         @wraps(f)
         def decorated(*args, **kwargs):
             token = get_token_auth_header(args[0])
-            public_key = make_public_key()
 
-            decoded = jwt.decode(token, public_key, audience=os.environ["AUTH0_AUDIENCE"], algorithms=["RS256"])
+            decoded = jwt.decode(
+                token, settings.PUBLIC_KEY, audience=os.environ["AUTH0_AUDIENCE"], algorithms=["RS256"]
+            )
 
             if decoded.get("scope"):
                 token_scopes = decoded["scope"].split()
