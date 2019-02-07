@@ -36,8 +36,6 @@ In order to checkout the code, and run it locally, the following steps are neede
    AUTH0_URL - URL of the auth0 authentication engine.
    AUTH0_CLIENTID - ClientID of the auth0 authentication engine.
    AUTH0_SECRET - Secret of the auth0 authentication engine.
-   AUTH0_TEST_USER - Auth0 user created for testing purposes
-   AUTH0_TEST_PASS - Auth0 test user password
    LOG_LEVEL - Error/Reporting logging level. More information here https://docs.djangoproject.com/en/2.0/topics/logging/#configuring-logging
    AZURE_IMAGE_CONTAINER_NAME - Azure container name for file uploads.
    AZURE_IMAGE_CONTAINER_KEY - Azure container access key.
@@ -55,8 +53,6 @@ In order to checkout the code, and run it locally, the following steps are neede
    AUTH0_URL=<Create your own auth0 or ask developers for it>
    AUTH0_CLIENTID=<Create your own auth0 or ask developers for it>
    AUTH0_SECRET=<Create your own auth0 or ask developers for it>
-   AUTH0_TEST_USER=<created Auth0 user>
-   AUTH0_TEST_PASS=<password for test Auth0 user>
    SSL_MODE=disable
    LOG_LEVEL=DEBUG
    AZURE_IMAGE_CONTAINER_NAME=taggingtrackerdevimages
