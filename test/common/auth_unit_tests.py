@@ -2,7 +2,7 @@ import pytest
 from rest_framework import status
 from rest_framework.views import APIView
 
-from common.auth import jwt_get_username_from_payload_handler, get_token_auth_header, requires_scope
+from common.auth import jwt_get_username_from_payload_handler, get_token_auth_header, requires_scope, has_valid_scope
 
 pytestmark = pytest.mark.unit
 
@@ -27,6 +27,55 @@ def test_get_token_auth_header_gets_token(request_builder):
     }
 
     assert get_token_auth_header(request) == token
+
+
+def test_has_valid_scope_returns_true_if_valid_scope(mocker, request_builder):
+    scope = "read:write"
+    payload = {
+        "scope": scope
+    }
+
+    jwt_decode = mocker.patch("common.auth.jwt.decode")
+    jwt_decode.return_value = payload
+
+    request = request_builder("GET", "/some/endpoint")
+    request.META = {
+        "HTTP_AUTHORIZATION": "Bearer token"
+    }
+
+    assert has_valid_scope(request, scope) is True
+
+
+def test_has_valid_scope_returns_false_if_invalid_scope(mocker, request_builder):
+    scope = "read:write"
+    payload = {
+        "scope": "another:scope"
+    }
+
+    jwt_decode = mocker.patch("common.auth.jwt.decode")
+    jwt_decode.return_value = payload
+
+    request = request_builder("GET", "/some/endpoint")
+    request.META = {
+        "HTTP_AUTHORIZATION": "Bearer token"
+    }
+
+    assert has_valid_scope(request, scope) is False
+
+
+def test_has_valid_scope_returns_false_if_scope_not_found(mocker, request_builder):
+    scope = "read:write"
+    payload = {}
+
+    jwt_decode = mocker.patch("common.auth.jwt.decode")
+    jwt_decode.return_value = payload
+
+    request = request_builder("GET", "/some/endpoint")
+    request.META = {
+        "HTTP_AUTHORIZATION": "Bearer token"
+    }
+
+    assert has_valid_scope(request, scope) is False
 
 
 @pytest.mark.usefixtures("enable_auth")

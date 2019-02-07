@@ -1,3 +1,4 @@
+import logging
 import os
 from functools import wraps
 
@@ -9,6 +10,9 @@ from rest_framework.response import Response
 
 # This entire module was taken from https://bit.ly/2t8LZVD
 from rest_framework.views import APIView
+
+
+logger = logging.getLogger(__name__)
 
 
 def jwt_get_username_from_payload_handler(payload):
@@ -27,6 +31,19 @@ def get_token_auth_header(request):
     return token
 
 
+def has_valid_scope(request, required_scope):
+    token = get_token_auth_header(request)
+
+    decoded = jwt.decode(
+        token, settings.PUBLIC_KEY, audience=os.environ["AUTH0_AUDIENCE"], algorithms=["RS256"]
+    )
+
+    if decoded.get("scope"):
+        token_scopes = decoded["scope"].split()
+        return required_scope in token_scopes
+    return False
+
+
 def requires_scope(required_scope):
     """Determines if the required scope is present in the access token
     Args:
@@ -36,19 +53,12 @@ def requires_scope(required_scope):
         @wraps(f)
         def decorated(*args, **kwargs):
             if settings.DISABLE_AUTH:
+                logger.debug("auth disabled requires_scope bypassed")
                 return f(*args, **kwargs)
 
             request = args[1] if isinstance(args[0], APIView) else args[0]
-            token = get_token_auth_header(request)
-
-            decoded = jwt.decode(
-                token, settings.PUBLIC_KEY, audience=os.environ["AUTH0_AUDIENCE"], algorithms=["RS256"]
-            )
-
-            if decoded.get("scope"):
-                token_scopes = decoded["scope"].split()
-                if required_scope in token_scopes:
-                    return f(*args, **kwargs)
+            if has_valid_scope(request, required_scope):
+                return f(*args, **kwargs)
 
             return Response(
                 {"message": "You do not have access to this resource"}, status=status.HTTP_403_FORBIDDEN
