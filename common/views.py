@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 class BaseView(APIView):
     """
     Handles Auth0 authentication scope authentication for endpoints.
-    Authentication can be disabled via DISABLE_AUTH=1 in envars
+    Authentication can be disabled via DISABLE_AUTH=1 in envars.
+    If scope is not defined for method on view the check is not made.
 
     Define 'scopes' as follows
     scopes = {
