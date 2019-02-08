@@ -32,7 +32,9 @@ class BaseView(APIView):
         if scope is None:
             return
 
-        if not has_valid_scope(request, scope):
+        valid_scope, msg = has_valid_scope(request, scope)
+        if not valid_scope:
+            logger.debug(f"Invalid permissions: {msg}")
             raise PermissionError
         return super().check_permissions(request)
 

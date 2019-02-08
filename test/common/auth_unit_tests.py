@@ -1,6 +1,5 @@
+import jwt
 import pytest
-from rest_framework import status
-from rest_framework.views import APIView
 
 from common.auth import jwt_get_username_from_payload_handler, get_token_auth_header, has_valid_scope
 
@@ -43,7 +42,9 @@ def test_has_valid_scope_returns_true_if_valid_scope(mocker, request_builder):
         "HTTP_AUTHORIZATION": "Bearer token"
     }
 
-    assert has_valid_scope(request, scope) is True
+    ans, msg = has_valid_scope(request, scope)
+    assert ans is True
+    assert msg is None
 
 
 def test_has_valid_scope_returns_false_if_invalid_scope(mocker, request_builder):
@@ -60,7 +61,9 @@ def test_has_valid_scope_returns_false_if_invalid_scope(mocker, request_builder)
         "HTTP_AUTHORIZATION": "Bearer token"
     }
 
-    assert has_valid_scope(request, scope) is False
+    ans, msg = has_valid_scope(request, scope)
+    assert ans is False
+    assert msg == "invalid scope"
 
 
 def test_has_valid_scope_returns_false_if_scope_not_found(mocker, request_builder):
@@ -75,4 +78,26 @@ def test_has_valid_scope_returns_false_if_scope_not_found(mocker, request_builde
         "HTTP_AUTHORIZATION": "Bearer token"
     }
 
-    assert has_valid_scope(request, scope) is False
+    valid_scope, msg = has_valid_scope(request, scope)
+    assert valid_scope is False
+    assert msg == "unhandled reason"
+
+
+@pytest.mark.parametrize("exception,expected_msg", (
+        (jwt.ExpiredSignatureError, "expired token"),
+        (jwt.InvalidAudienceError, "invalid audience")
+))
+def test_has_valid_scope_handles_exceptions(mocker, request_builder, exception, expected_msg):
+    scope = "read:write"
+
+    jwt_decode = mocker.patch("common.auth.jwt.decode")
+    jwt_decode.side_effect = [exception]
+
+    request = request_builder("GET", "/some/endpoint")
+    request.META = {
+        "HTTP_AUTHORIZATION": "Bearer token"
+    }
+
+    valid_scope, msg = has_valid_scope(request, scope)
+    assert valid_scope is False
+    assert msg == expected_msg

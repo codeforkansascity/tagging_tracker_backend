@@ -28,15 +28,24 @@ def has_valid_scope(request, required_scope):
     Given a request and scope will decode JWT and determine if scope is valid
     :param request: WSGIRequest
     :param required_scope: Auth0 scope
-    :return: True if valid scope. False if invalid scope or no scope found
+    :return: True, None if valid scope. False, error_msg if invalid scope or no scope found
     """
     token = get_token_auth_header(request)
 
-    decoded = jwt.decode(
-        token, settings.PUBLIC_KEY, audience=os.environ["AUTH0_AUDIENCE"], algorithms=["RS256"]
-    )
+    try:
+        decoded = jwt.decode(
+            token,
+            settings.PUBLIC_KEY,
+            audience=os.environ["AUTH0_AUDIENCE"],
+            algorithms=["RS256"]
+        )
+    except jwt.ExpiredSignatureError:
+        return False, "expired token"
+    except jwt.InvalidAudienceError:
+        return False, "invalid audience"
 
     if decoded.get("scope"):
         token_scopes = decoded["scope"].split()
-        return required_scope in token_scopes
-    return False
+        valid_scope = required_scope in token_scopes
+        return valid_scope, None if valid_scope else "invalid scope"
+    return False, "unhandled reason"
