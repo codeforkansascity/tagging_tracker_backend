@@ -22,11 +22,6 @@ class Command(BaseCommand):
             city="Kansas City",
             state="MO",
             zip="64030",
-            owner_name=fake.name(),
-            owner_email=fake.safe_email(),
-            tenant_name=fake.name(),
-            tenant_email=fake.safe_email(),
-            follow_up_owner_needed=True,
             land_bank_property=False,
             type_of_property=1,
         )
