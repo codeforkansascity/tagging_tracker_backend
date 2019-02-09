@@ -2,7 +2,6 @@ from django.core.management import BaseCommand
 from django.db import IntegrityError
 
 from backend.models import ContactType
-from backend.enums import ContactTypes
 
 
 class Command(BaseCommand):
@@ -10,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        for name, value in ContactTypes:
+        for name, value in ContactType.Types:
             try:
                 ct = ContactType(slug=value)
                 ct.save()
