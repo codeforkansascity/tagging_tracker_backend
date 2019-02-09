@@ -9,3 +9,8 @@ class IterEnumMeta(enum.EnumMeta):
 class IterEnum(enum.Enum, metaclass=IterEnumMeta):
     def __str__(self):
         return self.name
+
+
+class ContactTypes(IterEnum):
+    OWNER = "owner"
+    TENANT = "tenant"
