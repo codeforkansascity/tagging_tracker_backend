@@ -22,13 +22,6 @@ class Address(models.Model):
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=100)
     zip = models.CharField(max_length=12)
-    owner_name = models.CharField(max_length=100, blank=True)
-    owner_contact_number = models.CharField(max_length=20, blank=True)
-    owner_email = models.CharField(max_length=100, blank=True)
-    tenant_name = models.CharField(max_length=100, blank=True)
-    tenant_phone = models.CharField(max_length=100, blank=True)
-    tenant_email = models.CharField(max_length=100, blank=True)
-    follow_up_owner_needed = models.BooleanField(default=False)
     land_bank_property = models.BooleanField(default=False)
     type_of_property = models.IntegerField(default=False, blank=False)
     date_updated = models.DateTimeField(auto_now=True)
@@ -43,6 +36,20 @@ class Address(models.Model):
 
     def __str__(self):
         return self.street
+
+
+class ContactType(models.Model):
+    slug = models.CharField(max_length=15, unique=True)
+
+
+class Contact(models.Model):
+    address = models.ForeignKey(Address)
+    contact_type = models.OneToOneField(ContactType)
+    first_name = models.CharField(max_length=25)
+    last_name = models.CharField(max_length=25)
+    email = models.EmailField(max_length=75, unique=True)
+    phone = models.CharField(max_length=25)
+    follow_up = models.BooleanField(default=False)
 
 
 class Tag(models.Model):
