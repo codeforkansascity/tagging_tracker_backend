@@ -19,38 +19,6 @@ class ContactTypesView(APIView):
         return Response(ContactTypeSerializer(cts, many=True).data)
 
 
-class ContactView(APIView):
-
-    parser_classes = (JSONParser,)
-
-    def get(self, request, address_pk, pk):
-        address = get_object_or_404(Address, pk=address_pk)
-        contact = get_object_or_404(Contact, pk=pk, address=address)
-        return Response(ContactSerializer(contact).data)
-
-    def put(self, request, address_pk, pk):
-        address = get_object_or_404(Address, pk=address_pk)
-        contact = get_object_or_404(Contact, pk=pk, address=address)
-        data = {**request.data, "address": address.id}
-        serializer = ContactSerializer(contact, data=data)
-        if serializer.is_valid():
-            contact = serializer.save()
-            logger.debug(f"contact {contact.id} updated")
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, address_pk, pk):
-        address = get_object_or_404(Address, pk=address_pk)
-        contact = get_object_or_404(Contact, pk=pk, address=address)
-        data = {
-            "id": contact.id,
-            "address": address.id
-        }
-        contact.delete()
-        logger.debug(f"contact {data['id']} for address {data['address']} deleted")
-        return Response()
-
-
 class ContactListView(APIView):
 
     parser_classes = (JSONParser,)
@@ -59,6 +27,17 @@ class ContactListView(APIView):
         address = get_object_or_404(Address, pk=pk)
         contacts = Contact.objects.filter(address=address)
         return Response(ContactSerializer(contacts, many=True).data)
+
+    def put(self, request, pk):
+        address = get_object_or_404(Address, pk=pk)
+        contact = get_object_or_404(Contact, pk=request.data["id"], address=address)
+        data = {**request.data, "address": address.id}
+        serializer = ContactSerializer(contact, data=data)
+        if serializer.is_valid():
+            contact = serializer.save()
+            logger.debug(f"contact {contact.id} updated")
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
@@ -69,3 +48,14 @@ class ContactListView(APIView):
             logger.debug(f"contact {contact.id} created")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        address = get_object_or_404(Address, pk=pk)
+        contact = get_object_or_404(Contact, pk=request.data["id"], address=address)
+        data = {
+            "id": contact.id,
+            "address": address.id
+        }
+        contact.delete()
+        logger.debug(f"contact {data['id']} for address {data['address']} deleted")
+        return Response()
