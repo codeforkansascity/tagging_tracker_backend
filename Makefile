@@ -88,6 +88,10 @@ migratelocal:
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py makemigrations
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py migrate
 
+# Initialize db with values
+initdb:
+	@$(DC) $(BASE_AND_LOC) exec web python manage.py initdb
+
 # Compiles requirements*.in
 compile:
 	@pip-compile
