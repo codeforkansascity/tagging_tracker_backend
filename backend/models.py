@@ -9,6 +9,8 @@ from django.dispatch import receiver
 
 from azure.storage.blob import BlockBlobService
 
+from backend.enums import IterEnum
+
 logger = logging.getLogger(__name__)
 
 
@@ -39,6 +41,10 @@ class Address(models.Model):
 
 
 class ContactType(models.Model):
+    class Types(IterEnum):
+        OWNER = "owner"
+        TENANT = "tenant"
+
     slug = models.CharField(max_length=15, unique=True)
 
 
