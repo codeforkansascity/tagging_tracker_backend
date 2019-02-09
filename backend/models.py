@@ -1,4 +1,3 @@
-import enum
 import logging
 import os
 
@@ -37,11 +36,6 @@ class Address(models.Model):
 
     def __str__(self):
         return self.street
-
-
-class ContactTypes(enum.Enum):
-    OWNER = "owner"
-    TENANT = "tenant"
 
 
 class ContactType(models.Model):
