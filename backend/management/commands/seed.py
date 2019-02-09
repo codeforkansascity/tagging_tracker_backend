@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = "Seed database with fake data"
 
     def handle(self, *args, **options):
-        init_contact_types(self)
+        init_contact_types(self.stdout, self.style)
 
         fake = Faker()
 
