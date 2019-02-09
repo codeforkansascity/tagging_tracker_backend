@@ -7,4 +7,4 @@ class Command(BaseCommand):
     help = "Initializes database with proper values"
 
     def handle(self, *args, **options):
-        init_contact_types(self.stdout, self.style)
+        init_contact_types(self)
