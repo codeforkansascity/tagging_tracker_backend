@@ -1,10 +1,20 @@
 from django.core.management import BaseCommand
+from django.db import IntegrityError
 
-from backend.management.commands._helpers import init_contact_types
+from backend.models import ContactType, ContactTypes
 
 
 class Command(BaseCommand):
     help = "Initializes database with proper values"
 
     def handle(self, *args, **options):
-        init_contact_types(self)
+
+        for type in ContactTypes:
+            try:
+                ct = ContactType(slug=type.value)
+                ct.save()
+            except IntegrityError:
+                self.stdout.write(
+                    self.style.ERROR(f"contact_type: '{type}' already exists")
+                )
+        self.stdout.write(self.style.SUCCESS("types written"))
