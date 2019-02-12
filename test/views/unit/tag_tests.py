@@ -4,6 +4,23 @@ from rest_framework import status
 from backend.views.tag import TagView, TagListView
 
 
+def test_tag_view_permissions_set():
+    scopes = {
+        "get": "read:tag",
+        "put": "write:tag",
+        "delete": "write:tag",
+    }
+    assert TagView().scopes == scopes, "Invalid permissions"
+
+
+def test_tag_list_view_permissions_set():
+    scopes = {
+        "get": "read:tag",
+        "post": "write:tag"
+    }
+    assert TagListView().scopes == scopes, "Invalid permissions"
+
+
 def test_tag_view_put_invalid_response_structure(mocker, request_builder):
 
     get_object = mocker.patch("backend.views.tag.get_object_or_404")

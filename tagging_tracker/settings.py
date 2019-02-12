@@ -9,10 +9,13 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import requests
+
+from cryptography.hazmat.backends import default_backend
+from cryptography.x509 import load_pem_x509_certificate
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -21,6 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True if os.environ.get("DEBUG") else False
+DISABLE_AUTH = os.getenv("DISABLE_AUTH", False)
 
 if DEBUG:
     SECRET_KEY = 'mysecretkey'
@@ -51,7 +55,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'rest_framework_jwt',
-    'rest_framework_auth0',
 ]
 
 MIDDLEWARE = [
@@ -59,10 +62,15 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'backend.middleware.auth.AuthMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.RemoteUserBackend',
 ]
 
 ROOT_URLCONF = 'tagging_tracker.urls'
@@ -141,30 +149,41 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-if not DEBUG:
+REST_FRAMEWORK = {}
+
+if not DISABLE_AUTH:
     REST_FRAMEWORK = {
+        **REST_FRAMEWORK,
+        'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.IsAuthenticated',
+        ),
         'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework_auth0.authentication.Auth0JSONWebTokenAuthentication',
+            'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+            'rest_framework.authentication.BasicAuthentication',
         ),
     }
 
-if not DEBUG:
-    AUTH0 = {
-        'CLIENTS': {
-            'default': {
-                'AUTH0_CLIENT_ID': os.environ['AUTH0_CLIENTID'],
-            # make sure it's the same string that aud attribute in your payload provides
-                'AUTH0_CLIENT_SECRET': os.environ['AUTH0_SECRET'],
-                'CLIENT_SECRET_BASE64_ENCODED': True,
-                'AUTH0_ALGORITHM': 'HS256',  # default used in Auth0 apps
-                'AUTHORIZATION_EXTENSION': False,  # default to False
-            # default to True, if you're Auth0 user since December, maybe you should set it to False
-            }
-        },
-        'AUTH0_ALGORITHM': 'HS256',  # default used in Auth0 apps
-        'JWT_AUTH_HEADER_PREFIX': 'JWT',  # default prefix used by djangorestframework_jwt
-        'AUTHORIZATION_EXTENSION': False,  # default to False
-        # 'USERNAME_FIELD': 'sub',  # default username field in auth0 token scope to use as token user
+PUBLIC_KEY = "somekey"
+JWT_AUTH = {}
+
+if not DISABLE_AUTH:
+    response = requests.get(f"https://{os.environ['AUTH0_URL']}/.well-known/jwks.json")
+    jwks = response.json()
+    cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
+
+    certificate = load_pem_x509_certificate(str.encode(cert), default_backend())
+    PUBLIC_KEY = certificate.public_key()
+
+    JWT_AUTH = {
+        **JWT_AUTH,
+        'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+            'common.auth.jwt_get_username_from_payload_handler',
+        'JWT_PUBLIC_KEY': PUBLIC_KEY,
+        'JWT_ALGORITHM': 'RS256',
+        'JWT_AUDIENCE': os.environ["AUTH0_AUDIENCE"],
+        'JWT_ISSUER': os.environ["AUTH0_URL"],
+        'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     }
 
 
