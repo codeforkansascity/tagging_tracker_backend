@@ -55,7 +55,6 @@ class Tag(models.Model):
     description = models.CharField(max_length=255)
     gang_related = models.BooleanField(default=False)
     img = models.CharField(max_length=1000, blank=True)
-    neighborhood = models.CharField(max_length=255, blank=True)
     racially_motivated = models.BooleanField(default=False)
     square_footage = models.CharField(max_length=50, blank=True)
     surface = models.CharField(max_length=100, blank=True)

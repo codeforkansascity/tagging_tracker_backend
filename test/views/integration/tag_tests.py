@@ -39,7 +39,6 @@ def test_get_method_retrieves_existing_tag(client, fake):
         date_taken=timezone.now(),
         description="some description",
         img="something goes here",
-        neighborhood="some neighborhood",
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
@@ -81,7 +80,6 @@ def test_put_method_updates_tag(client, fake):
         date_taken=timezone.now(),
         description="some description",
         img="something goes here",
-        neighborhood="some neighborhood",
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
@@ -95,14 +93,13 @@ def test_put_method_updates_tag(client, fake):
         "creator_user_id": tag.creator_user_id,
         "last_updated_user_id": tag.last_updated_user_id,
         "date_taken": tag.date_taken.strftime("%Y-%m-%d %H:%M:%S"),
-        "description": tag.description,
-        "neighborhood": "new neighborhood"
+        "description": "new subscription"
     }
 
     response = client.put(reverse("tag", kwargs={"pk": tag.id}), json.dumps(updated), content_type="application/json")
     assert response.status_code == status.HTTP_200_OK, response.content
     tag.refresh_from_db()
-    assert tag.neighborhood == updated["neighborhood"]
+    assert tag.description == updated["description"]
 
 
 def test_deleted_method_deletes_tag(client, fake):
@@ -133,7 +130,6 @@ def test_deleted_method_deletes_tag(client, fake):
         date_taken=timezone.now(),
         description="some description",
         img="something goes here",
-        neighborhood="some neighborhood",
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",

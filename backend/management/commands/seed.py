@@ -40,7 +40,6 @@ class Command(BaseCommand):
             date_taken=timezone.now(),
             description=fake.text(),
             img="some resource url",
-            neighborhood="the neighborhood",
             square_footage="23",
             surface="concrete",
             tag_words="some words",

@@ -20,7 +20,6 @@ TAG_SCHEMA = Schema({
     "gang_related": bool,
     "img": Or(str, is_blank),
     "last_updated_user_id": str,
-    "neighborhood": Or(str, is_blank),
     "racially_motivated": bool,
     "square_footage": Or(str, is_blank),
     "surface": Or(str, is_blank),
