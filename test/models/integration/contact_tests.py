@@ -89,4 +89,4 @@ def test_email_unique(fake):
     with pytest.raises(IntegrityError) as exc:
         c2.save()
 
-    assert "duplicate key value violates unique constraint" in str(exc.value.args[0])
+    assert 'duplicate key value violates unique constraint "backend_contact_email' in str(exc.value.args[0])

@@ -25,7 +25,7 @@ class Address(models.Model):
     state = models.CharField(max_length=100)
     zip = models.CharField(max_length=12)
     land_bank_property = models.BooleanField(default=False)
-    type_of_property = models.IntegerField(default=False)
+    type_of_property = models.IntegerField(default=False, blank=False)
     date_updated = models.DateTimeField(auto_now=True)
 
     @property
@@ -49,8 +49,8 @@ class ContactType(models.Model):
 
 
 class Contact(models.Model):
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    contact_type = models.ForeignKey(ContactType, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address)
+    contact_type = models.ForeignKey(ContactType)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
     email = models.EmailField(max_length=75, unique=True)
