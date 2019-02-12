@@ -3,7 +3,7 @@ from django.contrib.gis.geos import Point
 from schema import Schema, And, Use
 
 from backend.models import Address, PropertyType
-from backend.serializers import AddressSerializer
+from backend.serializers import AddressSerializer, PropertyTypeSerializer
 
 pytestmark = pytest.mark.usefixtures("db")
 
@@ -35,8 +35,13 @@ ADDRESS_SCHEMA = Schema({
     )
 })
 
+PROPERTY_TYPE_SCHEMA = Schema({
+    "id": int,
+    "slug": str
+})
 
-def test_schema(fake):
+
+def test_address_schema(fake):
     pt = PropertyType(slug="some_slug")
     pt.save()
     pt.refresh_from_db()
@@ -57,3 +62,11 @@ def test_schema(fake):
 
     data = AddressSerializer(address).data
     ADDRESS_SCHEMA.validate(dict(data))
+
+
+def test_property_type_schema():
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+
+    data = PropertyTypeSerializer(pt).data
+    PROPERTY_TYPE_SCHEMA.validate(dict(data))

@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 
 from backend.models import Address
-from backend.views.address import AddressView, AddressListView, AddressTagsView
+from backend.views.address import AddressView, AddressListView, AddressTagsView, PropertyTypesView
 
 
 def test_address_view_permissions_set():
@@ -24,6 +24,11 @@ def test_address_list_view_permissions_set():
 def test_address_tags_view_permissions_set():
     scopes = {"get": "read:address"}
     assert AddressTagsView().scopes == scopes, "Invalid permissions"
+
+
+def test_property_types_view_permissions_set():
+    scopes = {"get": "read:address"}
+    assert PropertyTypesView().scopes == scopes, "Invalid permissions"
 
 
 def test_get_address_found_and_returned(request_builder, mocker):

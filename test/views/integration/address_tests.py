@@ -177,3 +177,14 @@ def test_list_addresses(client, fake):
     response_data = json.loads(response.content)
     observed_data = response_data["features"]
     assert [address_one.id, address_two.id] == sorted([a["id"] for a in observed_data])
+
+
+def test_property_types_returned(client):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
+    response = client.get(reverse("property-types"))
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data.pop()["id"] == pt.id
