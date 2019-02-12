@@ -3,7 +3,7 @@ from django.contrib.gis.geos import Point
 from django.utils import timezone
 from schema import Schema, Or
 
-from backend.models import Tag, Address
+from backend.models import Tag, Address, PropertyType
 from backend.serializers import TagSerializer
 from test.serializers.schema import is_blank, is_datetime
 
@@ -29,6 +29,10 @@ TAG_SCHEMA = Schema({
 
 
 def test_schema(fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -39,7 +43,7 @@ def test_schema(fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()

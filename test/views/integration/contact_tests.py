@@ -5,12 +5,16 @@ from django.contrib.gis.geos import Point
 from django.urls import reverse
 from rest_framework import status
 
-from backend.models import Contact, ContactType, Address
+from backend.models import Contact, ContactType, Address, PropertyType
 
 pytestmark = pytest.mark.usefixtures("db")
 
 
 def test_contact_list_returns_valid(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -21,7 +25,7 @@ def test_contact_list_returns_valid(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()
@@ -48,6 +52,10 @@ def test_contact_list_returns_valid(client, fake):
 
 
 def test_create_contact_returns_valid(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -58,7 +66,7 @@ def test_create_contact_returns_valid(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()
@@ -86,6 +94,10 @@ def test_create_contact_returns_valid(client, fake):
 
 
 def test_update_contact_returns_valid(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -96,7 +108,7 @@ def test_update_contact_returns_valid(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()
@@ -136,6 +148,10 @@ def test_update_contact_returns_valid(client, fake):
 
 
 def test_contact_view_delete(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -146,7 +162,7 @@ def test_contact_view_delete(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()
@@ -189,6 +205,10 @@ def test_contact_types_returns_list_of_contact_types(client):
 
 
 def test_contact_view_returns_valid_contact(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -199,7 +219,7 @@ def test_contact_view_returns_valid_contact(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()
