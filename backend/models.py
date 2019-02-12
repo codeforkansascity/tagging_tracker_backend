@@ -50,7 +50,7 @@ class ContactType(models.Model):
 
 class Contact(models.Model):
     address = models.ForeignKey(Address)
-    contact_type = models.OneToOneField(ContactType)
+    contact_type = models.ForeignKey(ContactType)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
     email = models.EmailField(max_length=75, unique=True)
