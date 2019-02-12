@@ -14,6 +14,18 @@ from backend.enums import IterEnum
 logger = logging.getLogger(__name__)
 
 
+class PropertyType(models.Model):
+    class Types(IterEnum):
+        COMMERCIAL = "commercial"
+        RESIDENTIAL = "residential"
+        VACANT_COMMERCIAL = "vacant_commercial"
+        VACANT_RESIDENTIAL = "vacant_residential"
+        VACANT_LOT = "vacant_lot"
+        PUBLIC_SPACE = "public_space"
+
+    slug = models.CharField(max_length=25, unique=True)
+
+
 class Address(models.Model):
     objects = GeoManager()
     point = PointField(srid=4326)
@@ -25,7 +37,7 @@ class Address(models.Model):
     state = models.CharField(max_length=100)
     zip = models.CharField(max_length=12)
     land_bank_property = models.BooleanField(default=False)
-    type_of_property = models.IntegerField(default=False)
+    property_type = models.OneToOneField(PropertyType)
     date_updated = models.DateTimeField(auto_now=True)
 
     @property
