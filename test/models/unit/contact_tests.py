@@ -1,7 +1,6 @@
 import pytest
-from django.db.models import CASCADE
 
-from backend.models import Contact, Address, ContactType
+from backend.models import Contact
 
 
 @pytest.mark.parametrize("field,max_length", (
@@ -20,13 +19,3 @@ def test_default_values():
 
 def test_unique_fields():
     assert Contact._meta.get_field("email").unique is True
-
-
-@pytest.mark.parametrize("field,model,on_delete", (
-        ("address", Address, CASCADE),
-        ("contact_type", ContactType, CASCADE)
-))
-def test_foreign_keys(field, model, on_delete):
-    field_obj = Contact._meta.get_field(field)
-    assert field_obj.remote_field.on_delete == on_delete
-    assert field_obj.remote_field.model == model
