@@ -25,7 +25,7 @@ class Address(models.Model):
     state = models.CharField(max_length=100)
     zip = models.CharField(max_length=12)
     land_bank_property = models.BooleanField(default=False)
-    type_of_property = models.IntegerField(default=False, blank=False)
+    type_of_property = models.IntegerField(default=False)
     date_updated = models.DateTimeField(auto_now=True)
 
     @property
