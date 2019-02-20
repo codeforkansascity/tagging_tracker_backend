@@ -50,12 +50,8 @@ def test_max_lengths(field, max_length):
     assert Address._meta.get_field(field).max_length == max_length
 
 
-@pytest.mark.parametrize("field,default", (
-        ("land_bank_property", False),
-        ("type_of_property", False),
-))
-def test_defaults(field, default):
-    assert Address._meta.get_field(field).default == default
+def test_defaults():
+    assert Address._meta.get_field("land_bank_property").default is False
 
 
 def test_date_updated_auto_now_is_true():
