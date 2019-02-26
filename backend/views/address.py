@@ -4,11 +4,21 @@ from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
-from backend.models import Address, Tag
-from backend.serializers import AddressSerializer, TagSerializer
+from backend.models import Address, Tag, PropertyType
+from backend.serializers import AddressSerializer, TagSerializer, PropertyTypeSerializer
 from common.views import BaseView
 
 logger = logging.getLogger(__name__)
+
+
+class PropertyTypesView(BaseView):
+    scopes = {
+        "get": "read:address"
+    }
+
+    def get(self, request):
+        pts = PropertyType.objects.all()
+        return Response(PropertyTypeSerializer(pts, many=True).data)
 
 
 class AddressView(BaseView):

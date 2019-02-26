@@ -6,12 +6,16 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 
-from backend.models import Address, Tag
+from backend.models import Address, Tag, PropertyType
 
 pytestmark = pytest.mark.usefixtures("db")
 
 
 def test_get_returns_list_of_tags(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -22,7 +26,7 @@ def test_get_returns_list_of_tags(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()
@@ -53,6 +57,10 @@ def test_get_returns_list_of_tags(client, fake):
 
 
 def test_post_request_creates_tag(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -63,7 +71,7 @@ def test_post_request_creates_tag(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()

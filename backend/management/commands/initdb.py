@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 
-from backend.management.commands._helpers import init_contact_types
+from backend.management.commands._helpers import init_contact_types, init_property_types
 
 
 class Command(BaseCommand):
@@ -8,3 +8,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         init_contact_types(self)
+        init_property_types(self)

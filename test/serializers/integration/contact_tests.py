@@ -2,7 +2,7 @@ import pytest
 from django.contrib.gis.geos import Point
 from schema import Schema
 
-from backend.models import Address, ContactType, Contact
+from backend.models import Address, ContactType, Contact, PropertyType
 from backend.serializers import ContactSerializer, ContactTypeSerializer
 
 pytestmark = pytest.mark.usefixtures("db")
@@ -25,6 +25,10 @@ CONTACT_TYPE_SCHEMA = Schema({
 
 
 def test_contact_schema(fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -35,7 +39,7 @@ def test_contact_schema(fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt
     )
     address.save()
     address.refresh_from_db()

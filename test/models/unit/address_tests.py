@@ -2,7 +2,7 @@ import pytest
 from django.contrib.gis.geos import Point
 from django.db.models import Field
 
-from backend.models import Address
+from backend.models import Address, PropertyType
 
 
 def test_longitude_returns_x(fake):
@@ -16,7 +16,6 @@ def test_longitude_returns_x(fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
     )
 
     assert address.longitude == 1
@@ -33,7 +32,6 @@ def test_latitude_returns_y(fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        type_of_property=1
     )
 
     assert address.latitude == 2
@@ -52,12 +50,8 @@ def test_max_lengths(field, max_length):
     assert Address._meta.get_field(field).max_length == max_length
 
 
-@pytest.mark.parametrize("field,default", (
-        ("land_bank_property", False),
-        ("type_of_property", False),
-))
-def test_defaults(field, default):
-    assert Address._meta.get_field(field).default == default
+def test_defaults():
+    assert Address._meta.get_field("land_bank_property").default is False
 
 
 def test_date_updated_auto_now_is_true():

@@ -1,4 +1,4 @@
-from backend.models import Tag, Address, Contact, ContactType
+from backend.models import Tag, Address, Contact, ContactType, PropertyType
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
@@ -25,4 +25,10 @@ class ContactSerializer(serializers.ModelSerializer):
 class ContactTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactType
+        fields = "__all__"
+
+
+class PropertyTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyType
         fields = "__all__"
