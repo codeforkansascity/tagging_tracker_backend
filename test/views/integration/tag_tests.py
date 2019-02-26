@@ -21,11 +21,6 @@ def test_get_method_retrieves_existing_tag(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
         type_of_property=1
     )
@@ -62,11 +57,6 @@ def test_put_method_updates_tag(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
         type_of_property=1
     )
@@ -112,11 +102,6 @@ def test_deleted_method_deletes_tag(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
         type_of_property=1
     )

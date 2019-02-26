@@ -3,14 +3,16 @@ from django.core.management import BaseCommand
 from django.utils import timezone
 from faker import Faker
 
-from backend.models import Address, Tag
+from backend.management.commands._helpers import init_contact_types
+from backend.models import Address, Tag, Contact, ContactType
 
 
 class Command(BaseCommand):
     help = "Seed database with fake data"
 
-
     def handle(self, *args, **options):
+        init_contact_types(self)
+
         fake = Faker()
 
         address = Address(
@@ -22,16 +24,21 @@ class Command(BaseCommand):
             city="Kansas City",
             state="MO",
             zip="64030",
-            owner_name=fake.name(),
-            owner_email=fake.safe_email(),
-            tenant_name=fake.name(),
-            tenant_email=fake.safe_email(),
-            follow_up_owner_needed=True,
             land_bank_property=False,
             type_of_property=1,
         )
         address.save()
         address.refresh_from_db()
+
+        contact = Contact(
+            address=address,
+            contact_type=ContactType.objects.get(slug=ContactType.Types.OWNER.value),
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            email=fake.email(),
+            phone=fake.phone_number()
+        )
+        contact.save()
 
         tag = Tag(
             address=address,
