@@ -6,7 +6,18 @@ RUN apk add \
   --no-cache \
   --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
   --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-  gdal py-gdal gcc musl-dev libffi-dev postgresql-dev python3-dev build-base linux-headers pcre-dev gdal-dev
+  gdal \
+  py-gdal \
+  gcc \
+  musl-dev \
+  libffi-dev \
+  postgresql-dev \
+  python3-dev \
+  build-base \
+  linux-headers \
+  pcre-dev \
+  gdal-dev \
+  geos-dev
 
 RUN pip install uwsgi
 RUN pip install numpy
