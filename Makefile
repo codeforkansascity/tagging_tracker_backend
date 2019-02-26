@@ -137,3 +137,7 @@ static:
 # Seed db with fake data
 seed: rundb
 	@python manage.py seed
+
+# Checks for formatting issues
+black:
+	@black . --check
