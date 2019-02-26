@@ -19,7 +19,7 @@ RUN apk add \
   gdal-dev \
   geos-dev
 
-RUN pip install --no-cache-dir uwsgi numpy gdal
+RUN pip install --no-cache-dir uwsgi
 
 RUN mkdir /code
 WORKDIR /code
