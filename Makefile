@@ -65,7 +65,7 @@ reload:
 
 # Bash inside web container
 bashw:
-	@$(DC) exec web bash
+	@$(DC) exec web sh
 
 # Bash inside Nginx container
 bashn:

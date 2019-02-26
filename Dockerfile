@@ -1,10 +1,25 @@
-FROM python:3.6
+FROM python:3.6-alpine
 
-RUN apt-get update \
-    && apt-get install -y \
-        gdal-bin
+RUN apk update
 
-RUN pip install uwsgi
+RUN apk add \
+  --no-cache \
+  --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+  --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+  gdal \
+  py-gdal \
+  gcc \
+  musl-dev \
+  libffi-dev \
+  postgresql-dev \
+  python3-dev \
+  build-base \
+  linux-headers \
+  pcre-dev \
+  gdal-dev \
+  geos-dev
+
+RUN pip install --no-cache-dir uwsgi
 
 RUN mkdir /code
 WORKDIR /code
