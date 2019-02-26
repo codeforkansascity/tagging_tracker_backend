@@ -7,14 +7,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0012_auto_20190209_0332'),
-    ]
+    dependencies = [("backend", "0012_auto_20190209_0332")]
 
     operations = [
         migrations.AlterField(
-            model_name='contact',
-            name='phone',
-            field=models.CharField(max_length=25),
-        ),
+            model_name="contact", name="phone", field=models.CharField(max_length=25)
+        )
     ]

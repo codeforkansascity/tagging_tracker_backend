@@ -21,6 +21,7 @@ class BaseView(APIView):
         "method_name_in_lower_case": "auth0scope"
     }
     """
+
     scopes = {}
 
     def check_permissions(self, request):
@@ -58,5 +59,7 @@ class CSVView(BaseView):
 
     def get(self, request):
         return render_to_csv_response(
-            queryset=self.query(), filename=self.file_name, append_datestamp=self.append_datestamp
+            queryset=self.query(),
+            filename=self.file_name,
+            append_datestamp=self.append_datestamp,
         )

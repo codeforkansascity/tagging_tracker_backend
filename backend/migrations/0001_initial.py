@@ -10,18 +10,25 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='TaggingPoint',
+            name="TaggingPoint",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('point', django.contrib.gis.db.models.fields.PointField(srid=4326)),
-                ('address', models.CharField(max_length=255)),
-                ('city', models.CharField(max_length=100)),
-                ('state', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("point", django.contrib.gis.db.models.fields.PointField(srid=4326)),
+                ("address", models.CharField(max_length=255)),
+                ("city", models.CharField(max_length=100)),
+                ("state", models.CharField(max_length=100)),
             ],
-        ),
+        )
     ]

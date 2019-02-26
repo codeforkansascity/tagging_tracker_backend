@@ -8,58 +8,47 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0009_auto_20190209_0239'),
-    ]
+    dependencies = [("backend", "0009_auto_20190209_0239")]
 
     operations = [
         migrations.CreateModel(
-            name='Contact',
+            name="Contact",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=25)),
-                ('last_name', models.CharField(max_length=25)),
-                ('email', models.EmailField(max_length=25)),
-                ('phone', models.CharField(max_length=15)),
-                ('follow_up', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=25)),
+                ("last_name", models.CharField(max_length=25)),
+                ("email", models.EmailField(max_length=25)),
+                ("phone", models.CharField(max_length=15)),
+                ("follow_up", models.BooleanField(default=False)),
             ],
         ),
-        migrations.RemoveField(
-            model_name='address',
-            name='follow_up_owner_needed',
-        ),
-        migrations.RemoveField(
-            model_name='address',
-            name='owner_contact_number',
-        ),
-        migrations.RemoveField(
-            model_name='address',
-            name='owner_email',
-        ),
-        migrations.RemoveField(
-            model_name='address',
-            name='owner_name',
-        ),
-        migrations.RemoveField(
-            model_name='address',
-            name='tenant_email',
-        ),
-        migrations.RemoveField(
-            model_name='address',
-            name='tenant_name',
-        ),
-        migrations.RemoveField(
-            model_name='address',
-            name='tenant_phone',
+        migrations.RemoveField(model_name="address", name="follow_up_owner_needed"),
+        migrations.RemoveField(model_name="address", name="owner_contact_number"),
+        migrations.RemoveField(model_name="address", name="owner_email"),
+        migrations.RemoveField(model_name="address", name="owner_name"),
+        migrations.RemoveField(model_name="address", name="tenant_email"),
+        migrations.RemoveField(model_name="address", name="tenant_name"),
+        migrations.RemoveField(model_name="address", name="tenant_phone"),
+        migrations.AddField(
+            model_name="contact",
+            name="address",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="backend.Address"
+            ),
         ),
         migrations.AddField(
-            model_name='contact',
-            name='address',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backend.Address'),
-        ),
-        migrations.AddField(
-            model_name='contact',
-            name='contact_type',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='backend.ContactType'),
+            model_name="contact",
+            name="contact_type",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to="backend.ContactType"
+            ),
         ),
     ]

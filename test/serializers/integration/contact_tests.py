@@ -7,21 +7,20 @@ from backend.serializers import ContactSerializer, ContactTypeSerializer
 
 pytestmark = pytest.mark.usefixtures("db")
 
-CONTACT_SCHEMA = Schema({
-    "id": int,
-    "address": int,
-    "contact_type": int,
-    "first_name": str,
-    "last_name": str,
-    "email": str,
-    "phone": str,
-    "follow_up": bool
-})
+CONTACT_SCHEMA = Schema(
+    {
+        "id": int,
+        "address": int,
+        "contact_type": int,
+        "first_name": str,
+        "last_name": str,
+        "email": str,
+        "phone": str,
+        "follow_up": bool,
+    }
+)
 
-CONTACT_TYPE_SCHEMA = Schema({
-    "id": int,
-    "slug": str
-})
+CONTACT_TYPE_SCHEMA = Schema({"id": int, "slug": str})
 
 
 def test_contact_schema(fake):
@@ -39,7 +38,7 @@ def test_contact_schema(fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -54,7 +53,7 @@ def test_contact_schema(fake):
         first_name=fake.first_name(),
         last_name=fake.last_name(),
         email=fake.email(),
-        phone=fake.phone_number()
+        phone=fake.phone_number(),
     )
     contact.save()
     contact.refresh_from_db()

@@ -24,7 +24,7 @@ def test_export_addresses(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -33,7 +33,7 @@ def test_export_addresses(client, fake):
 
     assert response.status_code == status.HTTP_200_OK
     headers = response._headers
-    assert headers["content-type"] == ('Content-Type', 'text/csv')
+    assert headers["content-type"] == ("Content-Type", "text/csv")
 
 
 def test_export_tags(client, fake):
@@ -51,7 +51,7 @@ def test_export_tags(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -80,4 +80,4 @@ def test_export_tags(client, fake):
 
     assert response.status_code == status.HTTP_200_OK
     headers = response._headers
-    assert headers["content-type"] == ('Content-Type', 'text/csv')
+    assert headers["content-type"] == ("Content-Type", "text/csv")

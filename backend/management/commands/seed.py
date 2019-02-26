@@ -28,20 +28,18 @@ class Command(BaseCommand):
             land_bank_property=False,
             property_type=PropertyType.objects.get(
                 slug=PropertyType.Types.COMMERCIAL.value
-            )
+            ),
         )
         address.save()
         address.refresh_from_db()
 
         contact = Contact(
             address=address,
-            contact_type=ContactType.objects.get(
-                slug=ContactType.Types.OWNER.value
-            ),
+            contact_type=ContactType.objects.get(slug=ContactType.Types.OWNER.value),
             first_name=fake.first_name(),
             last_name=fake.last_name(),
             email=fake.email(),
-            phone=fake.phone_number()
+            phone=fake.phone_number(),
         )
         contact.save()
 
@@ -55,7 +53,7 @@ class Command(BaseCommand):
             square_footage="23",
             surface="concrete",
             tag_words="some words",
-            tag_initials="some initials"
+            tag_initials="some initials",
         )
         tag.save()
 

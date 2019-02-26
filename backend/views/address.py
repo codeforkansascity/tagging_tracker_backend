@@ -12,9 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class PropertyTypesView(BaseView):
-    scopes = {
-        "get": "read:address"
-    }
+    scopes = {"get": "read:address"}
 
     def get(self, request):
         pts = PropertyType.objects.all()
@@ -23,10 +21,7 @@ class PropertyTypesView(BaseView):
 
 class AddressView(BaseView):
 
-    scopes = {
-        "get": "read:address",
-        "delete": "write:address"
-    }
+    scopes = {"get": "read:address", "delete": "write:address"}
 
     def get(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
@@ -34,11 +29,7 @@ class AddressView(BaseView):
 
     def delete(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
-        data = {
-            "street": address.street,
-            "city": address.city,
-            "zip": address.zip
-        }
+        data = {"street": address.street, "city": address.city, "zip": address.zip}
         address.delete()
         logger.debug(f"{data['street']} {data['city']}, {data['zip']} deleted")
         return Response()
@@ -48,10 +39,7 @@ class AddressListView(BaseView):
 
     parser_classes = (JSONParser,)
 
-    scopes = {
-        "get": "read:address",
-        "post": "write:address"
-    }
+    scopes = {"get": "read:address", "post": "write:address"}
 
     def get(self, request):
         addresses = Address.objects.all()
@@ -69,9 +57,7 @@ class AddressListView(BaseView):
 
 class AddressTagsView(BaseView):
 
-    scopes = {
-        "get": "read:address"
-    }
+    scopes = {"get": "read:address"}
 
     def get(self, request, pk):
         address = get_object_or_404(Address, pk=pk)

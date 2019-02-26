@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 
 
 def jwt_get_username_from_payload_handler(payload):
-    username = payload.get('sub').replace('|', '.')
+    username = payload.get("sub").replace("|", ".")
     authenticate(remote_user=username)
     return username
 
@@ -37,7 +37,7 @@ def has_valid_scope(request, required_scope):
             token,
             settings.PUBLIC_KEY,
             audience=os.environ["AUTH0_AUDIENCE"],
-            algorithms=["RS256"]
+            algorithms=["RS256"],
         )
     except jwt.ExpiredSignatureError:
         return False, "expired token"
