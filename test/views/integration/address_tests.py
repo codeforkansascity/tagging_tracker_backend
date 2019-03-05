@@ -26,7 +26,7 @@ def test_get_address_exists_returned(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -50,7 +50,7 @@ def test_delete_address(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -74,10 +74,12 @@ def test_create_address(client, fake):
         "creator_user_id": "some id",
         "last_updated_user_id": "some other id",
         "point": "POINT(1 1)",
-        "property_type": pt.id
+        "property_type": pt.id,
     }
 
-    response = client.post(reverse("address-list"), data=json.dumps(data), content_type="application/json")
+    response = client.post(
+        reverse("address-list"), data=json.dumps(data), content_type="application/json"
+    )
 
     assert response.status_code == status.HTTP_201_CREATED
 
@@ -102,7 +104,7 @@ def test_get_address_tags(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -150,7 +152,7 @@ def test_list_addresses(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address_one.save()
     address_one.refresh_from_db()
@@ -165,7 +167,7 @@ def test_list_addresses(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address_two.save()
     address_two.refresh_from_db()

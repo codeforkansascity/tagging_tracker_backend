@@ -8,14 +8,14 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0013_auto_20190209_0333'),
-    ]
+    dependencies = [("backend", "0013_auto_20190209_0333")]
 
     operations = [
         migrations.AlterField(
-            model_name='contact',
-            name='contact_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backend.ContactType'),
-        ),
+            model_name="contact",
+            name="contact_type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="backend.ContactType"
+            ),
+        )
     ]

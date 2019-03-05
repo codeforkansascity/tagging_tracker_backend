@@ -4,9 +4,11 @@
 #
 #    pip-compile --output-file requirements-dev.txt requirements-dev.in
 #
+appdirs==1.4.3            # via black
 atomicwrites==1.2.1       # via pytest
-attrs==18.2.0             # via pytest
-click==7.0                # via pip-tools
+attrs==18.2.0             # via black, pytest
+black==18.9b0
+click==7.0                # via black, pip-tools
 coverage==4.5.2           # via pytest-cov
 faker==1.0.1
 more-itertools==5.0.0     # via pytest
@@ -23,3 +25,4 @@ python-dotenv==0.10.1     # via pytest-dotenv
 schema==0.6.8
 six==1.12.0               # via faker, more-itertools, pip-tools, pytest, python-dateutil
 text-unidecode==1.2       # via faker
+toml==0.10.0              # via black

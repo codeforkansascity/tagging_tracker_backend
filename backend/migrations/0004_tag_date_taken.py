@@ -7,15 +7,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0003_address_type_of_property'),
-    ]
+    dependencies = [("backend", "0003_address_type_of_property")]
 
     operations = [
         migrations.AddField(
-            model_name='tag',
-            name='date_taken',
-            field=models.DateField(default='2013-12-17'),
+            model_name="tag",
+            name="date_taken",
+            field=models.DateField(default="2013-12-17"),
             preserve_default=False,
-        ),
+        )
     ]

@@ -37,7 +37,9 @@ def test_latitude_returns_y(fake):
     assert address.latitude == 2
 
 
-@pytest.mark.parametrize("field,max_length", (
+@pytest.mark.parametrize(
+    "field,max_length",
+    (
         ("creator_user_id", 255),
         ("last_updated_user_id", 255),
         ("neighborhood", 255),
@@ -45,7 +47,8 @@ def test_latitude_returns_y(fake):
         ("city", 255),
         ("state", 100),
         ("zip", 12),
-))
+    ),
+)
 def test_max_lengths(field, max_length):
     assert Address._meta.get_field(field).max_length == max_length
 

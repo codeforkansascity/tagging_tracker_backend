@@ -7,13 +7,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0006_auto_20180111_2205'),
-    ]
+    dependencies = [("backend", "0006_auto_20180111_2205")]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='tag',
-            name='neighborhood',
-        ),
-    ]
+    operations = [migrations.RemoveField(model_name="tag", name="neighborhood")]

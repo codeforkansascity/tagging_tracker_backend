@@ -94,8 +94,11 @@ class Tag(models.Model):
 def delete_image(sender, instance, **kwargs):
     image_name = instance.img.split("/")[-1]
     if not settings.DEBUG:
-        block_blob_service = BlockBlobService(account_name=os.environ['AZURE_IMAGE_CONTAINER_NAME'], account_key=os.environ['AZURE_IMAGE_CONTAINER_KEY'])
-        block_blob_service.delete_blob('images', image_name)
+        block_blob_service = BlockBlobService(
+            account_name=os.environ["AZURE_IMAGE_CONTAINER_NAME"],
+            account_key=os.environ["AZURE_IMAGE_CONTAINER_KEY"],
+        )
+        block_blob_service.delete_blob("images", image_name)
         logger.debug(f"Image: {image_name} deleted from Azure")
     else:
         logger.debug(f"Image: {image_name} would of been deleted if not in DEBUG mode")

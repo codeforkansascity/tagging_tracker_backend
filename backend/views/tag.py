@@ -13,11 +13,7 @@ logger = logging.getLogger(__name__)
 
 class TagView(BaseView):
 
-    scopes = {
-        "get": "read:tag",
-        "put": "write:tag",
-        "delete": "write:tag"
-    }
+    scopes = {"get": "read:tag", "put": "write:tag", "delete": "write:tag"}
 
     def get(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
@@ -35,10 +31,7 @@ class TagView(BaseView):
 
     def delete(self, request, pk):
         tag = get_object_or_404(Tag, pk=pk)
-        data = {
-            "id": tag.id,
-            "address": tag.address.id
-        }
+        data = {"id": tag.id, "address": tag.address.id}
         tag.delete()
         logger.debug(f"tag id: {data['id']} related to {data['address']} deleted")
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -46,10 +39,7 @@ class TagView(BaseView):
 
 class TagListView(BaseView):
 
-    scopes = {
-        "get": "read:tag",
-        "post": "write:tag"
-    }
+    scopes = {"get": "read:tag", "post": "write:tag"}
 
     def get(self, request):
         tags = Tag.objects.all()

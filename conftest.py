@@ -25,7 +25,9 @@ def enable_auth():
 
 @pytest.fixture
 def request_builder():
-    def _request_builder(method, path, data=None, query_params=None, meta=None, format_="json"):
+    def _request_builder(
+        method, path, data=None, query_params=None, meta=None, format_="json"
+    ):
         """
         Fixture for easily building requests
         :param method: HTTP method
@@ -51,6 +53,7 @@ def request_builder():
             request.META.update(meta)
 
         return request
+
     return _request_builder
 
 

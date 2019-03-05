@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 
 
 class ContactTypesView(APIView):
-
     def get(self, request):
         cts = ContactType.objects.all()
         return Response(ContactTypeSerializer(cts, many=True).data)
@@ -42,10 +41,7 @@ class ContactView(APIView):
     def delete(self, request, address_pk, pk):
         address = get_object_or_404(Address, pk=address_pk)
         contact = get_object_or_404(Contact, pk=pk, address=address)
-        data = {
-            "id": contact.id,
-            "address": address.id
-        }
+        data = {"id": contact.id, "address": address.id}
         contact.delete()
         logger.debug(f"contact {data['id']} for address {data['address']} deleted")
         return Response()

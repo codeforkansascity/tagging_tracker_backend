@@ -26,7 +26,7 @@ def test_get_method_retrieves_existing_tag(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -41,7 +41,7 @@ def test_get_method_retrieves_existing_tag(client, fake):
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
-        tag_initials="someones initial"
+        tag_initials="someones initial",
     )
     tag.save()
     tag.refresh_from_db()
@@ -66,7 +66,7 @@ def test_put_method_updates_tag(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -81,7 +81,7 @@ def test_put_method_updates_tag(client, fake):
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
-        tag_initials="someones initial"
+        tag_initials="someones initial",
     )
     tag.save()
     tag.refresh_from_db()
@@ -91,10 +91,14 @@ def test_put_method_updates_tag(client, fake):
         "creator_user_id": tag.creator_user_id,
         "last_updated_user_id": tag.last_updated_user_id,
         "date_taken": tag.date_taken.strftime("%Y-%m-%d %H:%M:%S"),
-        "description": "new subscription"
+        "description": "new subscription",
     }
 
-    response = client.put(reverse("tag", kwargs={"pk": tag.id}), json.dumps(updated), content_type="application/json")
+    response = client.put(
+        reverse("tag", kwargs={"pk": tag.id}),
+        json.dumps(updated),
+        content_type="application/json",
+    )
     assert response.status_code == status.HTTP_200_OK, response.content
     tag.refresh_from_db()
     assert tag.description == updated["description"]
@@ -115,7 +119,7 @@ def test_deleted_method_deletes_tag(client, fake):
         creator_user_id="some id",
         last_updated_user_id="some id",
         land_bank_property=True,
-        property_type=pt
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -130,7 +134,7 @@ def test_deleted_method_deletes_tag(client, fake):
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
-        tag_initials="someones initial"
+        tag_initials="someones initial",
     )
     tag.save()
     tag.refresh_from_db()
