@@ -9,4 +9,6 @@ omit =
     conftest.py,
     */wsgi.py,
     */settings.py,
-    */admin.py
+    */admin.py,
+    */management/*,
+    */enums.py

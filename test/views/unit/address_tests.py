@@ -2,7 +2,32 @@ from django.urls import reverse
 from rest_framework import status
 
 from backend.models import Address
-from backend.views.address import AddressView, AddressListView, AddressTagsView
+from backend.views.address import (
+    AddressView,
+    AddressListView,
+    AddressTagsView,
+    PropertyTypesView,
+)
+
+
+def test_address_view_permissions_set():
+    scopes = {"get": "read:address", "delete": "write:address"}
+    assert AddressView().scopes == scopes, "Invalid permissions"
+
+
+def test_address_list_view_permissions_set():
+    scopes = {"get": "read:address", "post": "write:address"}
+    assert AddressListView().scopes == scopes, "Invalid permissions"
+
+
+def test_address_tags_view_permissions_set():
+    scopes = {"get": "read:address"}
+    assert AddressTagsView().scopes == scopes, "Invalid permissions"
+
+
+def test_property_types_view_permissions_set():
+    scopes = {"get": "read:address"}
+    assert PropertyTypesView().scopes == scopes, "Invalid permissions"
 
 
 def test_get_address_found_and_returned(request_builder, mocker):
@@ -45,11 +70,16 @@ def test_get_address_list_returns_all(request_builder, mocker):
     address_all.assert_called_once()
 
 
-def test_post_address_list_invalid_parameters_response_structure(request_builder, mocker):
+def test_post_address_list_invalid_parameters_response_structure(
+    request_builder, mocker
+):
     is_valid = mocker.patch("backend.views.address.AddressSerializer.is_valid")
     is_valid.return_value = False
 
-    errors = mocker.patch("backend.views.address.AddressSerializer.errors", new_callable=mocker.PropertyMock)
+    errors = mocker.patch(
+        "backend.views.address.AddressSerializer.errors",
+        new_callable=mocker.PropertyMock,
+    )
     expected_return = {"parameter": ["error"]}
     errors.return_value = expected_return
 
@@ -60,7 +90,9 @@ def test_post_address_list_invalid_parameters_response_structure(request_builder
     assert response.data == expected_return
 
 
-def test_post_address_list_valid_parameters_valid_response_structure(request_builder, mocker):
+def test_post_address_list_valid_parameters_valid_response_structure(
+    request_builder, mocker
+):
     address_serializer = mocker.patch("backend.views.address.AddressSerializer")
     address_serializer.return_value.is_valid.return_value = True
 

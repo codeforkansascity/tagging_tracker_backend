@@ -6,12 +6,16 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 
-from backend.models import Address, Tag
+from backend.models import Address, Tag, PropertyType
 
 pytestmark = pytest.mark.usefixtures("db")
 
 
 def test_get_returns_list_of_tags(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -21,13 +25,8 @@ def test_get_returns_list_of_tags(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -54,10 +53,16 @@ def test_get_returns_list_of_tags(client, fake):
 
     response = client.get(reverse("tag-list"))
     assert response.status_code == status.HTTP_200_OK
-    assert [tag_one.id, tag_two.id] == sorted([t["id"] for t in json.loads(response.content)])
+    assert [tag_one.id, tag_two.id] == sorted(
+        [t["id"] for t in json.loads(response.content)]
+    )
 
 
 def test_post_request_creates_tag(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -67,13 +72,8 @@ def test_post_request_creates_tag(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -86,6 +86,8 @@ def test_post_request_creates_tag(client, fake):
         "date_taken": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
-    response = client.post(reverse("tag-list"), json.dumps(data), content_type="application/json")
+    response = client.post(
+        reverse("tag-list"), json.dumps(data), content_type="application/json"
+    )
     assert response.status_code == status.HTTP_201_CREATED, response.content
     assert Tag.objects.filter(description=data["description"]).exists() is True

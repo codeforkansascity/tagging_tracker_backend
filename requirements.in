@@ -6,5 +6,5 @@ djangorestframework-jwt
 django-queryset-csv
 psycopg2
 python-dotenv
-rest_framework_auth0
-urllib3
+requests
+faker

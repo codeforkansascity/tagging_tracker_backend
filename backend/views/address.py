@@ -3,15 +3,25 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from backend.models import Address, Tag
-from backend.serializers import AddressSerializer, TagSerializer
+from backend.models import Address, Tag, PropertyType
+from backend.serializers import AddressSerializer, TagSerializer, PropertyTypeSerializer
+from common.views import BaseView
 
 logger = logging.getLogger(__name__)
 
 
-class AddressView(APIView):
+class PropertyTypesView(BaseView):
+    scopes = {"get": "read:address"}
+
+    def get(self, request):
+        pts = PropertyType.objects.all()
+        return Response(PropertyTypeSerializer(pts, many=True).data)
+
+
+class AddressView(BaseView):
+
+    scopes = {"get": "read:address", "delete": "write:address"}
 
     def get(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
@@ -19,19 +29,17 @@ class AddressView(APIView):
 
     def delete(self, request, pk):
         address = get_object_or_404(Address, pk=pk)
-        data = {
-            "street": address.street,
-            "city": address.city,
-            "zip": address.zip
-        }
+        data = {"street": address.street, "city": address.city, "zip": address.zip}
         address.delete()
         logger.debug(f"{data['street']} {data['city']}, {data['zip']} deleted")
         return Response()
 
 
-class AddressListView(APIView):
+class AddressListView(BaseView):
 
     parser_classes = (JSONParser,)
+
+    scopes = {"get": "read:address", "post": "write:address"}
 
     def get(self, request):
         addresses = Address.objects.all()
@@ -47,7 +55,9 @@ class AddressListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AddressTagsView(APIView):
+class AddressTagsView(BaseView):
+
+    scopes = {"get": "read:address"}
 
     def get(self, request, pk):
         address = get_object_or_404(Address, pk=pk)

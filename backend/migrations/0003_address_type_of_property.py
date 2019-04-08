@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('backend', '0002_auto_20171130_0512'),
-    ]
+    dependencies = [("backend", "0002_auto_20171130_0512")]
 
     operations = [
         migrations.AddField(
-            model_name='address',
-            name='type_of_property',
+            model_name="address",
+            name="type_of_property",
             field=models.IntegerField(default=False),
-        ),
+        )
     ]

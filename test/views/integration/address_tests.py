@@ -6,12 +6,16 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 
-from backend.models import Address, Tag
+from backend.models import Address, Tag, PropertyType
 
 pytestmark = pytest.mark.usefixtures("db")
 
 
 def test_get_address_exists_returned(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -21,13 +25,8 @@ def test_get_address_exists_returned(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -37,6 +36,10 @@ def test_get_address_exists_returned(client, fake):
 
 
 def test_delete_address(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -46,13 +49,8 @@ def test_delete_address(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -63,22 +61,25 @@ def test_delete_address(client, fake):
 
 
 def test_create_address(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     data = {
         "neighborhood": "Some neighborhood",
         "street": fake.street_address(),
         "city": fake.city(),
         "state": fake.state(),
         "zip": fake.zipcode(),
-        "owner_name": fake.name(),
-        "owner_email": fake.safe_email(),
-        "tenant_name": fake.name(),
-        "tenant_email": fake.safe_email(),
         "creator_user_id": "some id",
         "last_updated_user_id": "some other id",
-        "point": "POINT(1 1)"
+        "point": "POINT(1 1)",
+        "property_type": pt.id,
     }
 
-    response = client.post(reverse("address-list"), data=json.dumps(data), content_type="application/json")
+    response = client.post(
+        reverse("address-list"), data=json.dumps(data), content_type="application/json"
+    )
 
     assert response.status_code == status.HTTP_201_CREATED
 
@@ -89,6 +90,10 @@ def test_create_address(client, fake):
 
 
 def test_get_address_tags(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -98,13 +103,8 @@ def test_get_address_tags(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -138,6 +138,10 @@ def test_get_address_tags(client, fake):
 
 
 def test_list_addresses(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address_one = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -147,13 +151,8 @@ def test_list_addresses(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address_one.save()
     address_one.refresh_from_db()
@@ -167,13 +166,8 @@ def test_list_addresses(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address_two.save()
     address_two.refresh_from_db()
@@ -185,3 +179,14 @@ def test_list_addresses(client, fake):
     response_data = json.loads(response.content)
     observed_data = response_data["features"]
     assert [address_one.id, address_two.id] == sorted([a["id"] for a in observed_data])
+
+
+def test_property_types_returned(client):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
+    response = client.get(reverse("property-types"))
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data.pop()["id"] == pt.id

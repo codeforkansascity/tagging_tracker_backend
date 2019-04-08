@@ -6,12 +6,16 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 
-from backend.models import Address, Tag
+from backend.models import Address, Tag, PropertyType
 
 pytestmark = pytest.mark.usefixtures("db")
 
 
 def test_get_method_retrieves_existing_tag(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -21,13 +25,8 @@ def test_get_method_retrieves_existing_tag(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -39,11 +38,10 @@ def test_get_method_retrieves_existing_tag(client, fake):
         date_taken=timezone.now(),
         description="some description",
         img="something goes here",
-        neighborhood="some neighborhood",
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
-        tag_initials="someones initial"
+        tag_initials="someones initial",
     )
     tag.save()
     tag.refresh_from_db()
@@ -54,6 +52,10 @@ def test_get_method_retrieves_existing_tag(client, fake):
 
 
 def test_put_method_updates_tag(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -63,13 +65,8 @@ def test_put_method_updates_tag(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -81,11 +78,10 @@ def test_put_method_updates_tag(client, fake):
         date_taken=timezone.now(),
         description="some description",
         img="something goes here",
-        neighborhood="some neighborhood",
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
-        tag_initials="someones initial"
+        tag_initials="someones initial",
     )
     tag.save()
     tag.refresh_from_db()
@@ -95,17 +91,24 @@ def test_put_method_updates_tag(client, fake):
         "creator_user_id": tag.creator_user_id,
         "last_updated_user_id": tag.last_updated_user_id,
         "date_taken": tag.date_taken.strftime("%Y-%m-%d %H:%M:%S"),
-        "description": tag.description,
-        "neighborhood": "new neighborhood"
+        "description": "new subscription",
     }
 
-    response = client.put(reverse("tag", kwargs={"pk": tag.id}), json.dumps(updated), content_type="application/json")
+    response = client.put(
+        reverse("tag", kwargs={"pk": tag.id}),
+        json.dumps(updated),
+        content_type="application/json",
+    )
     assert response.status_code == status.HTTP_200_OK, response.content
     tag.refresh_from_db()
-    assert tag.neighborhood == updated["neighborhood"]
+    assert tag.description == updated["description"]
 
 
 def test_deleted_method_deletes_tag(client, fake):
+    pt = PropertyType(slug="some_slug")
+    pt.save()
+    pt.refresh_from_db()
+
     address = Address(
         point=Point(1, 2),
         neighborhood="Some neighborhood",
@@ -115,13 +118,8 @@ def test_deleted_method_deletes_tag(client, fake):
         zip=fake.zipcode(),
         creator_user_id="some id",
         last_updated_user_id="some id",
-        owner_name=fake.first_name(),
-        owner_email=fake.safe_email(),
-        tenant_name=fake.name(),
-        tenant_email=fake.safe_email(),
-        follow_up_owner_needed=True,
         land_bank_property=True,
-        type_of_property=1
+        property_type=pt,
     )
     address.save()
     address.refresh_from_db()
@@ -133,11 +131,10 @@ def test_deleted_method_deletes_tag(client, fake):
         date_taken=timezone.now(),
         description="some description",
         img="something goes here",
-        neighborhood="some neighborhood",
         square_footage="some sq ft",
         surface="concrete",
         tag_words="some words",
-        tag_initials="someones initial"
+        tag_initials="someones initial",
     )
     tag.save()
     tag.refresh_from_db()

@@ -65,7 +65,7 @@ reload:
 
 # Bash inside web container
 bashw:
-	@$(DC) exec web bash
+	@$(DC) exec web sh
 
 # Bash inside Nginx container
 bashn:
@@ -88,8 +88,13 @@ migratelocal:
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py makemigrations
 	@$(DC) $(BASE_AND_LOC) exec web python manage.py migrate
 
+# Initialize db with values
+initdb:
+	@$(DC) $(BASE_AND_LOC) exec web python manage.py initdb
+
 # Compiles requirements*.in
 compile:
+	@rm requirements*.txt
 	@pip-compile
 	@pip-compile --output-file requirements-dev.txt requirements-dev.in
 
@@ -128,4 +133,12 @@ integration: rundb
 
 # Collect static files
 static:
-	@$(E) && python manage.py collectstatic --no-input
+	@python manage.py collectstatic --no-input
+
+# Seed db with fake data
+seed: rundb
+	@python manage.py seed
+
+# Checks for formatting issues
+black:
+	@black . --check

@@ -16,3 +16,4 @@ install:
 
 script:
   - make travis
+  - make black
