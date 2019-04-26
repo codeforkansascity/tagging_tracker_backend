@@ -16,9 +16,8 @@ install:
 
 jobs:
   include:
-    - stage: "Tests"
+    - stage: "Tests and Formatting"
       name: "Test suite"
       script: make travis
-    - stage: "Formatting"
-      name: "Check formatting"
-      script: make black
+    - script: make format
+      name: "Formatting"
