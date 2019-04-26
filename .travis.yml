@@ -14,6 +14,11 @@ before_script:
 install:
   - make reqs
 
-script:
-  - make travis
-  - make black
+jobs:
+  include:
+    - stage: "Tests"
+      name: "Test suite"
+      script: make travis
+    - stage: "Formatting"
+      name: "Check formatting"
+      script: make black
