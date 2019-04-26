@@ -19,5 +19,5 @@ jobs:
     - stage: "Tests and Formatting"
       name: "Test suite"
       script: make travis
-    - script: make format
+    - script: make black
       name: "Formatting"
