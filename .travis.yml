@@ -21,3 +21,5 @@ jobs:
       script: make travis
     - script: make black
       name: "Formatting"
+    - stage: "Build Container"
+      if: branch = master
