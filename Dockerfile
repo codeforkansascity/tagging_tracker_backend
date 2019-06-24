@@ -9,7 +9,7 @@ RUN apk add \
   gdal \
   py-gdal \
   gcc \
-  musl-dev=1.1.22-r0 \
+  musl-dev \
   libffi-dev \
   postgresql-dev \
   python3-dev \
