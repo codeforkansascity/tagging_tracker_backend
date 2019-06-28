@@ -21,5 +21,6 @@ jobs:
       script: make travis
     - script: make black
       name: "Formatting"
-    - stage: "Build Container"
-      if: branch = master
+    - stage: "Sending to staging"
+      if: branch =~ /^release\/.+/
+      script: ./build-scripts/build-image.sh
