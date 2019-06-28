@@ -32,4 +32,10 @@ resource "azurerm_container_group" "tagging_tracker" {
       protocol = "TCP"
     }
   }
+
+  image_registry_credential {
+    password = "${var.container_repo_password}"
+    server = "${var.container_repo_url}"
+    username = "${var.container_repo_user}"
+  }
 }
