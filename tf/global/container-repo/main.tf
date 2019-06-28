@@ -10,6 +10,10 @@ provider "azurerm" {
 resource "azurerm_resource_group" "binfra" {
   location = "${var.location}"
   name = "containerInfra"
+
+  tags {
+    Environment = "Global"
+  }
 }
 
 
@@ -18,4 +22,8 @@ resource "azurerm_container_registry" "acr" {
   name = "wpR6r5k9hDLpK1VPEG6l"
   sku = "Basic"
   resource_group_name = "${azurerm_resource_group.binfra.name}"
+
+  tags {
+    Environment = "Global"
+  }
 }

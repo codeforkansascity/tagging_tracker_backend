@@ -11,6 +11,10 @@ provider "azurerm" {
 resource "azurerm_resource_group" "app_infra" {
   location = "${var.location}"
   name = "applicationInfra"
+
+  tags {
+    Environment = "Staging"
+  }
 }
 
 resource "azurerm_container_group" "tagging_tracker" {
@@ -37,5 +41,9 @@ resource "azurerm_container_group" "tagging_tracker" {
     password = "${var.container_repo_password}"
     server = "${var.container_repo_url}"
     username = "${var.container_repo_user}"
+  }
+
+  tags {
+    Environment = "Staging"
   }
 }

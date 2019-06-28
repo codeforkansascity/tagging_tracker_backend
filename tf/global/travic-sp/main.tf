@@ -10,6 +10,10 @@ provider "azurerm" {
 resource "azurerm_resource_group" "binfra" {
   location = "${var.location}"
   name = "travis-ci"
+
+  tags {
+    Environment = "Global"
+  }
 }
 
 resource "azurerm_azuread_application" "travisci" {

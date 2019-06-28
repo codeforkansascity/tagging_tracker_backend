@@ -10,6 +10,10 @@ provider "azurerm" {
 resource "azurerm_resource_group" "staging-db" {
   location = "${var.location}"
   name = "stagingDBInfra"
+
+  tags {
+    Environment = "Staging"
+  }
 }
 
 resource "azurerm_postgresql_server" "staging-db" {
@@ -28,6 +32,10 @@ resource "azurerm_postgresql_server" "staging-db" {
   }
   storage_profile {
     storage_mb = 10000
+  }
+
+  tags {
+    Environment = "Staging"
   }
 }
 
