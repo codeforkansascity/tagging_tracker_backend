@@ -22,5 +22,5 @@ jobs:
     - script: make black
       name: "Formatting"
     - stage: "Sending to staging"
-      if: branch =~ ^release\/
+      if: branch =~ /^release.*$/
       script: ./build-scripts/build-image.sh
