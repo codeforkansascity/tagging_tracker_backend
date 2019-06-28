@@ -19,24 +19,3 @@ resource "azurerm_container_registry" "acr" {
   sku = "Basic"
   resource_group_name = "${azurerm_resource_group.binfra.name}"
 }
-
-resource "azurerm_azuread_application" "travisci" {
-  name = "travisci"
-}
-
-resource "azurerm_azuread_service_principal" "travisci" {
-  application_id = "${azurerm_azuread_application.travisci.application_id}"
-}
-
-resource "azurerm_azuread_service_principal_password" "travisci" {
-  end_date = "2020-01-01T00:00:00Z"
-  service_principal_id = "${azurerm_azuread_service_principal.travisci.id}"
-  value = "${var.travisci_sp_password}"
-}
-
-
-resource "azurerm_role_assignment" "travisci" {
-  principal_id = "${azurerm_azuread_service_principal.travisci.id}"
-  scope = "${azurerm_resource_group.binfra.id}"
-  role_definition_name = "AcrPush"
-}
