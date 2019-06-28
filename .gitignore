@@ -120,3 +120,6 @@ static/
 azure-creds.auto.tfvars
 .terraform/
 *.tfstate*
+
+local/
+secrets.txt
