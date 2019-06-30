@@ -18,11 +18,11 @@ resource "azurerm_resource_group" "app_infra" {
 }
 
 resource "azurerm_container_group" "tagging_tracker" {
-  name                = "example-continst"
+  name                = "tagging-tracker-staging"
   location            = "${azurerm_resource_group.app_infra.location}"
   resource_group_name = "${azurerm_resource_group.app_infra.name}"
   ip_address_type     = "public"
-  dns_name_label      = "aci-label"
+  dns_name_label      = "tagging-tracker-staging"
   os_type             = "Linux"
 
   container {
