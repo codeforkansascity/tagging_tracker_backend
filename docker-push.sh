@@ -2,5 +2,5 @@
 
 source secrets.sh
 
-docker push ${TF_VAR_container_repo_name}/tagging-tracker
-docker push ${TF_VAR_container_repo_name}/tagging-tracker-nginx
+docker push ${TF_VAR_container_repo_url}/tagging-tracker
+docker push ${TF_VAR_container_repo_url}/tagging-tracker-nginx
