@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "storage_acct_staging" {
 }
 
 resource "azurerm_storage_account" "storage_acct_staging" {
-  name                     = "taggingtrackerstaging"
+  name                     = "${var.storage_account_name}"
   resource_group_name      = "${azurerm_resource_group.storage_acct_staging.name}"
   location                 = "${var.location}"
   account_tier             = "Standard"
@@ -25,7 +25,7 @@ resource "azurerm_storage_account" "storage_acct_staging" {
 }
 
 resource "azurerm_storage_share" "staging_share" {
-  name = "staging-share"
+  name = "${var.storage_share_name}"
 
   resource_group_name  = "${azurerm_resource_group.storage_acct_staging.name}"
   storage_account_name = "${azurerm_storage_account.storage_acct_staging.name}"

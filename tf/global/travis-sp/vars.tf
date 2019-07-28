@@ -14,7 +14,7 @@ variable "location" {
   default = "Central US"
   type = "string"
 }
-variable "travisci_sp_password" {
+variable "container_repo_password" {
   type = "string"
 }
 variable "container_resource_group" {

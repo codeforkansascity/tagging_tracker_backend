@@ -9,7 +9,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "binfra" {
   location = "${var.location}"
-  name = "containerInfra"
+  name = "${var.container_resource_group_name}"
 
   tags {
     Environment = "Global"
@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "binfra" {
 
 resource "azurerm_container_registry" "acr" {
   location = "${var.location}"
-  name = "wpR6r5k9hDLpK1VPEG6l"
+  name = "${var.container_repo_name}"
   sku = "Basic"
   resource_group_name = "${azurerm_resource_group.binfra.name}"
 

@@ -27,7 +27,7 @@ resource "azurerm_azuread_service_principal" "travisci" {
 resource "azurerm_azuread_service_principal_password" "travisci" {
   end_date = "2020-01-01T00:00:00Z"
   service_principal_id = "${azurerm_azuread_service_principal.travisci.id}"
-  value = "${var.travisci_sp_password}"
+  value = "${var.container_repo_password}"
 }
 
 

@@ -14,3 +14,9 @@ variable "location" {
   default = "Central US"
   type = "string"
 }
+variable "container_resource_group_name" {
+  type = "string"
+}
+variable "container_repo_name" {
+  type = "string"
+}
