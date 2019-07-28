@@ -122,13 +122,13 @@ $ python manage.py createsuperuser
 
 1. (Optional) Generate your own self signed certificate pointing to the localhost domain using `make ssl`.
 
-# Managing requirements
+## Managing requirements
 
 We use [`pip-tools`](https://github.com/jazzband/pip-tools) to manage our requirements. High level application packages should be
 put in `requirements.in` and high level development/testing packages should be put in `requirements-dev.in`. Once there run
 `make compile` to generate new requirements files and then `make reqs` to install the updates.
 
-# Testing
+## Testing
 
 All tests should be placed under `test/` in order for `pytest` to pick them up. Currently the development requirements
 are not installed in the docker image and so ensure you have your `virtualenv` setup and run `make reqs` prior to testing.
@@ -144,6 +144,11 @@ $ make integration
 $ pytest -k "some filter"
 ```
 
-# Contribution
+## Contribution
 
 Read the [Contribution Guide](docs/CONTRIBUTING.md)
+
+## Deployment
+
+Terraform is still WIP. See [README](tf/README.md). Run `cp secrets.template.sh secrets.sh` to create a
+file to make working w/ Terraform variables easier.
