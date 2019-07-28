@@ -11,24 +11,24 @@ black==19.3b0
 click==7.0                # via black, pip-tools
 contextlib2==0.5.5        # via schema
 coverage==4.5.3           # via pytest-cov
-faker==1.0.7
-importlib-metadata==0.17  # via pluggy, pytest
-more-itertools==7.0.0     # via pytest
+faker==2.0.0
+importlib-metadata==0.18  # via pluggy, pytest
+more-itertools==7.2.0     # via pytest
 packaging==19.0           # via pytest
-pip-tools==3.8.0
+pip-tools==4.0.0
 pluggy==0.12.0            # via pytest
 py==1.8.0                 # via pytest
-pyparsing==2.4.0          # via packaging
+pyparsing==2.4.1.1        # via packaging
 pytest-cov==2.7.1
-pytest-django==3.5.0
+pytest-django==3.5.1
 pytest-dotenv==0.4.0
 pytest-mock==1.10.4
-pytest==4.6.2
+pytest==5.0.1
 python-dateutil==2.8.0
 python-dotenv==0.10.3     # via pytest-dotenv
 schema==0.7.0
-six==1.12.0               # via faker, packaging, pip-tools, pytest, python-dateutil
+six==1.12.0               # via faker, packaging, pip-tools, python-dateutil
 text-unidecode==1.2       # via faker
 toml==0.10.0              # via black
 wcwidth==0.1.7            # via pytest
-zipp==0.5.1               # via importlib-metadata
+zipp==0.5.2               # via importlib-metadata
