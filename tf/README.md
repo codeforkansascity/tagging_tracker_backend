@@ -1,5 +1,8 @@
 # Terraform Setup
 
-1. Run `make` to init the credentials file and Terraform
-1. Follow this [guide](https://www.terraform.io/docs/providers/azurerm/auth/service_principal_client_secret.html)
-to create your credentials
+Work in progress. Current code should get a single uwsgi container running on port 8000
+
+## TODO
+
+- Nginx reverse proxy
+    - Ideally using a file socket
