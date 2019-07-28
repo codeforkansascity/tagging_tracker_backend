@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+DB_IMG=mdillon/postgis:10-alpine
+
 # This script ensures db container is running
 
 checkenv() {
@@ -26,9 +28,9 @@ else
         -d \
         -p 5432:5432 \
         -v tagging_tracker_backend_db-data:/var/lib/postgresql/data \
-		-e POSTGRES_PASSWORD=$DB_PASSWORD \
-		-e POSTGRES_USER=$DB_USER \
-		-e POSTGRES_DB=$DB_NAME \
-		$DB_IMG
+		-e POSTGRES_PASSWORD=${DB_PASSWORD} \
+		-e POSTGRES_USER=${DB_USER} \
+		-e POSTGRES_DB=${DB_NAME} \
+		${DB_IMG}
     echo "started!"
 fi

@@ -5,7 +5,6 @@ LOCAL=docker-compose.local.yml
 PROD=docker-compose.prod.yml
 BASE_AND_LOC=-f $(BASE) -f $(LOCAL)
 BASE_AND_PROD=-f $(BASE) -f $(PROD)
-DB_IMG=mdillon/postgis:9.6
 PT=pytest
 
 .PHONY: logs dev
@@ -116,7 +115,7 @@ start:
 
 # Starts container for db locally
 rundb:
-	@DB_IMG=$(DB_IMG) ./rundb.sh
+	@./rundb.sh
 
 # Runs test suite
 test: rundb
