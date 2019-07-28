@@ -94,7 +94,7 @@ initdb:
 
 # Compiles requirements*.in
 compile:
-	@rm requirements*.txt
+	@rm -f requirements*.txt
 	@pip-compile
 	@pip-compile requirements-dev.in
 
