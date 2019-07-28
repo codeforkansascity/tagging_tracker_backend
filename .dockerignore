@@ -1,5 +1,6 @@
 .git/
 .idea/
+tf/
 *.png
 *.md
 tagging_tracker/bin

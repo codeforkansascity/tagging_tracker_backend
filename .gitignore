@@ -115,3 +115,12 @@ docker-compose.override.yml
 reload.ini
 etc/
 static/
+
+# Terraform
+azure-creds.auto.tfvars
+.terraform/
+*.tfstate*
+
+local/
+secrets.txt
+secrets.sh
