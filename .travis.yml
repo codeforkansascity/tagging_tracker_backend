@@ -4,16 +4,23 @@ python:
   - "3.6"
 
 addons:
-  postgresql: 9.6
+  postgresql: "10"
   apt:
     packages:
-    - postgresql-9.6-postgis-2.3
+    - postgresql-10-postgis-2.4
 before_script:
   - psql -U postgres -c "create extension postgis"
 
 install:
   - make reqs
 
-script:
-  - make travis
-  - make black
+jobs:
+  include:
+    - stage: "Tests and Formatting"
+      name: "Test suite"
+      script: make travis
+    - script: make black
+      name: "Formatting"
+    - stage: "Sending to staging"
+      if: branch = /^release\/.+$/
+      script: ./build-scripts/build-image.sh
