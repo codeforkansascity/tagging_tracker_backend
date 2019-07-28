@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import os
+from distutils.util import strtobool
 
 import requests
 
@@ -23,8 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True if os.environ.get("DEBUG") else False
-DISABLE_AUTH = os.getenv("DISABLE_AUTH", False)
+DEBUG = strtobool(os.environ.get("DEBUG"))
+DISABLE_AUTH = strtobool(os.getenv("DISABLE_AUTH"))
 
 if DEBUG:
     SECRET_KEY = "mysecretkey"
