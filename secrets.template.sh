@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-#!/usr/bin/env bash
+: '
+    This script cannot be in the repo as it would expose credentials.
+    Long term build process scripts cannot be reliant on it and instead those
+    variables should be stored in the build process envars.
+'
 
 export TF_VAR_subscription_id=
 export TF_VAR_client_id=
