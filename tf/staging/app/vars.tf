@@ -23,3 +23,12 @@ variable "container_repo_user" {
 variable "container_repo_password" {
   type = "string"
 }
+variable "storage_share_name" {
+  type = "string"
+}
+variable "storage_account_key" {
+  type = "string"
+}
+variable "storage_account_name" {
+  type = "string"
+}
