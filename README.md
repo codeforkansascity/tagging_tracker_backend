@@ -150,5 +150,17 @@ Read the [Contribution Guide](docs/CONTRIBUTING.md)
 
 ## Deployment
 
+### Terraform
 Terraform is still WIP. See [README](tf/README.md). Run `cp secrets.template.sh secrets.sh` to create a
 file to make working w/ Terraform variables easier.
+
+### Travis CI
+
+Currently should run tests and check formatting on all PRs. This is a requirement for merging.
+
+TODO
+
+- Support release branch automatically deploying to staging resources
+    - The current regex does not appear to work
+- Auto deploy to production
+    - This is pretty much dependent on Terraform having production setup 
