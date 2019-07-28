@@ -100,7 +100,10 @@ compile:
 
 # Installs requirements
 reqs:
-	@pip install -I -r requirements.txt -r requirements-dev.txt
+	@pip install \
+	--force-reinstall \
+	-r requirements.txt \
+	-r requirements-dev.txt
 
 # Stop all containers and removes them
 stop:
