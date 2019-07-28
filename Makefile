@@ -94,13 +94,16 @@ initdb:
 
 # Compiles requirements*.in
 compile:
-	@rm requirements*.txt
+	@rm -f requirements*.txt
 	@pip-compile
 	@pip-compile requirements-dev.in
 
 # Installs requirements
 reqs:
-	@pip install -I -r requirements.txt -r requirements-dev.txt
+	@pip install \
+	--force-reinstall \
+	-r requirements.txt \
+	-r requirements-dev.txt
 
 # Stop all containers and removes them
 stop:
