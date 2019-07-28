@@ -123,3 +123,4 @@ azure-creds.auto.tfvars
 
 local/
 secrets.txt
+secrets.sh
