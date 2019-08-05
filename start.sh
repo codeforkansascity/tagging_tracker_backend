@@ -19,8 +19,11 @@ else
     else
         while ! nc -z localhost 5432; do
             echo "Waiting for DB container to boot"
-            sleep 0.2 # wait for 2/10 of the second before check again
+            sleep 0.5 # wait for half a second
         done
+
+        echo "Giving DB container time to initialize..."
+        sleep 1
     fi
 
     # Run dev server
