@@ -1,12 +1,10 @@
 import json
 
 import pytest
-from django.contrib.gis.geos import Point
 from django.urls import reverse
-from django.utils import timezone
 from rest_framework import status
 
-from backend.models import Address, Tag, PropertyType
+from backend.models import Address
 
 pytestmark = pytest.mark.usefixtures("db")
 

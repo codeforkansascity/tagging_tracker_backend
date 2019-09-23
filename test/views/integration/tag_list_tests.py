@@ -1,55 +1,19 @@
 import json
 
 import pytest
-from django.contrib.gis.geos import Point
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 
-from backend.models import Address, Tag, PropertyType
+from backend.models import Tag
 
 pytestmark = pytest.mark.usefixtures("db")
 
 
-def test_get_returns_list_of_tags(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
+def test_get_returns_list_of_tags(client, tag_builder):
+    tag_one = tag_builder()
 
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    tag_one = Tag(
-        address=address,
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        date_taken=timezone.now(),
-        description=fake.text(),
-    )
-    tag_one.save()
-    tag_one.refresh_from_db()
-
-    tag_two = Tag(
-        address=address,
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        date_taken=timezone.now(),
-        description=fake.text(),
-    )
-    tag_two.save()
-    tag_two.refresh_from_db()
+    tag_two = tag_builder(address=tag_one.address)
 
     response = client.get(reverse("tag-list"))
     assert response.status_code == status.HTTP_200_OK
@@ -58,25 +22,8 @@ def test_get_returns_list_of_tags(client, fake):
     )
 
 
-def test_post_request_creates_tag(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
-
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
+def test_post_request_creates_tag(client, fake, address_builder):
+    address = address_builder()
 
     data = {
         "address": address.id,

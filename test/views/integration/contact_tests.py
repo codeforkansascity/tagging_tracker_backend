@@ -1,11 +1,10 @@
 import json
 
 import pytest
-from django.contrib.gis.geos import Point
 from django.urls import reverse
 from rest_framework import status
 
-from backend.models import Contact, ContactType, Address, PropertyType
+from backend.models import Contact
 
 pytestmark = pytest.mark.usefixtures("db")
 
