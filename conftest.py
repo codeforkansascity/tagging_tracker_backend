@@ -5,6 +5,9 @@ from django.test import override_settings
 from faker import Faker
 from rest_framework.test import APIRequestFactory, APIClient
 
+# Imports all fixtures imported into in test_fixtures/__init__.py
+from test_fixtures import *
+
 
 @pytest.fixture
 def client():

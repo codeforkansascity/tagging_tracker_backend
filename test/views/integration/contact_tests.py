@@ -10,70 +10,24 @@ from backend.models import Contact, ContactType, Address, PropertyType
 pytestmark = pytest.mark.usefixtures("db")
 
 
-def test_contact_list_returns_valid(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
+def test_contact_list_returns_valid(client, contact_builder):
 
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
+    contact = contact_builder()
+
+    response = client.get(
+        reverse("address-contacts", kwargs={"pk": contact.address.id})
     )
-    address.save()
-    address.refresh_from_db()
-
-    ct = ContactType(slug="some-slug")
-    ct.save()
-    ct.refresh_from_db()
-
-    contact = Contact(
-        address=address,
-        contact_type=ct,
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-        email=fake.email(),
-        phone=fake.phone_number(),
-    )
-    contact.save()
-    contact.refresh_from_db()
-
-    response = client.get(reverse("address-contacts", kwargs={"pk": address.id}))
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data.pop()["id"] == contact.id
 
 
-def test_create_contact_returns_valid(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
+def test_create_contact_returns_valid(
+    client, fake, contact_type_builder, address_builder
+):
+    address = address_builder()
 
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    ct = ContactType(slug="some-slug")
-    ct.save()
-    ct.refresh_from_db()
+    ct = contact_type_builder()
 
     data = {
         "address": address.id,
@@ -93,44 +47,13 @@ def test_create_contact_returns_valid(client, fake):
     assert response.data["email"] == data["email"]
 
 
-def test_update_contact_returns_valid(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
+def test_update_contact_returns_valid(client, fake, contact_builder):
 
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    ct = ContactType(slug="some-slug")
-    ct.save()
-    ct.refresh_from_db()
-
-    contact = Contact(
-        address=address,
-        contact_type=ct,
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-        email=fake.email(),
-        phone=fake.phone_number(),
-    )
-    contact.save()
-    contact.refresh_from_db()
+    contact = contact_builder()
 
     data = {
-        "address": address.id,
-        "contact_type": ct.id,
+        "address": contact.address.id,
+        "contact_type": contact.contact_type.id,
         "first_name": fake.first_name(),
         "last_name": contact.last_name,
         "email": contact.email,
@@ -138,7 +61,7 @@ def test_update_contact_returns_valid(client, fake):
     }
 
     response = client.put(
-        reverse("contact", kwargs={"address_pk": address.id, "pk": contact.id}),
+        reverse("contact", kwargs={"address_pk": data["address"], "pk": contact.id}),
         json.dumps(data),
         content_type="application/json",
     )
@@ -147,57 +70,20 @@ def test_update_contact_returns_valid(client, fake):
     assert response.data["first_name"] == data["first_name"]
 
 
-def test_contact_view_delete(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
-
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    ct = ContactType(slug="some-slug")
-    ct.save()
-    ct.refresh_from_db()
-
-    contact = Contact(
-        address=address,
-        contact_type=ct,
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-        email=fake.email(),
-        phone=fake.phone_number(),
-    )
-    contact.save()
-    contact.refresh_from_db()
-    id = contact.id
+def test_contact_view_delete(client, contact_builder):
+    contact = contact_builder()
 
     response = client.delete(
-        reverse("contact", kwargs={"address_pk": address.id, "pk": contact.id})
+        reverse("contact", kwargs={"address_pk": contact.address.id, "pk": contact.id})
     )
     assert response.status_code == status.HTTP_200_OK
-    assert Contact.objects.filter(pk=id).exists() is False
+    assert Contact.objects.filter(pk=contact.id).exists() is False
 
 
-def test_contact_types_returns_list_of_contact_types(client):
-    ct1 = ContactType(slug="some-slug")
-    ct1.save()
-    ct1.refresh_from_db()
+def test_contact_types_returns_list_of_contact_types(client, contact_type_builder):
+    _ = contact_type_builder(slug="some-slug")
 
-    ct1 = ContactType(slug="some-slug2")
-    ct1.save()
-    ct1.refresh_from_db()
+    _ = contact_type_builder(slug="some-slug2")
 
     response = client.get(reverse("contact-types"))
     assert response.status_code == status.HTTP_200_OK
@@ -206,43 +92,11 @@ def test_contact_types_returns_list_of_contact_types(client):
     )
 
 
-def test_contact_view_returns_valid_contact(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
-
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    ct = ContactType(slug="some-slug")
-    ct.save()
-    ct.refresh_from_db()
-
-    contact = Contact(
-        address=address,
-        contact_type=ct,
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-        email=fake.email(),
-        phone=fake.phone_number(),
-    )
-    contact.save()
-    contact.refresh_from_db()
+def test_contact_view_returns_valid_contact(client, contact_builder):
+    contact = contact_builder()
 
     response = client.get(
-        reverse("contact", kwargs={"address_pk": address.id, "pk": contact.id})
+        reverse("contact", kwargs={"address_pk": contact.address.id, "pk": contact.id})
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.data["id"] == contact.id
