@@ -5,7 +5,7 @@ LOCAL=docker-compose.local.yml
 PROD=docker-compose.prod.yml
 BASE_AND_LOC=-f $(BASE) -f $(LOCAL)
 BASE_AND_PROD=-f $(BASE) -f $(PROD)
-PT=pytest
+PT=pytest --cache-clear
 
 .PHONY: logs dev
 
@@ -96,6 +96,10 @@ compile:
 	@rm -f requirements*.txt
 	@pip-compile
 	@pip-compile requirements-dev.in
+
+# Sync new reqs
+sync:
+	@pip-sync requirements*.txt
 
 # Installs requirements
 reqs:

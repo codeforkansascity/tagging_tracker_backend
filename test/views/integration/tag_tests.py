@@ -1,93 +1,27 @@
 import json
 
 import pytest
-from django.contrib.gis.geos import Point
 from django.urls import reverse
-from django.utils import timezone
 from rest_framework import status
 
-from backend.models import Address, Tag, PropertyType
+from backend.models import Tag
 
 pytestmark = pytest.mark.usefixtures("db")
 
 
-def test_get_method_retrieves_existing_tag(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
-
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    tag = Tag(
-        address=address,
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        date_taken=timezone.now(),
-        description="some description",
-        img="something goes here",
-        square_footage="some sq ft",
-        surface="concrete",
-        tag_words="some words",
-        tag_initials="someones initial",
-    )
-    tag.save()
-    tag.refresh_from_db()
+def test_get_method_retrieves_existing_tag(client, tag_builder):
+    tag = tag_builder()
 
     response = client.get(reverse("tag", kwargs={"pk": tag.id}))
     assert response.status_code == status.HTTP_200_OK
     assert json.loads(response.content)["id"] == tag.id
 
 
-def test_put_method_updates_tag(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
-
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    tag = Tag(
-        address=address,
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        date_taken=timezone.now(),
-        description="some description",
-        img="something goes here",
-        square_footage="some sq ft",
-        surface="concrete",
-        tag_words="some words",
-        tag_initials="someones initial",
-    )
-    tag.save()
-    tag.refresh_from_db()
+def test_put_method_updates_tag(client, tag_builder):
+    tag = tag_builder()
 
     updated = {
-        "address": address.id,
+        "address": tag.address.id,
         "creator_user_id": tag.creator_user_id,
         "last_updated_user_id": tag.last_updated_user_id,
         "date_taken": tag.date_taken.strftime("%Y-%m-%d %H:%M:%S"),
@@ -104,40 +38,8 @@ def test_put_method_updates_tag(client, fake):
     assert tag.description == updated["description"]
 
 
-def test_deleted_method_deletes_tag(client, fake):
-    pt = PropertyType(slug="some_slug")
-    pt.save()
-    pt.refresh_from_db()
-
-    address = Address(
-        point=Point(1, 2),
-        neighborhood="Some neighborhood",
-        street=fake.street_address(),
-        city=fake.city(),
-        state=fake.state(),
-        zip=fake.zipcode(),
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        land_bank_property=True,
-        property_type=pt,
-    )
-    address.save()
-    address.refresh_from_db()
-
-    tag = Tag(
-        address=address,
-        creator_user_id="some id",
-        last_updated_user_id="some id",
-        date_taken=timezone.now(),
-        description="some description",
-        img="something goes here",
-        square_footage="some sq ft",
-        surface="concrete",
-        tag_words="some words",
-        tag_initials="someones initial",
-    )
-    tag.save()
-    tag.refresh_from_db()
+def test_deleted_method_deletes_tag(client, tag_builder):
+    tag = tag_builder()
 
     response = client.delete(reverse("tag", kwargs={"pk": tag.id}))
     assert response.status_code == status.HTTP_204_NO_CONTENT
