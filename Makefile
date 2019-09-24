@@ -97,6 +97,10 @@ compile:
 	@pip-compile
 	@pip-compile requirements-dev.in
 
+# Sync new reqs
+sync:
+	@pip-sync requirements*.txt
+
 # Installs requirements
 reqs:
 	@pip install \
