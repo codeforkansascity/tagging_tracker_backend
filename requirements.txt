@@ -13,7 +13,7 @@ cffi==1.12.3              # via cryptography
 chardet==3.0.4            # via requests
 cryptography==2.7         # via azure-storage
 django-queryset-csv==1.0.2
-django==1.11.24
+django==1.11.28
 djangorestframework-gis==0.14
 djangorestframework-jwt==1.11.0
 djangorestframework==3.10.3
