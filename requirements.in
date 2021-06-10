@@ -1,5 +1,5 @@
 azure-storage
-django<2
+django<3
 djangorestframework
 djangorestframework-gis
 djangorestframework-jwt
